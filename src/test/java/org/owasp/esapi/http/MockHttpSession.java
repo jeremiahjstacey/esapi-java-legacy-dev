@@ -23,6 +23,7 @@ import java.util.Vector;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSessionContext;
 
 /**
  * The Class MockHttpSession.
@@ -135,7 +136,7 @@ public class MockHttpSession implements HttpSession {
         @Deprecated
     // need the full class here as for whatever stupid reason you can't
     // seem to @SuppressWarnings{'deprecation'} on the import... *sigh*
-    public javax.servlet.http.HttpSessionContext getSessionContext() {
+    public HttpSessionContext getSessionContext() {
         return null;
     }
 
