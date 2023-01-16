@@ -30,7 +30,6 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileUploadException;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Logger;
 import org.owasp.esapi.waf.actions.Action;
@@ -314,11 +313,7 @@ public class ESAPIWebApplicationFirewallFilter implements Filter {
 		 * Create the InterceptingHTTPServletRequest.
 		 */
 
-		try {
-			request = new InterceptingHTTPServletRequest((HttpServletRequest) servletRequest);
-		} catch (FileUploadException fue) {
-			logger.error(Logger.EVENT_SUCCESS, "Error Wrapping Request", fue);
-		}
+		request = new InterceptingHTTPServletRequest((HttpServletRequest) servletRequest);
 
 		/*
 		 * Stage 2: After the body has been read, but before the the application

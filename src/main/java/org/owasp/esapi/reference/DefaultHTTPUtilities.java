@@ -18,6 +18,7 @@ package org.owasp.esapi.reference;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -27,17 +28,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.ProgressListener;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.HTTPUtilities;
 import org.owasp.esapi.Logger;
@@ -56,6 +47,14 @@ import org.owasp.esapi.errors.IntegrityException;
 import org.owasp.esapi.errors.IntrusionException;
 import org.owasp.esapi.errors.ValidationException;
 import org.owasp.esapi.errors.ValidationUploadException;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
 /**
  * Reference implementation of the HTTPUtilities interface. This implementation
@@ -551,41 +550,15 @@ public class DefaultHTTPUtilities implements org.owasp.esapi.HTTPUtilities {
             dfiPrevValue = System.getProperty(DISKFILEITEM_SERIALIZABLE);
             System.setProperty(DISKFILEITEM_SERIALIZABLE, "false");
             final HttpSession session = request.getSession(false);
-            if (!ServletFileUpload.isMultipartContent(request)) {
+            boolean isMultipart = "POST".equals(request.getMethod()) && request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/") > -1 ;
+            if (!isMultipart) {
                 throw new ValidationUploadException("Upload failed", "Not a multipart request");
             }
 
-            // this factory will store ALL files in the temp directory,
-            // regardless of size
-            DiskFileItemFactory factory = new DiskFileItemFactory(0, tempDir);
-            ServletFileUpload upload = new ServletFileUpload(factory);
-            upload.setSizeMax(maxBytes);
-
-            // Create a progress listener
-            ProgressListener progressListener = new ProgressListener() {
-                private long megaBytes = -1;
-                private long progress = 0;
-
-                public void update(long pBytesRead, long pContentLength, int pItems) {
-                    if (pItems == 0)
-                        return;
-                    long mBytes = pBytesRead / 1000000;
-                    if (megaBytes == mBytes)
-                        return;
-                    megaBytes = mBytes;
-                    progress = (long) (((double) pBytesRead / (double) pContentLength) * 100);
-                    if ( session != null ) {
-                        session.setAttribute("progress", Long.toString(progress));
-                    }
-                    // logger.logSuccess(Logger.SECURITY, "   Item " + pItems + " (" + progress + "% of " + pContentLength + " bytes]");
-                }
-            };
-            upload.setProgressListener(progressListener);
-
-            List<FileItem> items = upload.parseRequest(request);
-            for (FileItem item : items)
+            Collection<Part> items = request.getParts();
+            for (Part item : items)
             {
-                if (!item.isFormField() && item.getName() != null && !(item.getName().equals("")))
+                if (item.getName() != null && !("".equals(item.getName())))
                 {
                     String[] fparts = item.getName().split("[\\/\\\\]");
                     String filename = fparts[fparts.length - 1];
@@ -608,8 +581,8 @@ public class DefaultHTTPUtilities implements org.owasp.esapi.HTTPUtilities {
                         String filenm = filename.substring(0, filename.length() - extension.length());
                         f = File.createTempFile(filenm, "." + extension, finalDir);
                     }
+                    FileUtils.copyInputStreamToFile(item.getInputStream(), f);
 
-                    item.write(f);
                     newFiles.add(f);
                     // delete temporary file
                     item.delete();

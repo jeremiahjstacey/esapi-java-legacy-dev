@@ -21,25 +21,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 import jakarta.servlet.ReadListener;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
-
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.fileupload.util.Streams;
+import jakarta.servlet.http.Part;
 
 /**
- * The wrapper for the HttpServletRequest object which will be passed to the application
- * being protected by the WAF. It contains logic for parsing multipart parameters out of
- * the request and provided downstream application logic a way of accessing it like it
- * hasn't been touched.
+ * The wrapper for the HttpServletRequest object which will be passed to the
+ * application being protected by the WAF. It contains logic for parsing
+ * multipart parameters out of the request and provided downstream application
+ * logic a way of accessing it like it hasn't been touched.
  *
  * @author Arshan Dabirsiaghi
  *
@@ -55,108 +54,117 @@ public class InterceptingHTTPServletRequest extends HttpServletRequestWrapper {
     private RAFInputStream is;
 
     public ServletInputStream getInputStream() throws IOException {
-
-        if ( isMultipart ) {
+        if (isMultipart) {
             return is;
         } else {
             return super.getInputStream();
         }
-
     }
 
     public BufferedReader getReader() throws IOException {
         String enc = getCharacterEncoding();
-        if(enc == null) enc = "UTF-8";
+        if (enc == null)
+            enc = "UTF-8";
         return new BufferedReader(new InputStreamReader(getInputStream(), enc));
     }
+    
+    /*  Multipart check - must be a post method, content type must start with multipart/
+     * 
+     *       HttpServletRequest request) {
+066        if (!POST_METHOD.equalsIgnoreCase(request.getMethod())) {
+067            return false;
+068        }
+     *  public static final boolean isMultipartContent(final RequestContext ctx) {
+        final String contentType = ctx.getContentType();
+        if (contentType == null) {
+            return false;
+        }
+        return contentType.toLowerCase(Locale.ENGLISH).startsWith(MULTIPART);
+    }
+     * 
+     */
 
-    public InterceptingHTTPServletRequest(HttpServletRequest request) throws FileUploadException, IOException {
+    public InterceptingHTTPServletRequest(HttpServletRequest request) throws IOException, ServletException {
 
         super(request);
 
         allParameters = new Vector<Parameter>();
         allParameterNames = new Vector<String>();
 
-
         /*
          * Get all the regular parameters.
          */
 
-        Enumeration e = request.getParameterNames();
-
-        while(e.hasMoreElements()) {
-            String param = (String)e.nextElement();
-            allParameters.add(new Parameter(param,request.getParameter(param),false));
+        Enumeration<String> e = request.getParameterNames();
+        
+        while (e.hasMoreElements()) {
+            String param = (String) e.nextElement();
+            allParameters.add(new Parameter(param, request.getParameter(param), false));
             allParameterNames.add(param);
         }
 
+        
+          
+          isMultipart = "POST".equals(request.getMethod()) && request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/") > -1 ;
+          
+          if ( isMultipart ) {
+          
+          requestBody = new RandomAccessFile( File.createTempFile("oew","mpc"), "rw");
+          
+          byte buffer[] = new byte[CHUNKED_BUFFER_SIZE];
+          
+          long size = 0; int len = 0;
+          
+          while ( len != -1 && size <= Integer.MAX_VALUE) { len =
+          request.getInputStream().read(buffer, 0, CHUNKED_BUFFER_SIZE); if ( len != -1
+          ) { size += len; requestBody.write(buffer,0,len); } }
+          
+          is = new RAFInputStream(requestBody);
+          
+          Collection<Part> parts = request.getParts();
+          
+          for (Part part : parts) {
+          //while(iter.hasNext()) {
+           //   FileItemStream item = iter.next(); String name =
+             //  item.getFieldName(); InputStream stream = item.openStream();
+             
+              String name = part.getName();
+              InputStream partStream = part.getInputStream();
+          
+          
+//          If this is a regular form field, add it to our parameter collection.
+          
+          
+          if (part.getContentType() != null && part.getContentType().toLowerCase().indexOf("multipart/") > -1) {
+              
+              String value = new BufferedReader(
+                      new InputStreamReader(part.getInputStream(), StandardCharsets.UTF_8))
+                        .lines()
+                        .collect(Collectors.joining("\n"));
+          
+          allParameters.add(new Parameter(name,value,true));
+          allParameterNames.add(name);
+          
+          } else {
+          
+          //This is a multipart content that is not a regular form field. Nothing to do here.
+          
+          
+          }
+          
+          }
+         
+       requestBody.seek(0);
 
-        /*
-         * Get all the multipart fields.
-         */
-
-        isMultipart = ServletFileUpload.isMultipartContent(request);
-
-        if ( isMultipart ) {
-
-            requestBody = new RandomAccessFile( File.createTempFile("oew","mpc"), "rw");
-
-            byte buffer[] = new byte[CHUNKED_BUFFER_SIZE];
-
-            long size = 0;
-            int len = 0;
-
-            while ( len != -1 && size <= Integer.MAX_VALUE) {
-                len = request.getInputStream().read(buffer, 0, CHUNKED_BUFFER_SIZE);
-                if ( len != -1 ) {
-                    size += len;
-                    requestBody.write(buffer,0,len);
-                }
-            }
-
-            is = new RAFInputStream(requestBody);
-
-            ServletFileUpload sfu = new ServletFileUpload();
-            FileItemIterator iter = sfu.getItemIterator(this);
-
-            while(iter.hasNext()) {
-                FileItemStream item = iter.next();
-                String name = item.getFieldName();
-                InputStream stream = item.openStream();
-
-                /*
-                 * If this is a regular form field, add it to our
-                 * parameter collection.
-                 */
-
-                if (item.isFormField()) {
-
-                    String value = Streams.asString(stream);
-
-                    allParameters.add(new Parameter(name,value,true));
-                    allParameterNames.add(name);
-
-                } else {
-                    /*
-                     * This is a multipart content that is not a
-                     * regular form field. Nothing to do here.
-                     */
-
-                }
-
-            }
-
-            requestBody.seek(0);
-
-        }
+    }
 
     }
 
     public String getDictionaryParameter(String s) {
 
-        for(int i=0;i<allParameters.size();i++) {
+        for (int i = 0; i < allParameters.size(); i++) {
             Parameter p = allParameters.get(i);
-            if ( p.getName().equals(s) ) {
+            if (p.getName().equals(s)) {
                 return p.getValue();
             }
         }
@@ -167,7 +175,6 @@ public class InterceptingHTTPServletRequest extends HttpServletRequestWrapper {
     public Enumeration getDictionaryParameterNames() {
         return allParameterNames.elements();
     }
-
 
     private class RAFInputStream extends ServletInputStream {
 
@@ -187,7 +194,7 @@ public class InterceptingHTTPServletRequest extends HttpServletRequestWrapper {
 
         public synchronized void reset() throws IOException {
             raf.seek(0);
-            isDone=false;
+            isDone = false;
         }
 
         @Override
@@ -202,7 +209,7 @@ public class InterceptingHTTPServletRequest extends HttpServletRequestWrapper {
 
         @Override
         public void setReadListener(ReadListener readListener) {
-            //NO-OP.  Unused in this scope
+            // NO-OP. Unused in this scope
         }
     }
 
