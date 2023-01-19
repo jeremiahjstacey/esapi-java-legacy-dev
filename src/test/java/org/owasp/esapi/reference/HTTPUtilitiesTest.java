@@ -15,20 +15,20 @@
  */
 package org.owasp.esapi.reference;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
+import org.mockito.Mockito;
 import org.owasp.esapi.Authenticator;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.EncoderConstants;
@@ -47,13 +47,14 @@ import org.owasp.esapi.http.MockHttpSession;
 import org.owasp.esapi.util.FileTestUtils;
 import org.owasp.esapi.util.TestUtils;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
 /**
  * The Class HTTPUtilitiesTest.
  *
@@ -206,6 +207,63 @@ public class HTTPUtilitiesTest extends TestCase
      * Test of formatHttpRequestForLog method, of class org.owasp.esapi.HTTPUtilities.
      * @throws IOException
      */
+    public void testGetFileUploads2() throws Exception {
+        File testFilesystem = FileTestUtils.createTmpDirectory(CLASS_NAME);
+
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+
+        //Configure Request to be a multipart POST event
+        Mockito.when(request.getMethod()).thenReturn("POST");
+        Mockito.when(request.getContentType()).thenReturn("Content-Type: multipart/mixed");
+
+        // Configure the parts to be returned
+        Collection<Part> uploadParts = new ArrayList<>();
+        Mockito.when(request.getParts()).thenReturn(uploadParts);
+
+        //create two Part instances to be returned.
+        Part nxStub = Mockito.mock(Part.class);
+        Part winStub = Mockito.mock(Part.class);
+        uploadParts.add(nxStub);
+        uploadParts.add(winStub);
+
+        Mockito.when(nxStub.getSubmittedFileName()).thenReturn("/tmp/nxFile.txt");
+        ByteArrayInputStream nxFileBody = new ByteArrayInputStream("LINUX FILE PATH WORKS".getBytes());
+        Mockito.when(nxStub.getInputStream()).thenReturn(nxFileBody);
+
+        Mockito.when(winStub.getSubmittedFileName()).thenReturn("C:\\temp\\winFile.txt");
+        ByteArrayInputStream winFilBody = new ByteArrayInputStream("WINDOWS FILE PATH WORKS".getBytes());
+        Mockito.when(winStub.getInputStream()).thenReturn(winFilBody);
+
+        try {
+            // Do some testing
+            DefaultHTTPUtilities testUnit = new DefaultHTTPUtilities();
+            testUnit.setCurrentHTTP(request, response);
+
+            List<File> files = testUnit.getFileUploads(request, testFilesystem);
+            assertEquals(2, files.size());
+
+            File nxFileCopy = files.get(0);
+            assertEquals("nxFile.txt", nxFileCopy.getName());
+            String nxReadBody = Files.lines(nxFileCopy.toPath()).collect(Collectors.joining(""));
+            assertEquals("LINUX FILE PATH WORKS", nxReadBody);
+            Files.delete(nxFileCopy.toPath());
+
+            File winFileCopy = files.get(1);
+            assertEquals("winFile.txt", winFileCopy.getName());
+            String winReadBody = Files.lines(winFileCopy.toPath()).collect(Collectors.joining(""));
+            assertEquals("WINDOWS FILE PATH WORKS", winReadBody);
+            Files.delete(winFileCopy.toPath());
+        } finally {
+            FileTestUtils.deleteRecursively(testFilesystem);
+        }
+        //TODO:  Refresher on Mockito call verification.
+    }
+
+    /**
+     * Test of formatHttpRequestForLog method, of class org.owasp.esapi.HTTPUtilities.
+     * @throws IOException
+     */
     public void testGetFileUploads() throws Exception {
         File home = null;
 
@@ -222,29 +280,6 @@ public class HTTPUtilitiesTest extends TestCase
                 fail();
             } catch( ValidationException e ) {
                 // expected
-            }
-
-            MockHttpServletRequest request2 = new MockHttpServletRequest("/test", content.getBytes(response.getCharacterEncoding()));
-            request2.setContentType( "multipart/form-data; boundary=ridiculous");
-            ESAPI.httpUtilities().setCurrentHTTP(request2, response);
-            List<File> response2 = new ArrayList<>();
-            try {
-                response2 = ESAPI.httpUtilities().getFileUploads(request2, home);
-                assertTrue( response2.size() > 0 );
-            } finally {
-                response2.forEach(file -> file.delete());
-            }
-
-            MockHttpServletRequest request4 = new MockHttpServletRequest("/test", content.getBytes(response.getCharacterEncoding()));
-            request4.setContentType( "multipart/form-data; boundary=ridiculous");
-            ESAPI.httpUtilities().setCurrentHTTP(request4, response);
-            System.err.println("UPLOAD DIRECTORY: " + ESAPI.securityConfiguration().getUploadDirectory());
-            List<File> response4 = new ArrayList<>();
-            try {
-                response4 = ESAPI.httpUtilities().getFileUploads(request4, home);
-                assertTrue( response4.size() > 0 );
-            } finally {
-                response4.forEach(file -> file.delete());
             }
 
             MockHttpServletRequest request3 = new MockHttpServletRequest("/test", content.replaceAll("txt", "ridiculous").getBytes(response.getCharacterEncoding()));
@@ -330,8 +365,6 @@ public class HTTPUtilitiesTest extends TestCase
         }
     }
 
-        @Rule
-        public ExpectedException thrown = ExpectedException.none();
 
     /**
      * Test of setCookie method, of class org.owasp.esapi.HTTPUtilities.
@@ -353,7 +386,7 @@ public class HTTPUtilitiesTest extends TestCase
                     instance.addCookie( response, new Cookie( "tes<t3", "test3" ) );
                     fail("Expected IllegalArgumentException");
                 } catch (IllegalArgumentException iae) {
-                    assertThat(iae.getMessage(), is("Cookie name \"tes<t3\" is a reserved token"));
+                    assertEquals("Cookie name \"tes<t3\" is a reserved token", iae.getMessage());
                 }
 
         // test illegal value

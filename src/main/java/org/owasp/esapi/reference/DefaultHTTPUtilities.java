@@ -17,6 +17,7 @@ package org.owasp.esapi.reference;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -549,7 +550,6 @@ public class DefaultHTTPUtilities implements org.owasp.esapi.HTTPUtilities {
         try {
             dfiPrevValue = System.getProperty(DISKFILEITEM_SERIALIZABLE);
             System.setProperty(DISKFILEITEM_SERIALIZABLE, "false");
-            final HttpSession session = request.getSession(false);
             boolean isMultipart = "POST".equals(request.getMethod()) && request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/") > -1 ;
             if (!isMultipart) {
                 throw new ValidationUploadException("Upload failed", "Not a multipart request");
@@ -558,9 +558,10 @@ public class DefaultHTTPUtilities implements org.owasp.esapi.HTTPUtilities {
             Collection<Part> items = request.getParts();
             for (Part item : items)
             {
-                if (item.getName() != null && !("".equals(item.getName())))
+                String clientFile = item.getSubmittedFileName();
+                if (clientFile != null && !("".equals(clientFile)))
                 {
-                    String[] fparts = item.getName().split("[\\/\\\\]");
+                    String[] fparts = clientFile.split("[\\/\\\\]");
                     String filename = fparts[fparts.length - 1];
 
                     if (!ESAPI.validator().isValidFileName("upload", filename, allowedExtensions, false))
@@ -587,16 +588,18 @@ public class DefaultHTTPUtilities implements org.owasp.esapi.HTTPUtilities {
                     // delete temporary file
                     item.delete();
                     logger.fatal(Logger.SECURITY_SUCCESS, "File successfully uploaded: " + f);
+
+                    final HttpSession session = request.getSession(false);
                     if (session != null)
                     {
                         session.setAttribute("progress", Long.toString(0));
                     }
                 }
             }
+        } catch (ValidationUploadException vue) 
+        {
+            throw (ValidationException) vue;
         } catch (Exception e) {
-            if (e instanceof ValidationUploadException) {
-                throw (ValidationException)e;
-            }
             throw new ValidationUploadException("Upload failure", "Problem during upload:" + e.getMessage(), e);
         }
         finally {
