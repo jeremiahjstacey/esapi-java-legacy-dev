@@ -96,59 +96,59 @@ public class InterceptingHTTPServletRequest extends HttpServletRequestWrapper {
          */
 
         Enumeration<String> e = request.getParameterNames();
-        
+
         while (e.hasMoreElements()) {
             String param = (String) e.nextElement();
             allParameters.add(new Parameter(param, request.getParameter(param), false));
             allParameterNames.add(param);
         }
 
-        
-          
-          isMultipart = "POST".equals(request.getMethod()) && request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/") > -1 ;
-          
-          if ( isMultipart ) {
-          
-          requestBody = new RandomAccessFile( File.createTempFile("oew","mpc"), "rw");
-          
-          byte buffer[] = new byte[CHUNKED_BUFFER_SIZE];
-          
-          long size = 0; int len = 0;
-          
-          while ( len != -1 && size <= Integer.MAX_VALUE) { len =
-          request.getInputStream().read(buffer, 0, CHUNKED_BUFFER_SIZE); if ( len != -1
-          ) { size += len; requestBody.write(buffer,0,len); } }
-          
-          is = new RAFInputStream(requestBody);
-          
-          Collection<Part> parts = request.getParts();
-          
-          for (Part part : parts) {
 
-          if (part.getContentType() != null && part.getContentType().toLowerCase().indexOf("multipart/") > -1) {
-//          If this is a regular form field, add it to our parameter collection.
-              
-              String value = new BufferedReader(
-                      new InputStreamReader(part.getInputStream(), StandardCharsets.UTF_8))
-                        .lines()
-                        .collect(Collectors.joining("\n"));
-          
-              String name = part.getName();
-          allParameters.add(new Parameter(name,value,true));
-          allParameterNames.add(name);
-          
-          } else {
-          
-          //This is a multipart content that is not a regular form field. Nothing to do here.
-          
-          
-          }
-          
-          }
-         
-       requestBody.seek(0);
 
-    }
+        isMultipart = "POST".equals(request.getMethod()) && request.getContentType() != null && request.getContentType().toLowerCase().indexOf("multipart/") > -1 ;
+
+        if ( isMultipart ) {
+
+            requestBody = new RandomAccessFile( File.createTempFile("oew","mpc"), "rw");
+
+            byte buffer[] = new byte[CHUNKED_BUFFER_SIZE];
+
+            long size = 0; int len = 0;
+
+            while ( len != -1 && size <= Integer.MAX_VALUE) { len =
+                    request.getInputStream().read(buffer, 0, CHUNKED_BUFFER_SIZE); if ( len != -1
+                            ) { size += len; requestBody.write(buffer,0,len); } }
+
+            is = new RAFInputStream(requestBody);
+
+            Collection<Part> parts = request.getParts();
+
+            for (Part part : parts) {
+
+                if (part.getContentType() != null && part.getContentType().toLowerCase().indexOf("multipart/") > -1) {
+                    //          If this is a regular form field, add it to our parameter collection.
+
+                    String value = new BufferedReader(
+                            new InputStreamReader(part.getInputStream(), StandardCharsets.UTF_8))
+                            .lines()
+                            .collect(Collectors.joining("\n"));
+
+                    String name = part.getName();
+                    allParameters.add(new Parameter(name,value,true));
+                    allParameterNames.add(name);
+
+                } else {
+
+                    //This is a multipart content that is not a regular form field. Nothing to do here.
+
+
+                }
+
+            }
+
+            requestBody.seek(0);
+
+        }
 
     }
 
