@@ -18,6 +18,7 @@ package org.owasp.esapi.reference;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,7 +30,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.io.FileUtils;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.HTTPUtilities;
 import org.owasp.esapi.Logger;
@@ -582,7 +582,7 @@ public class DefaultHTTPUtilities implements org.owasp.esapi.HTTPUtilities {
                         String filenm = filename.substring(0, filename.length() - extension.length());
                         f = File.createTempFile(filenm, "." + extension, finalDir);
                     }
-                    FileUtils.copyInputStreamToFile(item.getInputStream(), f);
+                    Files.copy(item.getInputStream(), Paths.get(f.toURI()));
 
                     newFiles.add(f);
                     // delete temporary file
