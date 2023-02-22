@@ -124,24 +124,16 @@ public class InterceptingHTTPServletRequest extends HttpServletRequestWrapper {
           Collection<Part> parts = request.getParts();
           
           for (Part part : parts) {
-          //while(iter.hasNext()) {
-           //   FileItemStream item = iter.next(); String name =
-             //  item.getFieldName(); InputStream stream = item.openStream();
-             
-              String name = part.getName();
-              InputStream partStream = part.getInputStream();
-          
-          
-//          If this is a regular form field, add it to our parameter collection.
-          
-          
+
           if (part.getContentType() != null && part.getContentType().toLowerCase().indexOf("multipart/") > -1) {
+//          If this is a regular form field, add it to our parameter collection.
               
               String value = new BufferedReader(
                       new InputStreamReader(part.getInputStream(), StandardCharsets.UTF_8))
                         .lines()
                         .collect(Collectors.joining("\n"));
           
+              String name = part.getName();
           allParameters.add(new Parameter(name,value,true));
           allParameterNames.add(name);
           
