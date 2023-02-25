@@ -68,22 +68,6 @@ public class InterceptingHTTPServletRequest extends HttpServletRequestWrapper {
         return new BufferedReader(new InputStreamReader(getInputStream(), enc));
     }
     
-    /*  Multipart check - must be a post method, content type must start with multipart/
-     * 
-     *       HttpServletRequest request) {
-066        if (!POST_METHOD.equalsIgnoreCase(request.getMethod())) {
-067            return false;
-068        }
-     *  public static final boolean isMultipartContent(final RequestContext ctx) {
-        final String contentType = ctx.getContentType();
-        if (contentType == null) {
-            return false;
-        }
-        return contentType.toLowerCase(Locale.ENGLISH).startsWith(MULTIPART);
-    }
-     * 
-     */
-
     public InterceptingHTTPServletRequest(HttpServletRequest request) throws IOException, ServletException {
 
         super(request);
