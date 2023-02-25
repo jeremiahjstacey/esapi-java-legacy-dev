@@ -47,11 +47,11 @@ import org.owasp.esapi.http.MockHttpSession;
 import org.owasp.esapi.util.FileTestUtils;
 import org.owasp.esapi.util.TestUtils;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.Part;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

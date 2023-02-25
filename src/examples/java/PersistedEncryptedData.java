@@ -3,7 +3,7 @@ import org.owasp.esapi.*;
 import org.owasp.esapi.crypto.*;
 import org.owasp.esapi.errors.*;
 import org.owasp.esapi.codecs.*;
-import jakarta.servlet.ServletRequest;
+import javax.servlet.ServletRequest;
 
 /** A slightly more complex example showing encoding encrypted data and writing
  *  it out to a file. This is very similar to the example in the ESAPI User

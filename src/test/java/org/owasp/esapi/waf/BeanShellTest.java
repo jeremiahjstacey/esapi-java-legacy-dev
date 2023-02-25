@@ -17,8 +17,8 @@ package org.owasp.esapi.waf;
 
 import java.net.URL;
 
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.owasp.esapi.http.MockFilterChain;
 import org.owasp.esapi.http.MockHttpServletRequest;

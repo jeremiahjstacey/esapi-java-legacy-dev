@@ -2,7 +2,7 @@ package org.owasp.esapi.waf;
 
 import java.util.Map;
 
-import jakarta.servlet.ServletContext;
+import javax.servlet.ServletContext;
 
 import org.owasp.esapi.http.MockFilterConfig;
 

@@ -17,7 +17,7 @@ package org.owasp.esapi.waf;
 
 import java.net.URL;
 
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestSuite;
 

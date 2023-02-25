@@ -1,6 +1,6 @@
 package org.owasp.esapi.tags;
 
-import jakarta.servlet.jsp.JspTagException;
+import javax.servlet.jsp.JspTagException;
 
 import org.owasp.esapi.Encoder;
 import org.owasp.esapi.errors.EncodingException;

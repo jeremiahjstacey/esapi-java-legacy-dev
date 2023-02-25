@@ -22,7 +22,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import jakarta.servlet.FilterConfig;
+import javax.servlet.FilterConfig;
 
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.http.MockFilterChain;
