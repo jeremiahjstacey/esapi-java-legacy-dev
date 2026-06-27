@@ -109,7 +109,7 @@ public class DefaultEncoder implements Encoder {
      * Instantiates a new {@code DefaultEncoder} based on the property {@code Encoder.DefaultCodecList}
      * from the {@code ESAPI.properties} file.
      */
-    private DefaultEncoder() {
+    public DefaultEncoder() {
         this( ESAPI.securityConfiguration().getDefaultCanonicalizationCodecs() );
     }
 

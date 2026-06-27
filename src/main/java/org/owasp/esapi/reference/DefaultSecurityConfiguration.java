@@ -406,7 +406,7 @@ public class DefaultSecurityConfiguration implements SecurityConfiguration {
      *
      * @param resourceFile The name of the property file to load
      */
-    DefaultSecurityConfiguration(String resourceFile) {
+    public DefaultSecurityConfiguration(String resourceFile) {
         this.resourceFile = resourceFile;
         // load security configuration
         try {
