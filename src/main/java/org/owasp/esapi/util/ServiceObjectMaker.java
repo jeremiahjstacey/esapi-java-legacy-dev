@@ -1,8 +1,6 @@
 package org.owasp.esapi.util;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ServiceLoader;
 
 import org.owasp.esapi.errors.ConfigurationException;
@@ -23,7 +21,7 @@ public class ServiceObjectMaker implements ObjMaker{
                     //LOG Multiple instances found.  Ignoring itr.next().getClass().getName();
                 }
             }
-            
+
             return instance;
         } catch (SecurityException e) {
             throw new ConfigurationException( "The SecurityManager has restricted the object factory from getting a reference to the implementation" +
@@ -54,8 +52,6 @@ public class ServiceObjectMaker implements ObjMaker{
             errMsg = ex.toString() + " " + typeName + " class (" + className + ") CTOR threw exception.";
             throw new ConfigurationException(errMsg, ex);
         }
-    }
-
     }
 
 }
