@@ -92,23 +92,12 @@ public class ExecutorTest extends TestCase {
         return suite;
     }
 
-    private void resetSingletonField() throws Exception {
-        //Wipe the singleton field here so we can force recreation.
-        Field singletonField = DefaultExecutor.class.getDeclaredField("singletonInstance");
-        singletonField.setAccessible(true);
-        //Object ref is ignored since field is static.
-        singletonField.set(new Object(), null);
-    }
-
     public void testPlatformResoveWindows() throws Exception {
         String origName = System.getProperty("os.name");
 
         try {
-            //Wipe the singleton field here so we can force recreation.
-            resetSingletonField();
-
             System.setProperty("os.name", "a name that includes the literal 'Windows'");
-            Executor ex = DefaultExecutor.getInstance();
+            Executor ex = new DefaultExecutor();
 
 
             Field codecField = DefaultExecutor.class.getDeclaredField("codec");
@@ -119,7 +108,6 @@ public class ExecutorTest extends TestCase {
             assertTrue(instCodec instanceof WindowsCodec);
         } finally {
             System.setProperty("os.name", origName);
-            resetSingletonField();
         }
     }
 
@@ -127,12 +115,10 @@ public class ExecutorTest extends TestCase {
         String origName = System.getProperty("os.name");
 
         try {
-            //Wipe the singleton field here so we can force recreation.
-            resetSingletonField();
 
             //Unmatched Platform is anything but the literal string "Windows" - In part or in whole.
             System.setProperty("os.name", "unmatchedPlatform");
-            Executor ex = DefaultExecutor.getInstance();
+            Executor ex = new DefaultExecutor();
 
 
             Field codecField = DefaultExecutor.class.getDeclaredField("codec");
@@ -143,7 +129,6 @@ public class ExecutorTest extends TestCase {
             assertTrue(instCodec instanceof UnixCodec);
         } finally {
             System.setProperty("os.name", origName);
-            resetSingletonField();
         }
     }
 
