@@ -16,7 +16,6 @@
  */
 package org.owasp.esapi.reference.crypto;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -34,9 +33,9 @@ import java.security.Signature;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -44,14 +43,13 @@ import javax.crypto.IllegalBlockSizeException;
 // import javax.crypto.Mac;         // Uncomment if computeHMAC() is included.
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.EncoderConstants;
 import org.owasp.esapi.Encryptor;
 import org.owasp.esapi.Logger;
-import org.owasp.esapi.codecs.Hex;
 import org.owasp.esapi.crypto.CipherSpec;
 import org.owasp.esapi.crypto.CipherText;
 import org.owasp.esapi.crypto.CryptoHelper;
@@ -61,7 +59,7 @@ import org.owasp.esapi.crypto.SecurityProviderLoader;
 import org.owasp.esapi.errors.ConfigurationException;
 import org.owasp.esapi.errors.EncryptionException;
 import org.owasp.esapi.errors.IntegrityException;
-import org.owasp.esapi.reference.DefaultSecurityConfiguration;
+import org.owasp.esapi.util.ObjFactory;
 
 /**
  * Reference implementation of the {@code Encryptor} interface. This implementation
@@ -79,20 +77,18 @@ import org.owasp.esapi.reference.DefaultSecurityConfiguration;
  * @see org.owasp.esapi.Encryptor
  */
 public final class JavaEncryptor implements Encryptor {
-    private static volatile Encryptor singletonInstance;
 
     // Note: This double-check pattern only works because singletonInstance
     //       is declared to be volatile.  Usually this method is called
     //       via ESAPI.encryptor() rather than directly.
+    /**
+     * Acquires the singleton reference to this type.
+     * @return instance.
+     * @deprecated Use {@link ObjFactory#make(DefaultEncoder.class.getName(), String)} instead
+     */
+    @Deprecated
     public static Encryptor getInstance() throws EncryptionException {
-        if ( singletonInstance == null ) {
-            synchronized ( JavaEncryptor.class ) {
-                if ( singletonInstance == null ) {
-                    singletonInstance = new JavaEncryptor();
-                }
-            }
-        }
-        return singletonInstance;
+        return ObjFactory.make(JavaEncryptor.class.getName(), "Encryptor");
     }
 
     private static boolean initialized = false;

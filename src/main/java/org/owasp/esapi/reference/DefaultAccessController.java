@@ -9,21 +9,19 @@ import org.owasp.esapi.Logger;
 import org.owasp.esapi.errors.AccessControlException;
 import org.owasp.esapi.reference.accesscontrol.policyloader.ACRPolicyFileLoader;
 import org.owasp.esapi.reference.accesscontrol.policyloader.PolicyDTO;
+import org.owasp.esapi.util.ObjFactory;
 
 public class DefaultAccessController implements AccessController {
     private Map ruleMap;
 
-    private static volatile AccessController singletonInstance = null;
-
+    /**
+     * Acquires the singleton reference to this type.
+     * @return instance.
+     * @deprecated Use {@link ObjFactory#make(DefaultEncoder.class.getName(), String)} instead
+     */
+    @Deprecated
     public static AccessController getInstance() throws AccessControlException {
-        if ( singletonInstance == null ) {
-            synchronized ( DefaultAccessController.class ) {
-                if ( singletonInstance == null ) {
-                    singletonInstance = new DefaultAccessController();
-                }
-            }
-        }
-        return singletonInstance;
+        return ObjFactory.make(DefaultAccessController.class.getName(), "AccessController");
     }
 
     protected final Logger logger = ESAPI.getLogger("DefaultAccessController");

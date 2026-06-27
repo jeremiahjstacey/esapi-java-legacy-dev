@@ -15,6 +15,9 @@
  */
 package org.owasp.esapi.reference;
 
+import static  org.owasp.esapi.PropNames.ACCEPTED_UNSAFE_METHODS_JUSTIFICATION;
+import static org.owasp.esapi.PropNames.ACCEPTED_UNSAFE_METHOD_NAMES;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -38,18 +41,16 @@ import org.owasp.esapi.codecs.Base64;
 import org.owasp.esapi.codecs.CSSCodec;
 import org.owasp.esapi.codecs.Codec;
 import org.owasp.esapi.codecs.HTMLEntityCodec;
+import org.owasp.esapi.codecs.JSONCodec;
 import org.owasp.esapi.codecs.JavaScriptCodec;
 import org.owasp.esapi.codecs.PercentCodec;
 import org.owasp.esapi.codecs.VBScriptCodec;
 import org.owasp.esapi.codecs.XMLEntityCodec;
-import org.owasp.esapi.codecs.JSONCodec;
+import org.owasp.esapi.errors.ConfigurationException;
 import org.owasp.esapi.errors.EncodingException;
 import org.owasp.esapi.errors.IntrusionException;
-import org.owasp.esapi.errors.ConfigurationException;
 import org.owasp.esapi.errors.NotConfiguredByDefaultException;
-
-import static org.owasp.esapi.PropNames.ACCEPTED_UNSAFE_METHOD_NAMES;
-import static  org.owasp.esapi.PropNames.ACCEPTED_UNSAFE_METHODS_JUSTIFICATION;
+import org.owasp.esapi.util.ObjFactory;
 
 
 /**
@@ -65,16 +66,14 @@ import static  org.owasp.esapi.PropNames.ACCEPTED_UNSAFE_METHODS_JUSTIFICATION;
 public class DefaultEncoder implements Encoder {
 
     private static volatile Encoder singletonInstance;
-
+    /**
+     * Acquires the singleton reference to this type.
+     * @return instance.
+     * @deprecated Use {@link ObjFactory#make(DefaultEncoder.class.getName(), String)} instead
+     */
+    @Deprecated
     public static Encoder getInstance() {
-        if ( singletonInstance == null ) {
-            synchronized ( DefaultEncoder.class ) {
-                if ( singletonInstance == null ) {
-                    singletonInstance = new DefaultEncoder();
-                }
-            }
-        }
-        return singletonInstance;
+        return ObjFactory.make(DefaultEncoder.class.getName(), "Encoder");
     }
 
     // Codecs

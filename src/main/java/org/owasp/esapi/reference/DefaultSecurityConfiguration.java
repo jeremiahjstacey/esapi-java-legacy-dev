@@ -35,12 +35,12 @@ import java.util.regex.PatternSyntaxException;
 
 import org.apache.commons.lang.text.StrTokenizer;
 import org.owasp.esapi.ESAPI;
-import org.owasp.esapi.Logger;
 import org.owasp.esapi.PropNames;   // <== Actual property names moved to here. Eventually we'll do static import.
 import org.owasp.esapi.PropNames.DefaultSearchPath;
 import org.owasp.esapi.SecurityConfiguration;
 import org.owasp.esapi.configuration.EsapiPropertyManager;
 import org.owasp.esapi.errors.ConfigurationException;
+import org.owasp.esapi.util.ObjFactory;
 
 /**
  * Thse reference implementation class for {@code SecurityConfiguration} manages all the settings used by the ESAPI
@@ -109,17 +109,14 @@ import org.owasp.esapi.errors.ConfigurationException;
  */
 
 public class DefaultSecurityConfiguration implements SecurityConfiguration {
-    private static volatile SecurityConfiguration instance = null;
-
+    /**
+     * Acquires the singleton reference to this type.
+     * @return instance.
+     * @deprecated Use {@link ObjFactory#make(DefaultEncoder.class.getName(), String)} instead
+     */
+    @Deprecated
     public static SecurityConfiguration getInstance() {
-        if ( instance == null ) {
-            synchronized (DefaultSecurityConfiguration.class) {
-                if ( instance == null ) {
-                    instance = new DefaultSecurityConfiguration();
-                }
-            }
-        }
-        return instance;
+        return ObjFactory.make(DefaultSecurityConfiguration.class.getName(), "SecurityConfiguration");
     }
 
     private Properties properties = null;

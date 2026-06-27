@@ -23,8 +23,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.DateFormat;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,6 +52,7 @@ import org.owasp.esapi.reference.validation.HTMLValidationRule;
 import org.owasp.esapi.reference.validation.IntegerValidationRule;
 import org.owasp.esapi.reference.validation.NumberValidationRule;
 import org.owasp.esapi.reference.validation.StringValidationRule;
+import org.owasp.esapi.util.ObjFactory;
 
 /**
  * Reference implementation of the {@code Validator} interface. This implementation
@@ -97,18 +98,15 @@ import org.owasp.esapi.reference.validation.StringValidationRule;
  */
 public class DefaultValidator implements org.owasp.esapi.Validator {
     private static Logger logger = ESAPI.log();
-    private static volatile Validator instance = null;
     private static boolean alreadyLogged = false;
-
+    /**
+     * Acquires the singleton reference to this type.
+     * @return instance.
+     * @deprecated Use {@link ObjFactory#make(DefaultEncoder.class.getName(), String)} instead
+     */
+    @Deprecated
     public static Validator getInstance() {
-        if ( instance == null ) {
-            synchronized ( Validator.class ) {
-                if ( instance == null ) {
-                    instance = new DefaultValidator();
-                }
-            }
-        }
-        return instance;
+        return ObjFactory.make(DefaultValidator.class.getName(), "Validator");
     }
 
     /** A map of validation rules */
