@@ -30,14 +30,6 @@ public class ServiceObjectMaker implements ObjMaker{
             String errMsg = null;
             errMsg = ex.toString() + " " + typeName + " class (" + className + ") must be in class path.";
             throw new ConfigurationException(errMsg, ex);
-        } catch( InstantiationException ex ) {
-            String errMsg = null;
-            errMsg = ex.toString() + " " + typeName + " class (" + className + ") must be concrete.";
-            throw new ConfigurationException(errMsg, ex);
-        } catch( IllegalAccessException ex ) {
-            String errMsg = null;
-            errMsg = ex.toString() + " " + typeName + " class (" + className + ") must have a public, no-arg constructor.";
-            throw new ConfigurationException(errMsg, ex);
         } catch (Exception ex) {
             String errMsg = null;
             // Because we are using reflection, we want to catch any checked or unchecked Exceptions and

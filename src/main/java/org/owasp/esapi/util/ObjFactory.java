@@ -65,7 +65,7 @@ public class ObjFactory {
     }
 
     private static final ObjMaker maker = ObjFactoryMode.getSystemObjMaker();
-
+    private static boolean cacheEnabled = true;
     /**
      * Create an object based on the <code>className</code> parameter.
      *
