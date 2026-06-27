@@ -24,24 +24,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
 import org.owasp.esapi.EncoderConstants;
+import org.owasp.esapi.Randomizer;
 import org.owasp.esapi.SecurityConfiguration;
 import org.owasp.esapi.SecurityConfigurationWrapper;
 import org.owasp.esapi.codecs.Codec;
 import org.owasp.esapi.codecs.HTMLEntityCodec;
 import org.owasp.esapi.codecs.MySQLCodec;
 import org.owasp.esapi.codecs.OracleCodec;
-import org.owasp.esapi.codecs.JSONCodec;
 import org.owasp.esapi.codecs.PushbackString;
 import org.owasp.esapi.codecs.UnixCodec;
 import org.owasp.esapi.codecs.WindowsCodec;
 import org.owasp.esapi.errors.EncodingException;
 import org.owasp.esapi.errors.IntrusionException;
-import org.owasp.esapi.Randomizer;
-
+import org.owasp.esapi.util.ObjFactory;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -962,7 +960,7 @@ public class EncoderTest extends TestCase {
         }
 
         public String javaScriptEncode(String str) {
-            Encoder encoder = DefaultEncoder.getInstance();
+            Encoder encoder = ObjFactory.make(DefaultEncoder.class.getName(), "EncoderTest");
             return encoder.encodeForJavaScript(str);
         }
     }
