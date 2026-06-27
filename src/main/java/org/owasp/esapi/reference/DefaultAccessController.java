@@ -26,7 +26,7 @@ public class DefaultAccessController implements AccessController {
 
     protected final Logger logger = ESAPI.getLogger("DefaultAccessController");
 
-    private DefaultAccessController() throws AccessControlException {
+    public DefaultAccessController() throws AccessControlException {
         ACRPolicyFileLoader policyDescriptor = new ACRPolicyFileLoader();
         PolicyDTO policyDTO = policyDescriptor.load();
         ruleMap = policyDTO.getAccessControlRules();

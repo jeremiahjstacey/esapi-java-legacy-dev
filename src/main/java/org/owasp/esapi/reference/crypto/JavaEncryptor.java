@@ -78,9 +78,6 @@ import org.owasp.esapi.util.ObjFactory;
  */
 public final class JavaEncryptor implements Encryptor {
 
-    // Note: This double-check pattern only works because singletonInstance
-    //       is declared to be volatile.  Usually this method is called
-    //       via ESAPI.encryptor() rather than directly.
     /**
      * Acquires the singleton reference to this type.
      * @return instance.
@@ -223,11 +220,11 @@ public final class JavaEncryptor implements Encryptor {
 
 
     /**
-     * Private CTOR for {@code JavaEncryptor}, called by {@code getInstance()}.
+     * Constructs a new class instance
      * @throws EncryptionException if can't construct this object for some reason.
      *                  Original exception will be attached as the 'cause'.
      */
-    private JavaEncryptor() throws EncryptionException {
+    public JavaEncryptor() throws EncryptionException {
         byte[] salt = ESAPI.securityConfiguration().getMasterSalt();
         byte[] skey = ESAPI.securityConfiguration().getMasterKey();
 
