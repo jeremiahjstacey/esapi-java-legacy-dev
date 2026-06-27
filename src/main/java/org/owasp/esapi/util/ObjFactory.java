@@ -9,10 +9,6 @@
  */
 package org.owasp.esapi.util;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.owasp.esapi.errors.ConfigurationException;
 
 /**
@@ -44,8 +40,29 @@ import org.owasp.esapi.errors.ConfigurationException;
  * @author Chris Schmidt ( chrisisbeef .at. gmail.com )
  */
 public class ObjFactory {
-    private static final ObjMaker maker = new CachingObjMakerDecorator(new ReflectionObjectMaker());
-    private static boolean cacheEnabled = true;
+    static enum ObjFactoryMode {
+        CACHING (new CachingObjMakerDecorator(new ReflectionObjectMaker())),
+        ALWAYS_NEW ( new ReflectionObjectMaker());
+
+        private ObjMaker maker;
+
+        private ObjFactoryMode(ObjMaker makerRef) {
+            this.maker = makerRef;
+        }
+
+        public  ObjMaker getMaker() {
+            return maker;
+        }
+        public static ObjMaker getSystemObjMaker() {
+            String sysProp = System.getProperty("ObjFactory.MAKER", ALWAYS_NEW.name());
+            //Logger
+            ObjFactoryMode mode = ObjFactoryMode.valueOf(sysProp.toUpperCase()); 
+            return mode.getMaker();
+        }
+
+    }
+
+    private static final ObjMaker maker = ObjFactoryMode.getSystemObjMaker();
 
     /**
      * Create an object based on the <code>className</code> parameter.
