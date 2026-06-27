@@ -12,6 +12,7 @@ package org.owasp.esapi.util;
 import java.util.Arrays;
 
 import org.owasp.esapi.errors.ConfigurationException;
+import org.owasp.esapi.util.ObjFactory.ObjFactoryMode;
 
 /**
  * A generic object factory to create an object of class T. T must be a concrete
@@ -43,7 +44,7 @@ import org.owasp.esapi.errors.ConfigurationException;
  */
 public class ObjFactory {
     static enum ObjFactoryMode {
-        CACHING (new CachingObjMakerDecorator(new ObjMakerChain(Arrays.asList(new ObjMaker[] {new ServiceObjectMaker(), new ReflectionObjectMaker()})))),
+        CACHING (new CachingObjMakerDecorator(new ObjMakerChain(Arrays.asList(new ObjMaker[] {new ReflectionObjectMaker()})))),
         ALWAYS_NEW ( new ReflectionObjectMaker());
 
         private ObjMaker maker;
