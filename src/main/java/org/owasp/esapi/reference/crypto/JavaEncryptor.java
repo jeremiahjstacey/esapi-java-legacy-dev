@@ -84,7 +84,7 @@ public final class JavaEncryptor implements Encryptor {
     /**
      * Acquires the singleton reference to this type.
      * @return instance.
-     * @deprecated Use {@link ObjFactory#make(DefaultEncoder.class.getName(), String)} instead
+     * @deprecated Use {@link ObjFactory#make(JavaEncryptor.class.getName(), String)} instead
      */
     @Deprecated
     public static Encryptor getInstance() throws EncryptionException {

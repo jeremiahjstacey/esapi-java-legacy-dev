@@ -81,7 +81,7 @@ public class FileBasedAuthenticator extends AbstractAuthenticator {
     /**
      * Acquires the singleton reference to this type.
      * @return instance.
-     * @deprecated Use {@link ObjFactory#make(DefaultEncoder.class.getName(), String)} instead
+     * @deprecated Use {@link ObjFactory#make(FileBasedAuthenticator.class.getName(), String)} instead
      */
     @Deprecated
     public static Authenticator getInstance()
