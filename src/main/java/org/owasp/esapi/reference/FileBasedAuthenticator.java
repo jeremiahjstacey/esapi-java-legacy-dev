@@ -252,7 +252,7 @@ public class FileBasedAuthenticator extends AbstractAuthenticator {
     /**
      *
      */
-    private FileBasedAuthenticator() {
+    public FileBasedAuthenticator() {
         super();
     }
 
