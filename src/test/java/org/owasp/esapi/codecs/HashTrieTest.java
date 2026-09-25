@@ -1,25 +1,24 @@
 package org.owasp.esapi.codecs;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.ArrayList;
-import java.util.Collections;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
 
-public class HashTrieTest extends TestCase
+public class HashTrieTest
 {
     private static final Class<HashTrieTest> CLASS = HashTrieTest.class;
 
-    public HashTrieTest(String testName)
-    {
-        super(testName);
-    }
-
+    @Test
     public void testSingleInsertLookup()
     {
         HashTrie<Boolean> trie = new HashTrie<Boolean>();
@@ -32,6 +31,7 @@ public class HashTrieTest extends TestCase
         assertEquals("true".length(), trie.getMaxKeyLength());
     }
 
+    @Test
     public void testEmpty()
     {
         HashTrie<Boolean> trie = new HashTrie<Boolean>();
@@ -41,6 +41,7 @@ public class HashTrieTest extends TestCase
         assertTrue(trie.getMaxKeyLength()<0);
     }
 
+    @Test
     public void testTwoInsertLookup()
     {
         HashTrie<Boolean> trie = new HashTrie<Boolean>();
@@ -52,6 +53,7 @@ public class HashTrieTest extends TestCase
         assertEquals("false".length(),trie.getMaxKeyLength());
     }
 
+    @Test
     public void testMatchingPrefix()
     {
         HashTrie<Boolean> trie = new HashTrie<Boolean>();
@@ -62,6 +64,7 @@ public class HashTrieTest extends TestCase
         assertEquals(Boolean.FALSE, trie.get("prefalse"));
     }
 
+    @Test
     public void testPrefixIsValidKey()
     {
         HashTrie<Boolean> trie = new HashTrie<Boolean>();
@@ -72,6 +75,7 @@ public class HashTrieTest extends TestCase
         assertEquals(Boolean.FALSE, trie.get("prefalse"));
     }
 
+    @Test
     public void testDuplicateAdd()
     {
         HashTrie<Boolean> trie = new HashTrie<Boolean>();
@@ -81,6 +85,7 @@ public class HashTrieTest extends TestCase
         assertFalse(trie.get("dup"));
     }
 
+    @Test
     public void testTwoInsertLongestLookup()
     {
         HashTrie<Boolean> trie = new HashTrie<Boolean>();
@@ -115,6 +120,7 @@ public class HashTrieTest extends TestCase
         assertNull(trie.getLongestMatch("fals"));
     }
 
+    @Test
     public void testContainsKey()
     {
         HashTrie<Boolean> trie = new HashTrie<Boolean>();
@@ -126,6 +132,7 @@ public class HashTrieTest extends TestCase
         assertFalse(trie.containsKey("not there"));
     }
 
+    @Test
     public void testContainsValue()
     {
         HashTrie<Integer> trie = new HashTrie<Integer>();
@@ -137,6 +144,7 @@ public class HashTrieTest extends TestCase
         assertFalse(trie.containsValue(3));
     }
 
+    @Test
     public void testKeySet()
     {
         HashTrie<Boolean> trie = new HashTrie<Boolean>();
@@ -149,6 +157,7 @@ public class HashTrieTest extends TestCase
         assertEquals(expected,trie.keySet());
     }
 
+    @Test
     public void testValues()
     {
         HashTrie<Boolean> trie = new HashTrie<Boolean>();
@@ -165,6 +174,7 @@ public class HashTrieTest extends TestCase
         assertEquals(expected,actual);
     }
 
+    @Test
     public void testEntrySet()
     {
         HashTrie<Boolean> trie = new HashTrie<Boolean>();
@@ -177,6 +187,7 @@ public class HashTrieTest extends TestCase
         assertEquals(equivMap.entrySet(),trie.entrySet());
     }
 
+    @Test
     public void testEquals()
     {
         HashTrie<Boolean> trie = new HashTrie<Boolean>();
@@ -189,6 +200,7 @@ public class HashTrieTest extends TestCase
         assertTrue(trie.equals(equivMap));
     }
 
+    @Test
     public void testHashCode()
     {
         HashTrie<Boolean> trie = new HashTrie<Boolean>();
@@ -199,15 +211,5 @@ public class HashTrieTest extends TestCase
         trie.put("true", Boolean.TRUE);
         trie.put("false", Boolean.FALSE);
         assertEquals(equivMap.hashCode(),trie.hashCode());
-    }
-
-    /**
-     * Create a test suite with just this test.
-     * @return A test swuite with just this test.
-     */
-    public static Test suite()
-    {
-        TestSuite suite = new TestSuite(CLASS);
-        return suite;
     }
 }

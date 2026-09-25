@@ -15,32 +15,14 @@
  */
 package org.owasp.esapi;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
 
 /**
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
-public class UserTest extends TestCase {
+public class UserTest {
 
-    public UserTest(String testName) {
-        super(testName);
-    }
-
-    protected void setUp() throws Exception {
-        // none
-    }
-
-    protected void tearDown() throws Exception {
-        // none
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite(UserTest.class);
-        return suite;
-    }
-
+    @Test
     public void testAllMethods() throws Exception {
         // create a user to test Anonymous
         String accountName = ESAPI.randomizer().getRandomString(8, EncoderConstants.CHAR_ALPHANUMERICS);
@@ -102,5 +84,3 @@ public class UserTest extends TestCase {
         try { User.ANONYMOUS.getAccountName(); } catch( RuntimeException e ) {}
     }
 }
-
-

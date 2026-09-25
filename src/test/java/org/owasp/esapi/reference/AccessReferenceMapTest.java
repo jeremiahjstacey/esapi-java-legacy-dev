@@ -15,14 +15,17 @@
  */
 package org.owasp.esapi.reference;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
+import org.junit.Test;
 import org.owasp.esapi.Authenticator;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.User;
@@ -36,43 +39,7 @@ import org.owasp.esapi.errors.EncryptionException;
  *
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
-public class AccessReferenceMapTest extends TestCase {
-
-    /**
-     * Instantiates a new access reference map test.
-     *
-     * @param testName
-     *            the test name
-     */
-    public AccessReferenceMapTest(String testName) {
-        super(testName);
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws Exception
-     */
-    protected void setUp() throws Exception {
-        // none
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws Exception
-     */
-    protected void tearDown() throws Exception {
-        // none
-    }
-
-    /**
-     * Suite.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(AccessReferenceMapTest.class);
-        return suite;
-    }
+public class AccessReferenceMapTest {
 
 
     /**
@@ -82,6 +49,7 @@ public class AccessReferenceMapTest extends TestCase {
      *             the authentication exception
      * @throws EncryptionException
      */
+    @Test
     public void testUpdate() throws AuthenticationException, EncryptionException {
         System.out.println("update");
         RandomAccessReferenceMap arm = new RandomAccessReferenceMap();
@@ -111,6 +79,7 @@ public class AccessReferenceMapTest extends TestCase {
     /**
      * Test of iterator method, of class org.owasp.esapi.AccessReferenceMap.
      */
+    @Test
     public void testIterator() {
         System.out.println("iterator");
         RandomAccessReferenceMap arm = new RandomAccessReferenceMap();
@@ -130,6 +99,7 @@ public class AccessReferenceMapTest extends TestCase {
      * Test of getIndirectReference method, of class
      * org.owasp.esapi.AccessReferenceMap.
      */
+    @Test
     public void testGetIndirectReference() {
         System.out.println("getIndirectReference");
 
@@ -152,6 +122,7 @@ public class AccessReferenceMapTest extends TestCase {
      * @throws AccessControlException
      *             the access control exception
      */
+    @Test
     public void testGetDirectReference() throws AccessControlException {
         System.out.println("getDirectReference");
 
@@ -177,6 +148,7 @@ public class AccessReferenceMapTest extends TestCase {
      *
      * @throws org.owasp.esapi.errors.AccessControlException
      */
+    @Test
     public void testAddDirectReference() throws AccessControlException {
         System.out.println("addDirectReference");
 
@@ -200,6 +172,7 @@ public class AccessReferenceMapTest extends TestCase {
      *
      * @throws org.owasp.esapi.errors.AccessControlException
      */
+    @Test
     public void testRemoveDirectReference() throws AccessControlException {
         System.out.println("removeDirectReference");
 
@@ -217,7 +190,6 @@ public class AccessReferenceMapTest extends TestCase {
         deleted = instance.removeDirectReference("ridiculous");
         assertNull(deleted);
     }
-
 
 
 }

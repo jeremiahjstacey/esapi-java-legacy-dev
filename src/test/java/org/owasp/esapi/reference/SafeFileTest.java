@@ -15,23 +15,28 @@
  */
 package org.owasp.esapi.reference;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.owasp.esapi.SafeFile;
 import org.owasp.esapi.errors.ValidationException;
 import org.owasp.esapi.util.CollectionsUtil;
 import org.owasp.esapi.util.FileTestUtils;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 /**
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
-public class SafeFileTest extends TestCase
+public class SafeFileTest
 {
     private static final Class CLASS = SafeFileTest.class;
     private static final String CLASS_NAME = CLASS.getName();
@@ -48,7 +53,8 @@ public class SafeFileTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    protected void setUp() throws Exception
+    @Before
+    public void setUp() throws Exception
     {
         // create a file to test with
         testDir = FileTestUtils.createTmpDirectory(CLASS_NAME).getCanonicalFile();
@@ -60,16 +66,13 @@ public class SafeFileTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    protected void tearDown() throws Exception
+    @After
+    public void tearDown() throws Exception
     {
         FileTestUtils.deleteRecursively(testDir);
     }
 
-    public static Test suite() {
-        TestSuite suite = new TestSuite(SafeFileTest.class);
-        return suite;
-    }
-
+    @Test
     public void testEscapeCharactersInFilename() {
         System.out.println("testEscapeCharactersInFilenameInjection");
         File tf = testFile;
@@ -85,6 +88,7 @@ public class SafeFileTest extends TestCase
 
     }
 
+    @Test
     public void testEscapeCharacterInDirectoryInjection() {
         System.out.println("testEscapeCharacterInDirectoryInjection");
         try {
@@ -94,6 +98,7 @@ public class SafeFileTest extends TestCase
         }
     }
 
+    @Test
     public void testJavaFileInjectionGood() throws ValidationException
     {
         for(Iterator i=GOOD_FILE_CHARS.iterator();i.hasNext();)
@@ -106,6 +111,7 @@ public class SafeFileTest extends TestCase
         }
     }
 
+    @Test
     public void testJavaFileInjectionBad()
     {
         for(Iterator i=BAD_FILE_CHARS.iterator();i.hasNext();)
@@ -130,6 +136,7 @@ public class SafeFileTest extends TestCase
         }
     }
 
+    @Test
     public void testMultipleJavaFileInjectionGood() throws ValidationException
     {
         for(Iterator i=GOOD_FILE_CHARS.iterator();i.hasNext();)
@@ -143,6 +150,7 @@ public class SafeFileTest extends TestCase
         }
     }
 
+    @Test
     public void testMultipleJavaFileInjectionBad()
     {
         for(Iterator i=BAD_FILE_CHARS.iterator();i.hasNext();)
@@ -168,6 +176,7 @@ public class SafeFileTest extends TestCase
         }
     }
 
+    @Test
     public void testAlternateDataStream() {
         try
         {
@@ -185,30 +194,35 @@ public class SafeFileTest extends TestCase
         return new String(array);
     }
 
+    @Test
     public void testCreatePath() throws Exception
     {
         SafeFile sf = new SafeFile(testFile.getPath());
         assertTrue(sf.exists());
     }
 
+    @Test
     public void testCreateParentPathName() throws Exception
     {
         SafeFile sf = new SafeFile(testDir, testFile.getName());
         assertTrue(sf.exists());
     }
 
+    @Test
     public void testCreateParentFileName() throws Exception
     {
         SafeFile sf = new SafeFile(testFile.getParentFile(), testFile.getName());
         assertTrue(sf.exists());
     }
 
+    @Test
     public void testCreateURI() throws Exception
     {
         SafeFile sf = new SafeFile(testFile.toURI());
         assertTrue(sf.exists());
     }
 
+    @Test
     public void testCreateFileNamePercentNull()
     {
         try
@@ -221,6 +235,7 @@ public class SafeFileTest extends TestCase
         }
     }
 
+    @Test
     public void testCreateFileNameQuestion()
     {
         try
@@ -234,6 +249,7 @@ public class SafeFileTest extends TestCase
         }
     }
 
+    @Test
     public void testCreateFileNameNull()
     {
         try
@@ -247,6 +263,7 @@ public class SafeFileTest extends TestCase
         }
     }
 
+    @Test
     public void testCreateFileHighByte()
     {
         try
@@ -260,6 +277,7 @@ public class SafeFileTest extends TestCase
         }
     }
 
+    @Test
     public void testCreateParentPercentNull()
     {
         try
@@ -273,6 +291,7 @@ public class SafeFileTest extends TestCase
         }
     }
 
+    @Test
     public final void testSafeFileShouldAcceptEmptyPath() throws ValidationException
     {
         String filename = "hello.txt";

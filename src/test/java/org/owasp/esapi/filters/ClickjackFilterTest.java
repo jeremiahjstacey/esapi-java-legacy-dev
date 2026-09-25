@@ -15,15 +15,17 @@
  */
 package org.owasp.esapi.filters;
 
+import static org.junit.Assert.*;
+
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.FilterConfig;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import org.owasp.esapi.http.MockFilterChain;
 import org.owasp.esapi.http.MockFilterConfig;
@@ -35,40 +37,16 @@ import org.owasp.esapi.http.MockHttpServletResponse;
  *
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
-public class ClickjackFilterTest extends TestCase {
+public class ClickjackFilterTest {
 
-    /**
-     * @param testName
-     *            the test name
-     */
-    public ClickjackFilterTest(String testName) {
-        super(testName);
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws Exception
-     */
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         // none
     }
 
-    /**
-     * {@inheritDoc}
-     * @throws Exception
-     */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         // none
-    }
-
-    /**
-     * Suite.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(ClickjackFilterTest.class);
-        return suite;
     }
 
 
@@ -76,6 +54,7 @@ public class ClickjackFilterTest extends TestCase {
      * Test of update method, of class org.owasp.esapi.AccessReferenceMap.
      * @throws Exception
      */
+    @Test
     public void testFilter() throws Exception {
         System.out.println("ClickjackFilter");
 
@@ -83,7 +62,7 @@ public class ClickjackFilterTest extends TestCase {
         FilterConfig mfc = new MockFilterConfig( map );
         ClickjackFilter filter = new ClickjackFilter();
         filter.init( mfc );
-           MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletRequest request = new MockHttpServletRequest();
 
         // the mock filter chain writes the requested URI to the response body
         MockFilterChain chain = new MockFilterChain();

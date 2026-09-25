@@ -15,6 +15,10 @@
  */
 package org.owasp.esapi.reference;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
@@ -22,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.ExecuteResult;
 import org.owasp.esapi.Executor;
@@ -31,16 +37,12 @@ import org.owasp.esapi.codecs.Codec;
 import org.owasp.esapi.codecs.UnixCodec;
 import org.owasp.esapi.codecs.WindowsCodec;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 /**
  * The Class ExecutorTest.
  *
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
-public class ExecutorTest extends TestCase {
+public class ExecutorTest {
 
     private static class Conf extends SecurityConfigurationWrapper
     {
@@ -67,29 +69,9 @@ public class ExecutorTest extends TestCase {
         }
     }
 
-    /**
-     * Instantiates a new executor test.
-     *
-     * @param testName
-     *            the test name
-     */
-    public ExecutorTest(String testName) {
-        super(testName);
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         ESAPI.override(null);
-    }
-
-    /**
-     * Suite.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(ExecutorTest.class);
-        return suite;
     }
 
     private void resetSingletonField() throws Exception {
@@ -100,6 +82,7 @@ public class ExecutorTest extends TestCase {
         singletonField.set(new Object(), null);
     }
 
+    @Test
     public void testPlatformResoveWindows() throws Exception {
         String origName = System.getProperty("os.name");
 
@@ -123,6 +106,7 @@ public class ExecutorTest extends TestCase {
         }
     }
 
+    @Test
     public void testPlatformResolveNx() throws Exception{
         String origName = System.getProperty("os.name");
 
@@ -154,6 +138,7 @@ public class ExecutorTest extends TestCase {
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testExecuteWindowsSystemCommand() throws Exception {
         System.out.println("executeWindowsSystemCommand");
 
@@ -242,6 +227,7 @@ public class ExecutorTest extends TestCase {
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testExecuteUnixSystemCommand() throws Exception {
         System.out.println("executeUnixSystemCommand");
 

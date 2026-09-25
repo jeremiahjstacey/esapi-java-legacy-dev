@@ -1,6 +1,6 @@
 package org.owasp.esapi.reference;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * Class for testing log levels
@@ -10,11 +10,12 @@ import junit.framework.TestCase;
  * @since October 15, 2010
  * @see org.owasp.esapi.logging.java.JavaLoggerTest
  */
-public class TestWarning extends TestCase {
+public class TestWarning {
 
     /**
      * Dummy method so that JUnit won't complain
      */
+    @Test
     public void testLogging() {
 
     }

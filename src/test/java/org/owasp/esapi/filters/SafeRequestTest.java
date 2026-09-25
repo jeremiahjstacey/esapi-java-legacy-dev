@@ -15,10 +15,13 @@
  */
 package org.owasp.esapi.filters;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.owasp.esapi.http.MockHttpServletRequest;
 
 
@@ -27,49 +30,18 @@ import org.owasp.esapi.http.MockHttpServletRequest;
  *
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
-public class SafeRequestTest extends TestCase {
+public class SafeRequestTest {
 
-    /**
-     * Instantiates a new access controller test.
-     *
-     * @param testName
-     *            the test name
-     * @throws Exception
-     */
-    public SafeRequestTest(String testName) throws Exception {
-        super(testName);
+    @Before
+    public void setUp() throws Exception {
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @throws Exception
-     */
-    protected void setUp() throws Exception {
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws Exception
-     */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         // none
     }
 
-    /**
-     * Suite.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(SafeRequestTest.class);
-        return suite;
-    }
-
-    /**
-     *
-     */
+    @Test
     public void testGetRequestParameters() {
         System.out.println( "getRequestParameters");
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -84,6 +56,7 @@ public class SafeRequestTest extends TestCase {
         assertEquals( "134", out );
     }
 
+    @Test
     public void testGetQueryStringNull()
     {
         MockHttpServletRequest req = new MockHttpServletRequest();
@@ -95,6 +68,7 @@ public class SafeRequestTest extends TestCase {
     }
 
     // Test to ensure null-value contract defined by ServletRequest.getParameterNames(String) is met.
+    @Test
     public void testGetParameterValuesReturnsNullWhenParameterDoesNotExistInRequest() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.clearParameters();
@@ -106,6 +80,7 @@ public class SafeRequestTest extends TestCase {
         assertNull("Expecting null value to be returned for non-existent parameter.", safeRequest.getParameterValues(paramName));
     }
 
+    @Test
     public void testGetParameterValuesReturnsCorrectValueWhenParameterExistsInRequest() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.clearParameters();
@@ -120,6 +95,7 @@ public class SafeRequestTest extends TestCase {
         assertEquals(paramValue, actualParamValue);
     }
 
+    @Test
     public void testGetParameterValuesReturnsCorrectValuesWhenParameterExistsMultipleTimesInRequest() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.clearParameters();
