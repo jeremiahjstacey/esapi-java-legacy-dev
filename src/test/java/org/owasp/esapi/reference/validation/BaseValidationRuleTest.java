@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -31,12 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.hamcrest.Matcher;
-import org.hamcrest.core.Is;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.Encoder;
 import org.owasp.esapi.ValidationErrorList;
 import org.owasp.esapi.errors.ValidationException;
@@ -45,9 +40,7 @@ public class BaseValidationRuleTest {
     /**Static Test Data.*/
     private static final String STR_VAL="";
     private static final String EX_MSG="Expected Failure Message from " + BaseValidationRuleTest.class.getSimpleName();
-    @Rule
-    public ExpectedException exEx = ExpectedException.none();
-
+   
     private ValidationException testValidationEx = new ValidationException(EX_MSG, EX_MSG);
 
     private BaseValidationRule uit = mock(BaseValidationRule.class, CALLS_REAL_METHODS);
@@ -141,10 +134,11 @@ public class BaseValidationRuleTest {
          * Verifies assertValid throws ValidationException on invalid input
          * Validates fix for Google issue #195
          */
-        Matcher<ValidationException> validationExMatch = Is.is(testValidationEx);
-        exEx.expect(validationExMatch);
         when(uit.getValid(STR_VAL, STR_VAL)).thenThrow(testValidationEx);
-        uit.assertValid(STR_VAL, STR_VAL);
+        ValidationException exEx = assertThrows(ValidationException.class, () -> {
+            uit.assertValid(STR_VAL, STR_VAL);
+        });
+        assertEquals(testValidationEx, exEx);
     }
     @Test
     public void testGetValidErrorListCallsGetValid() throws ValidationException {
@@ -167,11 +161,13 @@ public class BaseValidationRuleTest {
     }
     @Test
     public void testGetValidNullErrorListThrows() throws ValidationException {
-        Matcher<ValidationException> validationExMatch = Is.is(testValidationEx);
-        exEx.expect(validationExMatch);
         ValidationErrorList vel = null;
         when(uit.getValid(STR_VAL, STR_VAL)).thenThrow(testValidationEx);
-        uit.getValid(STR_VAL, STR_VAL, vel);
+        
+        ValidationException exEx = assertThrows(ValidationException.class, () -> {
+            uit.getValid(STR_VAL, STR_VAL, vel);
+        });
+        assertEquals(testValidationEx, exEx);
     }
     @Test
     public void testGetSafeCallsGetValid() throws ValidationException {
@@ -212,16 +208,17 @@ public class BaseValidationRuleTest {
      */
     @Test
     public void testGetValidMultipleExceptionSameContextThrowsRuntimeException() throws ValidationException {
-        exEx.expect(RuntimeException.class);
         ValidationErrorList vel = new ValidationErrorList();
         when(uit.getValid(STR_VAL, STR_VAL)).thenThrow(testValidationEx);
-        uit.getValid(STR_VAL, STR_VAL, vel);
-        /*
-         * Side-effect of ValidationErrorList. If the same context is used against a BaseValidationRule multiple times resulting in exception, the ValidationErrorList impl will blow up.
-         * This can be an unclear event at runtime if a single BaseValidationRule instance is shared in an application and multiple parts happen to use the same contextual string to capture failure events.
-         *
-         */
-        uit.getValid(STR_VAL, STR_VAL, vel);
+        assertThrows(RuntimeException.class, () -> {
+            uit.getValid(STR_VAL, STR_VAL, vel);
+            /*
+             * Side-effect of ValidationErrorList. If the same context is used against a BaseValidationRule multiple times resulting in exception, the ValidationErrorList impl will blow up.
+             * This can be an unclear event at runtime if a single BaseValidationRule instance is shared in an application and multiple parts happen to use the same contextual string to capture failure events.
+             *
+             */
+            uit.getValid(STR_VAL, STR_VAL, vel);
+        });
     }
 
     //None of the Whitelist content belongs in this class, IMO.
@@ -234,10 +231,11 @@ public class BaseValidationRuleTest {
     }
     @Test
     public void testWhitelistNullCharArrayThrows() {
-        exEx.expect(NullPointerException.class);
         String myString = "AAAGaaadBBB12345*";
         char[] whitelist = null;
-        uit.whitelist(myString, whitelist);
+        assertThrows(NullPointerException.class, () -> {
+            uit.whitelist(myString, whitelist);
+        });
     }
     @Test
     public void testWhitelistSetCleansString() {
@@ -253,10 +251,11 @@ public class BaseValidationRuleTest {
     }
     @Test
     public void testWhitelistNullSetThrows() {
-        exEx.expect(NullPointerException.class);
         String myString = "AAAGaaadBBB12345*";
         Set<Character> whitelist = null;
-        uit.whitelist(myString, whitelist);
+        assertThrows(NullPointerException.class, () -> {
+            uit.whitelist(myString, whitelist);
+        });
     }
     @Test
     public void testWhitelistSetExtendedCharacterSets() {

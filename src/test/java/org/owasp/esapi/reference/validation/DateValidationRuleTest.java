@@ -1,5 +1,10 @@
 package org.owasp.esapi.reference.validation;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.owasp.esapi.PropNames.ACCEPT_LENIENT_DATES;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,29 +14,21 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.hamcrest.CustomMatcher;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
 import org.owasp.esapi.ValidationErrorList;
 import org.owasp.esapi.errors.ValidationException;
-import org.owasp.esapi.reference.DefaultSecurityConfiguration;
-import static org.owasp.esapi.PropNames.ACCEPT_LENIENT_DATES;
 import org.powermock.reflect.Whitebox;
 
 public class DateValidationRuleTest {
 
-    @Rule
-    public ExpectedException exEx = ExpectedException.none();
-    @Rule
-    public TestName testName = new TestName();
+    private String testName;
     private ParseException testParseEx = new ParseException("Test Exception", 0);
     private Date testDate = new Date();
     private String dateString;
@@ -42,21 +39,24 @@ public class DateValidationRuleTest {
     private DateFormat testFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.US);
     private DateValidationRule uit;
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    public void setup(TestInfo testInfo) {
+        testName = testInfo.getDisplayName();
         mockEncoder = Mockito.mock(Encoder.class);
         testFormat = Mockito.spy(testFormat);
-        uit = new DateValidationRule(testName.getMethodName(), mockEncoder, testFormat);
-        contextStr = testName.getMethodName();
+        uit = new DateValidationRule(testName, mockEncoder, testFormat);
+        contextStr = testName;
 
         dateString = testFormat.format(testDate);
         canonDateString = dateString;
     }
     @Test
     public void testCtrNullDateFormatThrows() {
-        exEx.expect(IllegalArgumentException.class);
-        exEx.expectMessage("DateValidationRule.setDateFormat requires a non-null DateFormat");
-        new DateValidationRule("context", mockEncoder, null);
+        IllegalArgumentException exEx = assertThrows(IllegalArgumentException.class, () ->{
+            new DateValidationRule("context", mockEncoder, null);
+        });
+        
+        assertTrue(exEx.getMessage().contains("DateValidationRule.setDateFormat requires a non-null DateFormat"));
     }
     @Test
     public void testCtrSetDateFormat() {
@@ -65,9 +65,10 @@ public class DateValidationRuleTest {
     }
     @Test
     public void testsetDateFormatNullThrows() {
-        exEx.expect(IllegalArgumentException.class);
-        exEx.expectMessage("DateValidationRule.setDateFormat requires a non-null DateFormat");
-        uit.setDateFormat(null);
+        IllegalArgumentException exEx = assertThrows(IllegalArgumentException.class, () ->{
+            uit.setDateFormat(null);
+        });
+        assertTrue(exEx.getMessage().contains("DateValidationRule.setDateFormat requires a non-null DateFormat"));
     }
     @Test
     public void testsetDateFormat() {
@@ -90,34 +91,30 @@ public class DateValidationRuleTest {
     }
     @Test
     public void testGetValidNullInputNotAllowed() throws ValidationException {
-        exEx.expect(ValidationException.class);
-        exEx.expectMessage("Input date required");
-        uit.setAllowNull(false);
-        uit.getValid(contextStr, null);
+        ValidationException exEx = assertThrows(ValidationException.class, () ->{
+            uit.setAllowNull(false);
+            uit.getValid(contextStr, null);
+        });        
+        assertTrue(exEx.getMessage().contains("Input date required"));
     }
     @Test
     public void testGetValidNullInputNotAllowedEmptyString() throws ValidationException {
-        exEx.expect(ValidationException.class);
-        exEx.expectMessage("Input date required");
-        uit.setAllowNull(false);
-        uit.getValid(contextStr, "");
+        ValidationException exEx = assertThrows(ValidationException.class, () ->{
+            uit.setAllowNull(false);
+            uit.getValid(contextStr, "");
+        });
+        assertTrue(exEx.getMessage().contains("Input date required"));
     }
     @Test
     public void testGetValidBadDateThrows() throws ValidationException, ParseException {
-        exEx.expect(ValidationException.class);
-        exEx.expectMessage(contextStr + ": Invalid date");
-        exEx.expectCause(new CustomMatcher<Throwable>("Check for Test Parse Exception") {
-
-            @Override
-            public boolean matches(Object item) {
-               return item.equals(testParseEx);
-            }
-        });
 
         Mockito.when(mockEncoder.canonicalize(dateString)).thenReturn(canonDateString);
         Mockito.doThrow(testParseEx).when(testFormat).parse(canonDateString);
-
-        uit.getValid(contextStr, dateString);
+        ValidationException exEx = assertThrows(ValidationException.class, () ->{
+            uit.getValid(contextStr, dateString);
+        });
+        assertTrue(exEx.getMessage().contains(contextStr + ": Invalid date"));
+        assertEquals(testParseEx, exEx.getCause());
     }
     @Test
     public void testGetValidHappyPath() throws ValidationException, ParseException {

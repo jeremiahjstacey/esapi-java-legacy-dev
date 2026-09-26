@@ -16,24 +16,21 @@
 package org.owasp.esapi.reference.validation;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.owasp.esapi.PropNames.VALIDATOR_HTML_VALIDATION_ACTION;
+import static org.owasp.esapi.PropNames.VALIDATOR_HTML_VALIDATION_CONFIGURATION_FILE;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.SecurityConfiguration;
 import org.owasp.esapi.SecurityConfigurationWrapper;
-import org.owasp.esapi.ValidationErrorList;
 import org.owasp.esapi.Validator;
 import org.owasp.esapi.errors.ValidationException;
 import org.owasp.validator.html.PolicyException;
-import static org.owasp.esapi.PropNames.VALIDATOR_HTML_VALIDATION_ACTION;
-import static org.owasp.esapi.PropNames.VALIDATOR_HTML_VALIDATION_CONFIGURATION_FILE;
 
 /**
  * The class {@code HTMLValidationRuleClasspathTest} is used to test ESAPI where
@@ -90,16 +87,12 @@ public class HTMLValidationRuleClasspathTest {
         }
     }
 
-    // Must be public!
-    @Rule
-    public ExpectedException thrownEx = ExpectedException.none();
-
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         ESAPI.override(null);
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         ESAPI.override(
             new ConfOverride( ESAPI.securityConfiguration(), "throw", ANTISAMY_POLICY_FILE_NONSTANDARD_LOCATION )
@@ -110,8 +103,9 @@ public class HTMLValidationRuleClasspathTest {
     @Test
     public void checkPolicyExceptionWithBadConfig() throws Exception {
         ESAPI.override(null);
-        thrownEx.expect(PolicyException.class);
-        HTMLValidationRule.loadAntisamyPolicy(INVALID_ANTISAMY_POLICY_FILE);
+        assertThrows(PolicyException.class, () -> {
+            HTMLValidationRule.loadAntisamyPolicy(INVALID_ANTISAMY_POLICY_FILE);
+        });
     }
     @Test
     public void testGetValid() throws Exception {
@@ -120,10 +114,10 @@ public class HTMLValidationRuleClasspathTest {
         HTMLValidationRule rule = new HTMLValidationRule("testCP");
         ESAPI.validator().addRule(rule);
 
-        thrownEx.expect(ValidationException.class);
-        thrownEx.expectMessage("test: Invalid HTML input");
-
-        instance.getRule("testCP").getValid("test", "Test. <script>alert(document.cookie)</script>");
+        ValidationException exEx = assertThrows(ValidationException.class, () -> {
+            instance.getRule("testCP").getValid("test", "Test. <script>alert(document.cookie)</script>");
+        });
+        assertTrue(exEx.getMessage().contains("test: Invalid HTML input"));
     }
     @Test
     public void testGetValidSafeHTML() throws Exception {

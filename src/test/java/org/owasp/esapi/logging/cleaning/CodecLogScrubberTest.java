@@ -15,24 +15,23 @@
 package org.owasp.esapi.logging.cleaning;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.owasp.esapi.codecs.Codec;
 
 public class CodecLogScrubberTest {
-    @Rule
-    public ExpectedException exEx = ExpectedException.none();
     @Test
     public void testNullCodecThrowsException() {
-        exEx.expect(IllegalArgumentException.class);
-        exEx.expectMessage("cannot be null");
 
-        new CodecLogScrubber(null, new char[0]);
+       IllegalArgumentException exEx = assertThrows(IllegalArgumentException.class, () -> {
+           new CodecLogScrubber(null, new char[0]);
+       });
+       assertTrue(exEx.getMessage().contains("cannot be null"));
     }
     @Test
     public void testNullImmuneIsEmpty() {

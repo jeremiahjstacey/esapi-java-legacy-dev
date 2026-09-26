@@ -36,10 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-// import org.junit.Ignore;     // Doesn't seem to work with TestSuite.
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.junit.rules.ExpectedException;
 import org.owasp.esapi.Authenticator;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.EncoderConstants;
@@ -417,10 +414,7 @@ public class HTTPUtilitiesTest
             // expected
         }
     }
-
-        @Rule
-        public ExpectedException thrown = ExpectedException.none();
-
+      
     /**
      * Test of setCookie method, of class org.owasp.esapi.HTTPUtilities.
      */

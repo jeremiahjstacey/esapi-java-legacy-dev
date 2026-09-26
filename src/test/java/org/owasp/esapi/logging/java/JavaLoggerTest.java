@@ -16,16 +16,13 @@
 package org.owasp.esapi.logging.java;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
 import org.owasp.esapi.Logger;
 
 public class JavaLoggerTest {
-    @Rule
-    public TestName testName = new TestName();
 
     private static final String MSG = JavaLoggerTest.class.getSimpleName();
 
@@ -35,9 +32,9 @@ public class JavaLoggerTest {
     private Throwable testEx = new Throwable(MSG + "_Exception");
     private Logger testLogger;
 
-    @Before
-    public void setup() {
-        java.util.logging.Logger wrappedLogger = java.util.logging.Logger.getLogger(testName.getMethodName());
+    @BeforeEach
+    public void setup(TestInfo testInfo) {
+        java.util.logging.Logger wrappedLogger = java.util.logging.Logger.getLogger(testInfo.getDisplayName());
         javaLogSpy = Mockito.spy(wrappedLogger);
         testLogger = new JavaLogger(javaLogSpy, mockBridge, Logger.ALL);
     }

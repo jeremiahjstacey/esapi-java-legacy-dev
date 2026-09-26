@@ -15,15 +15,18 @@
  */
 package org.owasp.esapi;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.rules.TestName;
+
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.owasp.esapi.errors.ValidationException;
 
 
@@ -31,36 +34,46 @@ import org.owasp.esapi.errors.ValidationException;
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
 public class ValidationErrorListTest {
-    @Rule
-    public ExpectedException exEx = ExpectedException.none();
-    @Rule
-    public TestName testName = new TestName();
-
+    String testName;
     ValidationErrorList vel = new ValidationErrorList();
-    ValidationException vex = new ValidationException(testName.getMethodName(), testName.getMethodName());
+    ValidationException vex;
+    
+    @BeforeEach
+    void setUp(TestInfo testInfo) {
+        testName = testInfo.getDisplayName();
+        vex = new ValidationException(testName,testName);
+    }
+    
     @Test
     public void testAddErrorNullContextThrows() {
-        exEx.expect(RuntimeException.class);
-        exEx.expectMessage("Context cannot be null");
-        vel.addError(null, vex);
+        RuntimeException rex = assertThrows(RuntimeException.class,() ->{
+            vel.addError(null, vex);
+        });
+        assertNotNull(rex);
+        assertTrue(rex.getMessage().contains("Context cannot be null"));
     }
     @Test
     public void testAddErrorNullExceptionThrows() {
-        exEx.expect(RuntimeException.class);
-        exEx.expectMessage("ValidationException cannot be null");
-        vel.addError(testName.getMethodName(), null);
+        RuntimeException rex = assertThrows(RuntimeException.class,() ->{
+            vel.addError(testName, null);
+        });
+        assertNotNull(rex);
+        assertTrue(rex.getMessage().contains("ValidationException cannot be null"));
     }
     @Test
     public void testAddErrorDuplicateContextThrows() {
-        exEx.expect(RuntimeException.class);
-        exEx.expectMessage("already exists, must be unique");
-        vel.addError(testName.getMethodName(), vex);
-        vel.addError(testName.getMethodName(), vex);
+        RuntimeException rex = assertThrows(RuntimeException.class,() ->{
+            vel.addError(testName, vex);
+            vel.addError(testName, vex);
+        });
+        assertNotNull(rex);
+        assertTrue(rex.getMessage().contains("already exists, must be unique"));
+
     }
     @Test
     public void testErrors() throws Exception {
         vel.addError("context",  vex );
-        assertTrue("Validation Errors List should contain the added ValidationException Reference",vel.errors().contains( vex) );
+        assertTrue(vel.errors().contains( vex),"Validation Errors List should contain the added ValidationException Reference");
     }
     @Test
     public void testGetError() throws Exception {

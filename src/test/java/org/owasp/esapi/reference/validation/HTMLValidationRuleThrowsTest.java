@@ -15,22 +15,20 @@
  */
 package org.owasp.esapi.reference.validation;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.owasp.esapi.PropNames.VALIDATOR_HTML_VALIDATION_ACTION;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.SecurityConfiguration;
 import org.owasp.esapi.SecurityConfigurationWrapper;
-import org.owasp.esapi.ValidationErrorList;
-import org.owasp.esapi.ValidationRule;
 import org.owasp.esapi.Validator;
 import org.owasp.esapi.errors.ValidationException;
-import org.owasp.esapi.reference.validation.HTMLValidationRule;
-import static org.owasp.esapi.PropNames.VALIDATOR_HTML_VALIDATION_ACTION;
-
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
-import static org.junit.Assert.*;
 
 /**
  * The Class HTMLValidationRuleThrowsTest.
@@ -68,17 +66,12 @@ public class HTMLValidationRuleThrowsTest {
         }
     }
 
-    // Must be public!
-    @Rule
-    public ExpectedException thrownEx = ExpectedException.none();
-
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         ESAPI.override(null);
-        thrownEx = ExpectedException.none();
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         ESAPI.override(
             new ConfOverride( ESAPI.securityConfiguration(), "throw" )
@@ -92,10 +85,11 @@ public class HTMLValidationRuleThrowsTest {
         HTMLValidationRule rule = new HTMLValidationRule("test");
         ESAPI.validator().addRule(rule);
 
-        thrownEx.expect(ValidationException.class);
-        thrownEx.expectMessage("test: Invalid HTML input");
-
-        instance.getRule("test").getValid("test", "Test. <script>alert(document.cookie)</script>");
+        ValidationException exEx = assertThrows(ValidationException.class, () -> {
+            instance.getRule("test").getValid("test", "Test. <script>alert(document.cookie)</script>");
+        });
+        
+        assertTrue(exEx.getMessage().contains("test: Invalid HTML input"));
     }
     @Test
     public void testGetValidSafeHTML() throws Exception {

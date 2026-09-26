@@ -15,25 +15,22 @@
 package org.owasp.esapi.logging.cleaning;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 public class CompositeLogScrubberTest {
-
-    @Rule
-    public ExpectedException exEx = ExpectedException.none();
     @Test
     public void testNullListThrowsException() {
-        exEx.expect(IllegalArgumentException.class);
-        exEx.expectMessage("cannot be null");
-
-        new CompositeLogScrubber(null);
+        IllegalArgumentException exEx = assertThrows(IllegalArgumentException.class, () -> {
+            new CompositeLogScrubber(null);
+        });
+        assertTrue(exEx.getMessage().contains("cannot be null"));
     }
     @Test
     public void testPassthroughOnEmpty() {
