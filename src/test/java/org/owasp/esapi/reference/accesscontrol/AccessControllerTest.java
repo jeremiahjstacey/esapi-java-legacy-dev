@@ -1,17 +1,15 @@
 package org.owasp.esapi.reference.accesscontrol;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.AccessController;
 import org.owasp.esapi.errors.AccessControlException;
-import org.owasp.esapi.reference.accesscontrol.AlwaysFalseACR;
-import org.owasp.esapi.reference.accesscontrol.AlwaysTrueACR;
-import org.owasp.esapi.reference.accesscontrol.ExperimentalAccessController;
 
 /**
  * Answers the question: is the AccessController itself working properly?
@@ -22,7 +20,7 @@ public class AccessControllerTest {
 
     protected AccessController accessController;
 
-    @Before
+    @BeforeEach
     public void setup() {
         Map accessControlRules = new HashMap(3);
         accessControlRules.put("AlwaysTrue", new AlwaysTrueACR());
@@ -45,13 +43,17 @@ public class AccessControllerTest {
         assertEquals("EchoRuntimeParameter: null Runtime Parameter", accessController.isAuthorized("EchoRuntimeParameter", null), false);
     }
 
-    @Test (expected = AccessControlException.class)
+    @Test
     public void enforceAuthorizationRuleNotFoundNullKey() throws Exception {
-        accessController.assertAuthorized(null, null);
+        assertThrows (AccessControlException.class, () -> {
+            accessController.assertAuthorized(null, null);
+        });
     }
-    @Test (expected = AccessControlException.class)
+    @Test
     public void enforceAuthorizationRuleAKeyThatDoesNotMapToARule() throws Exception {
-        accessController.assertAuthorized("A key that does not map to a rule", null);
+        assertThrows (AccessControlException.class, () -> {
+            accessController.assertAuthorized("A key that does not map to a rule", null);
+        });
     }
 
 
@@ -61,9 +63,11 @@ public class AccessControllerTest {
         accessController.assertAuthorized("AlwaysTrue", null);
     }
 
-    @Test (expected = AccessControlException.class)
+    @Test
     public void enforceAuthorizationAlwaysFalse() throws Exception {
-        accessController.assertAuthorized("AlwaysFalse", null);
+        assertThrows (AccessControlException.class, () -> {
+            accessController.assertAuthorized("AlwaysFalse", null);
+        });
     }
 
     /**
@@ -80,22 +84,28 @@ public class AccessControllerTest {
      * Ensure that isAuthorized translates into an exception if enforceAuthorization
      * is called and isAuthorized returns false
      */
-    @Test (expected = AccessControlException.class)
+    @Test
     public void enforceAuthorizationEchoRuntimeParameterFalse() throws Exception {
-        accessController.assertAuthorized("EchoRuntimeParameter", Boolean.FALSE);
+        assertThrows (AccessControlException.class, () -> {
+            accessController.assertAuthorized("EchoRuntimeParameter", Boolean.FALSE);
+        });
     }
 
-    @Test (expected = AccessControlException.class)
+    @Test
     public void enforceAuthorizationEchoRuntimeParameterClassCastException() throws Exception {
-        accessController.assertAuthorized("EchoRuntimeParameter", "This is not a boolean");
+        assertThrows (AccessControlException.class, () -> {
+            accessController.assertAuthorized("EchoRuntimeParameter", "This is not a boolean");
+        });
     }
 
-    @Test (expected = AccessControlException.class)
+    @Test
     public void enforceAuthorizationEchoRuntimeParameterNullRuntimeParameter() throws Exception {
-        accessController.assertAuthorized("EchoRuntimeParameter", null);
+        assertThrows (AccessControlException.class, () -> {
+            accessController.assertAuthorized("EchoRuntimeParameter", null);
+        });
     }
 
-    @org.junit.Test
+    @Test
     public void delegatingACR() throws Exception {
         DelegatingACR delegatingACR = new DelegatingACR();
         DynaBeanACRParameter policyParameter = new DynaBeanACRParameter();

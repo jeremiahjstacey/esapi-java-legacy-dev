@@ -2,15 +2,16 @@ package org.owasp.esapi.configuration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.configuration.consts.EsapiConfiguration;
 import org.owasp.esapi.errors.ConfigurationException;
@@ -26,19 +27,19 @@ public class XmlEsapiPropertyLoaderTest {
     private static String DEVTEAM_CFG = "";
     private static String OPSTEAM_CFG = "";
 
-    @BeforeClass
+    @BeforeAll
     public static void captureEsapiConfigurations() {
         DEVTEAM_CFG = System.getProperty(EsapiConfiguration.DEVTEAM_ESAPI_CFG.getConfigName(),"");
         OPSTEAM_CFG = System.getProperty(EsapiConfiguration.OPSTEAM_ESAPI_CFG.getConfigName(),"");
     }
 
-    @AfterClass
+    @AfterAll
     public static void restoreEsapiConfigurations() {
          System.setProperty(EsapiConfiguration.DEVTEAM_ESAPI_CFG.getConfigName(), DEVTEAM_CFG);
          System.setProperty(EsapiConfiguration.OPSTEAM_ESAPI_CFG.getConfigName(), OPSTEAM_CFG);
     }
 
-    @Before
+    @BeforeEach
     public void init() {
         System.setProperty(EsapiConfiguration.DEVTEAM_ESAPI_CFG.getConfigName(), "");
         System.setProperty(EsapiConfiguration.OPSTEAM_ESAPI_CFG.getConfigName(), "");
@@ -166,35 +167,37 @@ public class XmlEsapiPropertyLoaderTest {
         assertEquals(expectedValue, value);
     }
 
-    @Test(expected = ConfigurationException.class)
+    @Test
     public void testIntPropertyNotFound() throws ConfigurationException {
-        // given
-        String key = "non-existing-key";
+        assertThrows (ConfigurationException.class, () -> {
+            // given
+            String key = "non-existing-key";
 
-        // when
-        try {
-            testPropertyLoader = new XmlEsapiPropertyLoader(filename, priority);
-        } catch ( IOException e ) {
-            fail( e.getMessage() );
-        }
-        testPropertyLoader.getIntProp(key);
-
+            // when
+            try {
+                testPropertyLoader = new XmlEsapiPropertyLoader(filename, priority);
+            } catch ( IOException e ) {
+                fail( e.getMessage() );
+            }
+            testPropertyLoader.getIntProp(key);
+        });
         // then expect exception
     }
 
-    @Test(expected = ConfigurationException.class)
+    @Test
     public void testIncorrectIntPropertyType() {
-        // given
-        String key = "invalid_int_property";
+        assertThrows (ConfigurationException.class, () -> {
+            // given
+            String key = "invalid_int_property";
 
-        // when
-        try {
-            testPropertyLoader = new XmlEsapiPropertyLoader(filename, priority);
-        } catch ( IOException e ) {
-            fail( e.getMessage() );
-        }
-        testPropertyLoader.getIntProp(key);
-
+            // when
+            try {
+                testPropertyLoader = new XmlEsapiPropertyLoader(filename, priority);
+            } catch ( IOException e ) {
+                fail( e.getMessage() );
+            }
+            testPropertyLoader.getIntProp(key);
+        });
         // then expect exception
     }
     @Test
@@ -215,19 +218,20 @@ public class XmlEsapiPropertyLoaderTest {
         assertEquals(expectedValue, value);
     }
 
-    @Test(expected = ConfigurationException.class)
+    @Test
     public void testStringPropertyNotFound() throws ConfigurationException {
-        // given
-        String key = "non-existing-key";
+        assertThrows (ConfigurationException.class, () -> {
+            // given
+            String key = "non-existing-key";
 
-        // when
-        try {
-            testPropertyLoader = new XmlEsapiPropertyLoader(filename, priority);
-        } catch ( IOException e ) {
-            fail( e.getMessage() );
-        }
-        testPropertyLoader.getStringProp(key);
-
+            // when
+            try {
+                testPropertyLoader = new XmlEsapiPropertyLoader(filename, priority);
+            } catch ( IOException e ) {
+                fail( e.getMessage() );
+            }
+            testPropertyLoader.getStringProp(key);
+        });
         // then expect exception
     }
     @Test
@@ -282,35 +286,37 @@ public class XmlEsapiPropertyLoaderTest {
         assertEquals(expectedValue, value);
     }
 
-    @Test(expected = ConfigurationException.class)
+    @Test
     public void testBooleanPropertyNotFound() throws ConfigurationException {
-        // given
-        String key = "non-existing-key";
+        assertThrows (ConfigurationException.class, () -> {
+            // given
+            String key = "non-existing-key";
 
-        // when
-        try {
-            testPropertyLoader = new XmlEsapiPropertyLoader(filename, priority);
-        } catch ( IOException e ) {
-            fail( e.getMessage() );
-        }
-        testPropertyLoader.getBooleanProp(key);
-
+            // when
+            try {
+                testPropertyLoader = new XmlEsapiPropertyLoader(filename, priority);
+            } catch ( IOException e ) {
+                fail( e.getMessage() );
+            }
+            testPropertyLoader.getBooleanProp(key);
+        });
         // then expect exception
     }
 
-    @Test(expected = ConfigurationException.class)
+    @Test
     public void testIncorrectBooleanPropertyType() throws ConfigurationException {
-        // given
-        String key = "invalid_boolean_property";
+        assertThrows (ConfigurationException.class, () -> {
+            // given
+            String key = "invalid_boolean_property";
 
-        // when
-        try {
-            testPropertyLoader = new XmlEsapiPropertyLoader(filename, priority);
-        } catch ( IOException e ) {
-            fail( e.getMessage() );
-        }
-        testPropertyLoader.getBooleanProp(key);
-
+            // when
+            try {
+                testPropertyLoader = new XmlEsapiPropertyLoader(filename, priority);
+            } catch ( IOException e ) {
+                fail( e.getMessage() );
+            }
+            testPropertyLoader.getBooleanProp(key);
+        });
         // then expect exception
     }
     @Test
@@ -336,19 +342,20 @@ public class XmlEsapiPropertyLoaderTest {
         assertEquals(expectedValue, value);
     }
 
-    @Test(expected = ConfigurationException.class)
+    @Test
     public void testByteArrayPropertyNotFound() throws ConfigurationException {
-        // given
-        String key = "non-existing-key";
+        assertThrows (ConfigurationException.class, () -> {
+            // given
+            String key = "non-existing-key";
 
-        // when
-        try {
-            testPropertyLoader = new XmlEsapiPropertyLoader(filename, priority);
-        } catch ( IOException e ) {
-            fail( e.getMessage() );
-        }
-        testPropertyLoader.getByteArrayProp(key);
-
+            // when
+            try {
+                testPropertyLoader = new XmlEsapiPropertyLoader(filename, priority);
+            } catch ( IOException e ) {
+                fail( e.getMessage() );
+            }
+            testPropertyLoader.getByteArrayProp(key);
+        });
         // then expect exception
     }
 

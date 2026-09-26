@@ -1,6 +1,6 @@
 package org.owasp.esapi.reference.accesscontrol.policyloader;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.eq;
 
 import java.math.BigDecimal;
@@ -10,8 +10,8 @@ import java.util.Random;
 
 import org.apache.commons.configuration.XMLConfiguration;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 
@@ -24,7 +24,7 @@ public class ACRParameterLoaderHelperTest {
    private int randomRuleIndex;
    private int randomParameterIndex;
    
-   @Before
+   @BeforeEach
    public void buildUniqueKey () {
        // Assembling a unique key each test verifies that the delegate calls are getting the expected values from the test calls.
        randomRuleIndex = Math.abs(new Random().nextInt() % 100);
@@ -32,9 +32,11 @@ public class ACRParameterLoaderHelperTest {
        randomTestKey = String.format(ACRParameterLoaderHelper.DEFAULT_KEY_FORMAT, randomRuleIndex, randomParameterIndex);
    }
    
-   @Test (expected = IllegalArgumentException.class)
+   @Test
     public void testUnsupportedTypeThrowsException() throws Exception {
-       ACRParameterLoaderHelper.getParameterValue(config, randomRuleIndex, randomParameterIndex, "Foo_to_the_Bar");
+       assertThrows (IllegalArgumentException.class, () -> {
+           ACRParameterLoaderHelper.getParameterValue(config, randomRuleIndex, randomParameterIndex, "Foo_to_the_Bar");
+       });
    }
     @Test
     public void testStringParam_lowercaseType() throws Exception {

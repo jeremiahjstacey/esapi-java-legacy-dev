@@ -15,7 +15,9 @@
  */
 package org.owasp.esapi.reference.validation;
 
-import org.junit.Test;
+import static org.junit.Assert.assertThrows;
+
+import org.junit.jupiter.api.Test;
 import org.owasp.validator.html.PolicyException;
 
 /**
@@ -28,9 +30,11 @@ public class HTMLValidationRuleAntisamyPropertyTest {
      */
     private static final String INVALID_ANTISAMY_POLICY_FILE = "antisamy-InvalidPolicy.xml";
 
-    @Test( expected = PolicyException.class )
+    @Test
     public void checkAntisamySystemPropertyWorksAsAdvertised() throws Exception {
-        HTMLValidationRule.loadAntisamyPolicy(INVALID_ANTISAMY_POLICY_FILE);
+        assertThrows (PolicyException.class, () -> {
+            HTMLValidationRule.loadAntisamyPolicy(INVALID_ANTISAMY_POLICY_FILE);
+        });
     }
 
 }

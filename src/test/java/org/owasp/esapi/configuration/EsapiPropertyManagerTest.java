@@ -5,16 +5,17 @@ package org.owasp.esapi.configuration;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.configuration.consts.EsapiConfiguration;
 import org.owasp.esapi.errors.ConfigurationException;
@@ -31,20 +32,20 @@ public class EsapiPropertyManagerTest {
     private static String DEVTEAM_CFG = "";
     private static String OPSTEAM_CFG = "";
 
-    @BeforeClass
+    @BeforeAll
     public static void captureEsapiConfigurations() {
         DEVTEAM_CFG = System.getProperty(EsapiConfiguration.DEVTEAM_ESAPI_CFG.getConfigName(),"");
         OPSTEAM_CFG = System.getProperty(EsapiConfiguration.OPSTEAM_ESAPI_CFG.getConfigName(),"");
     }
 
-    @AfterClass
+    @AfterAll
     public static void restoreEsapiConfigurations() {
          System.setProperty(EsapiConfiguration.DEVTEAM_ESAPI_CFG.getConfigName(), DEVTEAM_CFG);
          System.setProperty(EsapiConfiguration.OPSTEAM_ESAPI_CFG.getConfigName(), OPSTEAM_CFG);
     }
 
 
-    @Before
+    @BeforeEach
     public void init() {
         System.setProperty(EsapiConfiguration.DEVTEAM_ESAPI_CFG.getConfigName(), "");
         System.setProperty(EsapiConfiguration.OPSTEAM_ESAPI_CFG.getConfigName(), "");
@@ -153,19 +154,21 @@ public class EsapiPropertyManagerTest {
     }
 
 
-    @Test(expected = ConfigurationException.class)
+    @Test
     public void testStringPropertyNotFoundByLoaderAndThrowException() {
-        // given
-        System.setProperty(EsapiConfiguration.DEVTEAM_ESAPI_CFG.getConfigName(), propFilename1);
-        String propertyKey = "non.existing.property";
+        assertThrows (ConfigurationException.class, () -> {
+            // given
+            System.setProperty(EsapiConfiguration.DEVTEAM_ESAPI_CFG.getConfigName(), propFilename1);
+            String propertyKey = "non.existing.property";
 
-        // when
-        try {
-            testPropertyManager = new EsapiPropertyManager();
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-        testPropertyManager.getStringProp(propertyKey);
+            // when
+            try {
+                testPropertyManager = new EsapiPropertyManager();
+            } catch (IOException e) {
+                fail(e.getMessage());
+            }
+            testPropertyManager.getStringProp(propertyKey);
+        });
 
         // then expect exception
     }
@@ -246,21 +249,23 @@ public class EsapiPropertyManagerTest {
     }
 
 
-    @Test(expected = ConfigurationException.class)
+    @Test
     public void testIntPropertyNotFoundByLoaderAndThrowException() {
-        // given
-        String propertyKey = "non.existing.property";
+        assertThrows (ConfigurationException.class, () -> {
+            // given
+            String propertyKey = "non.existing.property";
 
-        // when
-        try {
-            testPropertyManager = new EsapiPropertyManager();
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-        testPropertyManager.getIntProp(propertyKey);
-
+            // when
+            try {
+                testPropertyManager = new EsapiPropertyManager();
+            } catch (IOException e) {
+                fail(e.getMessage());
+            }
+            testPropertyManager.getIntProp(propertyKey);
+        });
         // then expect exception
     }
+    
     @Test
     public void testBooleanPropFoundInLoader() {
         // given
@@ -280,21 +285,23 @@ public class EsapiPropertyManagerTest {
         assertEquals(expectedPropertyValue, propertyValue);
     }
 
-    @Test(expected = ConfigurationException.class)
+    @Test
     public void testBooleanPropertyNotFoundByLoaderAndThrowException() {
-        // given
-        String propertyKey = "non.existing.property";
+        assertThrows (ConfigurationException.class, () -> {
+            // given
+            String propertyKey = "non.existing.property";
 
-        // when
-        try {
-            testPropertyManager = new EsapiPropertyManager();
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-        testPropertyManager.getBooleanProp(propertyKey);
-
+            // when
+            try {
+                testPropertyManager = new EsapiPropertyManager();
+            } catch (IOException e) {
+                fail(e.getMessage());
+            }
+            testPropertyManager.getBooleanProp(propertyKey);
+        });
         // then expect exception
     }
+    
     @Test
     public void testByteArrayPropFoundInLoader() {
         // given
@@ -391,18 +398,20 @@ public class EsapiPropertyManagerTest {
         assertEquals(expectedValue, propertyValue);
     }
 
-    @Test(expected = ConfigurationException.class)
+    @Test
     public void testByteArrayPropertyNotFoundByLoaderAndThrowException() {
-        // given
-        String propertyKey = "non.existing.property";
+        assertThrows (ConfigurationException.class, () -> {
+            // given
+            String propertyKey = "non.existing.property";
 
-        // when
-        try {
-            testPropertyManager = new EsapiPropertyManager();
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-        testPropertyManager.getByteArrayProp(propertyKey);
+            // when
+            try {
+                testPropertyManager = new EsapiPropertyManager();
+            } catch (IOException e) {
+                fail(e.getMessage());
+            }
+            testPropertyManager.getByteArrayProp(propertyKey);
+        });
 
         // then expect exception
     }

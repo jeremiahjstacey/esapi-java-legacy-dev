@@ -1,10 +1,11 @@
 package org.owasp.esapi.codecs.ref;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+
 import java.util.regex.Pattern;
 
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
 public class EncodingPatternPreservationTest {
     @Test
@@ -46,31 +47,35 @@ public class EncodingPatternPreservationTest {
         assertEquals(origStr, restored);
     }
 
-    @Test (expected = IllegalStateException.class)
+    @Test
     public void testSetMarkerExceptionNoReset() {
-        Pattern numberRegex = Pattern.compile("(ABC)");
-        EncodingPatternPreservation epp = new EncodingPatternPreservation(numberRegex);
-        String origStr = "12 ABC 34 DEF 56 G 7";
-        epp.captureAndReplaceMatches(origStr);
-        //This allows the + case to be illustrated
-        epp.reset();
+        assertThrows (IllegalStateException.class, () -> {
+            Pattern numberRegex = Pattern.compile("(ABC)");
+            EncodingPatternPreservation epp = new EncodingPatternPreservation(numberRegex);
+            String origStr = "12 ABC 34 DEF 56 G 7";
+            epp.captureAndReplaceMatches(origStr);
+            //This allows the + case to be illustrated
+            epp.reset();
 
-        //And the exception case.
-        epp.captureAndReplaceMatches(origStr);
-        epp.setReplacementMarker(EncodingPatternPreservationTest.class.getSimpleName());
+            //And the exception case.
+            epp.captureAndReplaceMatches(origStr);
+            epp.setReplacementMarker(EncodingPatternPreservationTest.class.getSimpleName());
+        });
     }
 
-    @Test (expected = IllegalStateException.class)
+    @Test
     public void testReplaceExceptionNoReset() {
-        Pattern numberRegex = Pattern.compile("(ABC)");
-        EncodingPatternPreservation epp = new EncodingPatternPreservation(numberRegex);
-        String origStr = "12 ABC 34 DEF 56 G 7";
-        epp.captureAndReplaceMatches(origStr);
-        //This allows the + case to be illustrated
-        epp.reset();
+        assertThrows (IllegalStateException.class, () -> {
+            Pattern numberRegex = Pattern.compile("(ABC)");
+            EncodingPatternPreservation epp = new EncodingPatternPreservation(numberRegex);
+            String origStr = "12 ABC 34 DEF 56 G 7";
+            epp.captureAndReplaceMatches(origStr);
+            //This allows the + case to be illustrated
+            epp.reset();
 
-        //And the exception case.
-        epp.captureAndReplaceMatches(origStr);
-        epp.captureAndReplaceMatches(origStr);
+            //And the exception case.
+            epp.captureAndReplaceMatches(origStr);
+            epp.captureAndReplaceMatches(origStr);
+        });
     }
 }

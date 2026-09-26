@@ -1,12 +1,13 @@
 package org.owasp.esapi.reference.accesscontrol.policyloader;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.AccessController;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.errors.AccessControlException;
@@ -18,7 +19,7 @@ public class ACRPolicyFileLoaderTest {
 
     protected AccessController accessController;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         accessController = ESAPI.accessController();
     }
@@ -62,8 +63,10 @@ public class ACRPolicyFileLoaderTest {
         // null), false);
     }
 
-    @Test(expected = AccessControlException.class)
+    @Test
     public void enforceAuthorizationRuleNotFoundNullKey() throws AccessControlException {
-        accessController.assertAuthorized(null, null);
+        assertThrows (AccessControlException.class, () -> {
+            accessController.assertAuthorized(null, null);
+        });
     }
 }

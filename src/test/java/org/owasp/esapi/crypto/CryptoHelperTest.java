@@ -1,6 +1,7 @@
 package org.owasp.esapi.crypto;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -8,7 +9,7 @@ import java.util.Random;
 
 import javax.crypto.SecretKey;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.errors.EncryptionException;
 
 public class CryptoHelperTest {
@@ -26,11 +27,13 @@ public class CryptoHelperTest {
         }
     }
 
-    @Test(expected = EncryptionException.class)
+    @Test
     public final void testGenerateSecretKeyEncryptionException()
             throws EncryptionException {
-        SecretKey key = CryptoHelper.generateSecretKey("NoSuchAlg", 128);
-        assertTrue(key == null); // Not reached!
+        assertThrows (EncryptionException.class, () -> {
+            SecretKey key = CryptoHelper.generateSecretKey("NoSuchAlg", 128);
+            assertTrue(key == null); // Not reached!
+        });
     }
 
     @Test
@@ -53,23 +56,29 @@ public class CryptoHelperTest {
         assertTrue(checkByteArray(dest, (byte) 'A')); // Now filled with 'B'
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public final void testCopyByteArraySrcNullPointerException() {
-        byte[] ba = new byte[16];
-        CryptoHelper.copyByteArray(null, ba, ba.length);
+        assertThrows (NullPointerException.class, () -> {
+            byte[] ba = new byte[16];
+            CryptoHelper.copyByteArray(null, ba, ba.length);
+        });
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public final void testCopyByteArrayDestNullPointerException() {
-        byte[] ba = new byte[16];
-        CryptoHelper.copyByteArray(ba, null, ba.length);
+        assertThrows (NullPointerException.class, () -> {
+            byte[] ba = new byte[16];
+            CryptoHelper.copyByteArray(ba, null, ba.length);
+        });
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public final void testCopyByteArrayIndexOutOfBoundsException() {
-        byte[] ba8 = new byte[8];
-        byte[] ba16 = new byte[16];
-        CryptoHelper.copyByteArray(ba8, ba16, ba16.length);
+        assertThrows (IndexOutOfBoundsException.class, () -> {
+            byte[] ba8 = new byte[8];
+            byte[] ba16 = new byte[16];
+            CryptoHelper.copyByteArray(ba8, ba16, ba16.length);
+        });
     }
 
     @Test

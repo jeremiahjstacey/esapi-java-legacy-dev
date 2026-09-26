@@ -1,15 +1,17 @@
 package org.owasp.esapi.crypto;
 
-import static org.junit.Assert.*;
+
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.security.NoSuchProviderException;
 import java.security.Provider;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.errors.EncryptionException;
 
@@ -33,7 +35,7 @@ public class SecurityProviderLoaderTest {
 
     private static boolean HAS_BOUNCY_CASTLE = false;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() {
         try {
             Class<?> providerClass = Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
@@ -77,14 +79,18 @@ public class SecurityProviderLoaderTest {
         }
     }
 
-    @Test(expected=NoSuchProviderException.class)
+    @Test
     public final void testNoSuchProviderException() throws NoSuchProviderException {
-        SecurityProviderLoader.insertProviderAt("DrBobsSecretSnakeOilElixirCryptoJCE", 5);
+        assertThrows (NoSuchProviderException.class, () -> {
+            SecurityProviderLoader.insertProviderAt("DrBobsSecretSnakeOilElixirCryptoJCE", 5);
+        });
     }
 
-    @Test(expected=NoSuchProviderException.class)
+    @Test
     public final void testBogusProviderWithFQCN() throws NoSuchProviderException {
-        SecurityProviderLoader.insertProviderAt("com.snakeoil.DrBobsSecretSnakeOilElixirCryptoJCE", 5);
+        assertThrows (NoSuchProviderException.class, () -> {
+            SecurityProviderLoader.insertProviderAt("com.snakeoil.DrBobsSecretSnakeOilElixirCryptoJCE", 5);
+        });
     }
 
     @Test

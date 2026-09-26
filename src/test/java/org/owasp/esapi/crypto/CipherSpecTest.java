@@ -2,6 +2,7 @@ package org.owasp.esapi.crypto;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -14,9 +15,8 @@ import java.io.ObjectOutputStream;
 
 import javax.crypto.Cipher;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.codecs.Hex;
 
@@ -29,7 +29,8 @@ public class CipherSpecTest {
     private CipherSpec cipherSpec = null;
     private byte[] myIV = null;
 
-    @Before public void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() throws Exception {
         myIV = Hex.decode( "0x000102030405060708090a0b0c0d0e0f" ); // Any IV to test w/ will do.
 
         dfltAESCipher   = Cipher.getInstance("AES");
@@ -42,10 +43,6 @@ public class CipherSpecTest {
 
         cipherSpec = new CipherSpec(dfltOtherCipher);
         assertTrue( cipherSpec != null );
-    }
-
-    @After public void tearDown() throws Exception {
-        // none
     }
 
     /** Test CipherSpec(String cipherXform, int keySize, int blockSize, final byte[] iv) */
@@ -118,14 +115,11 @@ public class CipherSpecTest {
         cipherSpec = new CipherSpec();
         cipherSpec.setCipherTransformation("AlgName/Mode/Padding");
         cipherSpec.getCipherAlgorithm().equals("AlgName/Mode/Padding");
-
-        try {
-                // Don't use null here as compiling JUnit tests disables assertion
-                // checking so we get a NullPointerException here instead.
+        assertThrows (IllegalArgumentException.class, () -> {
+            // Don't use null here as compiling JUnit tests disables assertion
+            // checking so we get a NullPointerException here instead.
             cipherSpec.setCipherTransformation(""); // Throws IllegalArgumentException
-        } catch (IllegalArgumentException e) {
-            assertTrue(true);    // Doesn't work w/ @Test(expected=IllegalArgumentException.class)
-        }
+        });
     }
 
     /** Test getCipherTransformation() */

@@ -2,13 +2,14 @@ package org.owasp.esapi.tags;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.jsp.JspTagException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.owasp.esapi.Encoder;
 
@@ -41,11 +42,13 @@ public class EncodeForBase64TagTest {
         assertTrue(uit.getWrap());
     }
     
-    @Test (expected = JspTagException.class)
+    @Test
     public void assertExceptionOnEncodingFalure() throws Exception {
         String input = "Magic String";
         EncodeForBase64Tag uit = new EncodeForBase64Tag();
         Mockito.when(encoder.encodeForBase64(input.getBytes("UTF-8"), false)).thenAnswer(i -> { throw new UnsupportedEncodingException();});
-        uit.encode(input, encoder);
+        assertThrows (JspTagException.class, () -> {
+            uit.encode(input, encoder);
+        });
     }
 }

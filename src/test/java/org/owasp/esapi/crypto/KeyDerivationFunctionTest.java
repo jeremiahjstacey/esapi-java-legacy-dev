@@ -1,6 +1,7 @@
 package org.owasp.esapi.crypto;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -10,9 +11,9 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.errors.EncryptionException;
 
 public class KeyDerivationFunctionTest {
@@ -28,7 +29,7 @@ public class KeyDerivationFunctionTest {
     private KeyDerivationFunction kdfSha1;
     private KeyDerivationFunction kdfSha256;
 
-    @BeforeClass
+    @BeforeAll
     public static void setupStatic() {
         try {
             desKey    = CryptoHelper.generateSecretKey("DES", 56);
@@ -46,76 +47,88 @@ public class KeyDerivationFunctionTest {
         }
     }
 
-    @Before
+    @BeforeEach
     public void setup() {
         kdfSha1     = new KeyDerivationFunction( KeyDerivationFunction.PRF_ALGORITHMS.HmacSHA1 );
         kdfSha256   = new KeyDerivationFunction( KeyDerivationFunction.PRF_ALGORITHMS.HmacSHA256 );
     }
 
-    @Test(expected = EncryptionException.class)
+    @Test
     public void testKeyTooShort() throws EncryptionException {
         // System.out.println("testKeyTooShort");
-        try {
-            SecretKey key = kdfSha1.computeDerivedKey( shortKey, 128, "encryption" );
-            fail("testKeyTooShort: Expected IllegalArgumentException to be thrown.");
-        } catch ( NoSuchAlgorithmException | InvalidKeyException e ) {
-            fail("Caught unexpected exception " + e.getClass().getName() + ": exception msg: " + e);
-        }
+        assertThrows (EncryptionException.class, () -> {
+            try {
+                SecretKey key = kdfSha1.computeDerivedKey( shortKey, 128, "encryption" );
+                fail("testKeyTooShort: Expected IllegalArgumentException to be thrown.");
+            } catch ( NoSuchAlgorithmException | InvalidKeyException e ) {
+                fail("Caught unexpected exception " + e.getClass().getName() + ": exception msg: " + e);
+            }
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testKeySizeTooShort() {
         // System.out.println("testKeySizeTooShort");
-        try {
-            SecretKey key = kdfSha1.computeDerivedKey( aes128key, 40, "encryption" );   // Min size is 56 bits
-            fail("testKeySizeTooShort: Expected IllegalArgumentException to be thrown.");
-        } catch ( NoSuchAlgorithmException | InvalidKeyException | EncryptionException e ) {
-            fail("Caught unexpected exception " + e.getClass().getName() + ": exception msg: " + e);
-        }
+        assertThrows (IllegalArgumentException.class, () -> {
+            try {
+                SecretKey key = kdfSha1.computeDerivedKey( aes128key, 40, "encryption" );   // Min size is 56 bits
+                fail("testKeySizeTooShort: Expected IllegalArgumentException to be thrown.");
+            } catch ( NoSuchAlgorithmException | InvalidKeyException | EncryptionException e ) {
+                fail("Caught unexpected exception " + e.getClass().getName() + ": exception msg: " + e);
+            }
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNullKey() {
         // System.out.println("testNullKey");
-        try {
-            SecretKey key = kdfSha1.computeDerivedKey( null, 56, "encryption" );        // Null key disallowed
-            assertTrue(key == null); // Not reached!
-        } catch ( NoSuchAlgorithmException | InvalidKeyException | EncryptionException e ) {
-            fail("Caught unexpected exception " + e.getClass().getName() + ": exception msg: " + e);
-        }
+        assertThrows (IllegalArgumentException.class, () -> {
+            try {
+                SecretKey key = kdfSha1.computeDerivedKey( null, 56, "encryption" );        // Null key disallowed
+                assertTrue(key == null); // Not reached!
+            } catch ( NoSuchAlgorithmException | InvalidKeyException | EncryptionException e ) {
+                fail("Caught unexpected exception " + e.getClass().getName() + ": exception msg: " + e);
+            }
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testKeySizeNotEvenNumberOfBytes() {
         // System.out.println("testKeySizeNotEvenNumberOfBytes");
-        try {
-            SecretKey key = kdfSha1.computeDerivedKey( aes128key, 60, "encryption" );   // 60 % 8 == 4
-            assertTrue(key == null); // Not reached!
-        } catch ( NoSuchAlgorithmException | InvalidKeyException | EncryptionException e ) {
-            fail("Caught unexpected exception " + e.getClass().getName() + ": exception msg: " + e);
-        }
+        assertThrows (IllegalArgumentException.class, () -> {
+            try {
+                SecretKey key = kdfSha1.computeDerivedKey( aes128key, 60, "encryption" );   // 60 % 8 == 4
+                assertTrue(key == null); // Not reached!
+            } catch ( NoSuchAlgorithmException | InvalidKeyException | EncryptionException e ) {
+                fail("Caught unexpected exception " + e.getClass().getName() + ": exception msg: " + e);
+            }
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testPurposeNull() {
         // System.out.println("testPurposeNull");
-        try {
-            SecretKey key = kdfSha1.computeDerivedKey( aes128key, 128, null );   // purpose is null
-            assertTrue(key == null); // Not reached!
-        } catch ( NoSuchAlgorithmException | InvalidKeyException | EncryptionException e ) {
-            fail("Caught unexpected exception " + e.getClass().getName() + ": exception msg: " + e);
-        }
+        assertThrows (IllegalArgumentException.class, () -> {
+            try {
+                SecretKey key = kdfSha1.computeDerivedKey( aes128key, 128, null );   // purpose is null
+                assertTrue(key == null); // Not reached!
+            } catch ( NoSuchAlgorithmException | InvalidKeyException | EncryptionException e ) {
+                fail("Caught unexpected exception " + e.getClass().getName() + ": exception msg: " + e);
+            }
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testPurposeEmpty() {
         // System.out.println("testPurposeEmpty");
-        try {
-            SecretKey key = kdfSha1.computeDerivedKey( aes128key, 128, "" );   // purpose is empty string
-            assertTrue(key == null); // Not reached!
-        } catch ( NoSuchAlgorithmException | InvalidKeyException | EncryptionException e ) {
-            fail("Caught unexpected exception " + e.getClass().getName() + ": exception msg: " + e);
-        }
+        assertThrows (IllegalArgumentException.class, () -> {
+            try {
+                SecretKey key = kdfSha1.computeDerivedKey( aes128key, 128, "" );   // purpose is empty string
+                assertTrue(key == null); // Not reached!
+            } catch ( NoSuchAlgorithmException | InvalidKeyException | EncryptionException e ) {
+                fail("Caught unexpected exception " + e.getClass().getName() + ": exception msg: " + e);
+            }
+        });
     }
     @Test
     public void testSunnyDay() {
@@ -181,17 +194,19 @@ public class KeyDerivationFunctionTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testSetContextToNull() {
-        // System.out.println("testSetContextToNull");
-        try {
-            SecretKey key1 = kdfSha256.computeDerivedKey( aes128key, 128, "encryption" );
-            kdfSha256.setContext( null );   // Throws IllegalArgumentExeption
+        // System.out.println("testSetContextToNull");\
+        assertThrows (IllegalArgumentException.class, () -> {
+            try {
+                SecretKey key1 = kdfSha256.computeDerivedKey( aes128key, 128, "encryption" );
+                kdfSha256.setContext( null );   // Throws IllegalArgumentExeption
 
-            fail("testSetContextToNull: Expected IllegalArgumentException to be thrown.");
-        } catch ( NoSuchAlgorithmException | InvalidKeyException | EncryptionException e ) {
-            fail("Caught unexpected exception " + e.getClass().getName() + ": exception msg: " + e);
-        }
+                fail("testSetContextToNull: Expected IllegalArgumentException to be thrown.");
+            } catch ( NoSuchAlgorithmException | InvalidKeyException | EncryptionException e ) {
+                fail("Caught unexpected exception " + e.getClass().getName() + ": exception msg: " + e);
+            }
+        });
     }
 
 }

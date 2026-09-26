@@ -1,8 +1,10 @@
 package org.owasp.esapi.tags;
 
+import static org.junit.Assert.assertThrows;
+
 import javax.servlet.jsp.JspTagException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.owasp.esapi.Encoder;
 import org.owasp.esapi.errors.EncodingException;
@@ -24,11 +26,13 @@ public class EncodeForURLTagTest {
         
     }
     
-    @Test (expected = JspTagException.class)
+    @Test
     public void assertExceptionOnEncodingFalure() throws Exception {
         String input = "Magic String";
         EncodeForURLTag uit = new EncodeForURLTag();
         Mockito.when(encoder.encodeForURL(input)).thenThrow(new EncodingException("Test-Scope", "SAMPLE"));
-        uit.encode(input, encoder);
+        assertThrows (JspTagException.class, () -> {
+            uit.encode(input, encoder);
+        });
     }
 }
