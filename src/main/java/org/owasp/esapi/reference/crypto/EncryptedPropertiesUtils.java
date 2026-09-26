@@ -10,8 +10,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Properties;
 
-import org.owasp.esapi.EncryptedProperties;
-
 /**
  * Command line utilities for reading, writing and creating encrypted properties files.
  * <p>
@@ -153,14 +151,8 @@ public class EncryptedPropertiesUtils {
                     inProperties = new Properties();
                 }
 
-                InputStream in = null;
-                try {
-                    in = new FileInputStream(f);
+                try (InputStream in = new FileInputStream(f)) {
                     inProperties.load(in);
-                } finally {
-                    try {
-                        if (in != null) in.close(); //quietly close the InputStream
-                    } catch (Exception e) {}
                 }
 
                 //Use the existing properties
@@ -183,14 +175,8 @@ public class EncryptedPropertiesUtils {
      * @throws Exception
      */
     public static void storeProperties(String outFile, Properties props, String message) throws Exception {
-        OutputStream out = null;
-        try {
-            out = new FileOutputStream(new File(outFile));
+        try (OutputStream out = new FileOutputStream(new File(outFile))) {
             props.store(out, message);
-        } finally {
-            try {
-                if (out != null) out.close();  //quietly close OutputStream
-            } catch (Exception e) {}
         }
     }
 
