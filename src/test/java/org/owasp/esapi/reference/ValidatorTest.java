@@ -20,6 +20,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -27,6 +28,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -35,9 +38,8 @@ import java.util.Set;
 
 import javax.servlet.http.Cookie;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
 import org.owasp.esapi.EncoderConstants;
@@ -64,8 +66,8 @@ public class ValidatorTest {
 
     private static final String PREFERRED_ENCODING = "UTF-8";
 
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    @TempDir
+    Path tempFolder;
 
     @Test
     public void testAddRule() {
@@ -395,24 +397,30 @@ public class ValidatorTest {
     // GHSL-2022-008 - CVE-2022-23457 - Patched in commit a0d67b7
     @Test
     public void testIsValidDirectoryPathGHSL_POC() throws IOException {
-        // Note this uses different 'parent' and 'input' directories that generally don't already
-        // exist, so we will may have to create them and then remove them. The above
-        // mkdir() method does this.
-
         Validator instance = ESAPI.validator();
         ValidationErrorList errors = new ValidationErrorList();
+        
+        Path unassociatedFolder = tempFolder.resolve("child-directory1");
+        Path invalidLineageDir = Files.createDirectories(unassociatedFolder);
 
-        String invalidPath = tempFolder.newFolder("esapi-test2").getAbsolutePath();
-        File parent = tempFolder.newFolder("sibling-of-esapi-test2");
-        String validPath = tempFolder.newFolder("sibling-of-esapi-test2", "child").getCanonicalPath();
-
+        Path validParentPath = tempFolder.resolve("valid-parent-directory/child-directory2");
+        Path validDirPath = Files.createDirectories(validParentPath);
+        
+        File validParentDir = validDirPath.toFile().getParentFile(); 
+        
+        
         // Before the fix, this incorrectly would return 'true' even though
         // 'esapi-test2' directory clearly was not within the 'esapi-test'
         // directory.
         //
-        assertFalse( instance.isValidDirectoryPath("GHSL-2022-008", invalidPath, parent, false, errors) );
+        assertFalse( instance.isValidDirectoryPath("GHSL-2022-008", invalidLineageDir.toFile().getAbsolutePath(), validParentDir, false, errors) );
         assertEquals( 1, errors.size() );
-        assertTrue (instance.isValidDirectoryPath("GHSL-2022-008", validPath, parent, false, new ValidationErrorList()));
+        errors = new ValidationErrorList();
+        assertFalse( instance.isValidDirectoryPath("GHSL-2022-008", invalidLineageDir.toFile().getCanonicalPath(), validParentDir, false, errors) );
+        assertEquals( 1, errors.size() );
+        
+        assertTrue (instance.isValidDirectoryPath("GHSL-2022-008", validDirPath.toFile().getAbsolutePath(), validParentDir, false, new ValidationErrorList()));
+        assertTrue (instance.isValidDirectoryPath("GHSL-2022-008", validDirPath.toFile().getCanonicalPath(), validParentDir, false, new ValidationErrorList()));
     }
 
 
@@ -1146,10 +1154,12 @@ public class ValidatorTest {
         assertFalse(isValid);
     }
 
-    @Test(expected = ValidationException.class)
+    @Test
     public void testRegexWithGetValid() throws IntrusionException, ValidationException {
         Validator v = ESAPI.validator();
-        String foo = v.getValidInput("RegexString", "%2d%2d%3e%3c%2f%73%43%72%49%70%54%3e%3c%73%43%72%49%70%54%3e%61%6c%65%72%74%28%31%36%35%38%38%29%3c%2f%73%43%72%49%70%54%3e", "RegexString", 30000, true);
+        assertThrows (ValidationException.class, () -> { 
+            v.getValidInput("RegexString", "%2d%2d%3e%3c%2f%73%43%72%49%70%54%3e%3c%73%43%72%49%70%54%3e%61%6c%65%72%74%28%31%36%35%38%38%29%3c%2f%73%43%72%49%70%54%3e", "RegexString", 30000, true);
+        });
     }
 
     @Test

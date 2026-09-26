@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Path;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 
@@ -22,10 +23,9 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.errors.EncryptionException;
 import org.owasp.esapi.reference.crypto.CryptoPolicy;
@@ -39,11 +39,12 @@ public class CipherTextTest {
     private Cipher encryptor = null;
     private Cipher decryptor = null;
     private IvParameterSpec ivSpec = null;
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    
+    @TempDir
+    Path tempFolder;
 
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         encryptor = Cipher.getInstance("AES/CBC/PKCS5Padding");
         decryptor = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -187,7 +188,8 @@ public class CipherTextTest {
     @Test public final void testPortableSerialization() throws Exception{
         System.out.println("CipherTextTest.testPortableSerialization()starting...");
         String filename = "ciphertext-portable.ser";
-        File serializedFile = tempFolder.newFile(filename);
+        Path filePath = tempFolder.resolve(filename);
+        File serializedFile = filePath.toFile();
 
 
         int keySize = 128;
@@ -209,18 +211,20 @@ public class CipherTextTest {
 //          System.err.println("Original ciphertext being serialized: " + ciphertext);
             byte[] serializedBytes = ciphertext.asPortableSerializedByteArray();
 
-            FileOutputStream fos = new FileOutputStream(serializedFile);
-            fos.write(serializedBytes);
+            try (FileOutputStream fos = new FileOutputStream(serializedFile)) {
+                fos.write(serializedBytes);
                 // Note: FindBugs complains that this test may fail to close
                 // the fos output stream. We don't really care.
-            fos.close();
+            }
 
+            byte[] bytes;
             // NOTE: FindBugs complains about this (OS_OPEN_STREAM). It apparently
             //       is too lame to know that 'fis.read()' is a serious side-effect.
-            FileInputStream fis = new FileInputStream(serializedFile);
-            int avail = fis.available();
-            byte[] bytes = new byte[avail];
-            fis.read(bytes, 0, avail);
+            try (FileInputStream fis = new FileInputStream(serializedFile)) {
+                int avail = fis.available();
+                bytes = new byte[avail];
+                fis.read(bytes, 0, avail);
+            }
 
             // Sleep one second to prove that the timestamp on the original
             // CipherText object is the one that we use and not just the
@@ -285,7 +289,8 @@ public class CipherTextTest {
         String filename = "ciphertext.ser";
 
         try {
-            File serializedFile = tempFolder.newFile(filename);
+            Path filePath = tempFolder.resolve(filename);
+            File serializedFile = filePath.toFile();
 
             CipherSpec cipherSpec = new CipherSpec(encryptor, 128);
             cipherSpec.setIV(ivSpec.getIV());
@@ -295,17 +300,14 @@ public class CipherTextTest {
             byte[] raw = encryptor.doFinal("This is my secret message!!!".getBytes("UTF8"));
             CipherText ciphertext = new CipherText(cipherSpec, raw);
 
-            FileOutputStream fos = new FileOutputStream(serializedFile);
-            ObjectOutputStream out = new ObjectOutputStream(fos);
-            out.writeObject(ciphertext);
-            out.close();
-            fos.close();
+            try (FileOutputStream fos = new FileOutputStream(serializedFile); ObjectOutputStream out = new ObjectOutputStream(fos)) {
+                out.writeObject(ciphertext);
+            }
 
-            FileInputStream fis = new FileInputStream(serializedFile);
-            ObjectInputStream in = new ObjectInputStream(fis);
-            CipherText restoredCipherText = (CipherText)in.readObject();
-            in.close();
-            fis.close();
+            CipherText restoredCipherText;
+            try (FileInputStream fis = new FileInputStream(serializedFile); ObjectInputStream in = new ObjectInputStream(fis)) {
+                restoredCipherText = (CipherText)in.readObject();
+            }
 
             // check that ciphertext and restoredCipherText are equal. Requires
             // multiple checks. (Hmmm... maybe overriding equals() and hashCode()

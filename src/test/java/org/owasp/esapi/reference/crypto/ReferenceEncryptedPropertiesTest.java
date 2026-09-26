@@ -15,17 +15,26 @@
  */
 package org.owasp.esapi.reference.crypto;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.owasp.esapi.errors.EncryptionException;
 import org.owasp.esapi.errors.EncryptionRuntimeException;
 
@@ -38,8 +47,8 @@ import org.owasp.esapi.errors.EncryptionRuntimeException;
  */
 public class ReferenceEncryptedPropertiesTest {
 
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    @TempDir
+    Path tempFolder;
 
     /**
      * Test of getProperty method, of class org.owasp.esapi.EncryptedProperties.
@@ -460,49 +469,51 @@ public class ReferenceEncryptedPropertiesTest {
         props.setProperty("two", "three");
         props.setProperty("seuss.schneier", "one fish, twofish, red fish, blowfish");
 
-        FileOutputStream out = new FileOutputStream(tempFolder.newFile("ReferenceEncryptedProperties.test.txt"));
-        PrintStream ps = new PrintStream(out);
-        try {
-            props.list(ps);
-            fail("testOverriddenMethods(): list(PrintStream) did not result in expected Exception");
-        } catch( Exception e ) {
-            assertTrue( e instanceof UnsupportedOperationException );
-        }
+        try (FileOutputStream out = new FileOutputStream(tempFolder.resolve("ReferenceEncryptedProperties.test.txt").toFile()); 
+                PrintStream ps = new PrintStream(out);
+                PrintWriter pw = new PrintWriter(new FileWriter(tempFolder.resolve("test.out").toFile())) ){
+            try {
+                props.list(ps);
+                fail("testOverriddenMethods(): list(PrintStream) did not result in expected Exception");
+            } catch( Exception e ) {
+                assertTrue( e instanceof UnsupportedOperationException );
+            }
 
-        PrintWriter pw = new PrintWriter(new FileWriter(tempFolder.newFile("test.out")));
-        try {
-            props.list(pw);
-            fail("testOverriddenMethods(): list(PrintWriter) did not result in expected Exception");
-        } catch( Exception e ) {
-            assertTrue( e instanceof UnsupportedOperationException );
-        }
+            
+            try {
+                props.list(pw);
+                fail("testOverriddenMethods(): list(PrintWriter) did not result in expected Exception");
+            } catch( Exception e ) {
+                assertTrue( e instanceof UnsupportedOperationException );
+            }
 
-        try {
-            props.list(ps);
-            fail("testOverriddenMethods(): list(PrintStream) did not result in expected Exception");
-        } catch( Exception e ) {
-            assertTrue( e instanceof UnsupportedOperationException );
-        }
+            try {
+                props.list(ps);
+                fail("testOverriddenMethods(): list(PrintStream) did not result in expected Exception");
+            } catch( Exception e ) {
+                assertTrue( e instanceof UnsupportedOperationException );
+            }
 
-        try {
-            Collection c = props.values();
-            fail("testOverriddenMethods(): values() did not result in expected Exception");
-        } catch( Exception e ) {
-            assertTrue( e instanceof UnsupportedOperationException );
-        }
+            try {
+                Collection c = props.values();
+                fail("testOverriddenMethods(): values() did not result in expected Exception");
+            } catch( Exception e ) {
+                assertTrue( e instanceof UnsupportedOperationException );
+            }
 
-        try {
-            Collection c = props.entrySet();
-            fail("testOverriddenMethods(): entrySet() did not result in expected Exception");
-        } catch( Exception e ) {
-            assertTrue( e instanceof UnsupportedOperationException );
-        }
+            try {
+                Collection c = props.entrySet();
+                fail("testOverriddenMethods(): entrySet() did not result in expected Exception");
+            } catch( Exception e ) {
+                assertTrue( e instanceof UnsupportedOperationException );
+            }
 
-        try {
-            Enumeration e = props.elements();
-            fail("testOverriddenMethods(): elements() did not result in expected Exception");
-        } catch( Exception e ) {
-            assertTrue( e instanceof UnsupportedOperationException );
+            try {
+                Enumeration e = props.elements();
+                fail("testOverriddenMethods(): elements() did not result in expected Exception");
+            } catch( Exception e ) {
+                assertTrue( e instanceof UnsupportedOperationException );
+            }
         }
     }
 

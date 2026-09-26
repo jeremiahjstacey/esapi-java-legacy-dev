@@ -15,18 +15,20 @@
  */
 package org.owasp.esapi.reference.crypto;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Properties;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.io.TempDir;
 
 
 /**
@@ -48,13 +50,12 @@ public class EncryptedPropertiesUtilsTest {
     private static final String VALUE4    = "betty mae";
 
 
-    /** Rule to acquire the running test's information at runtime.*/
-    @Rule
-    public TestName testName = new TestName();
+    /**Test name*/
+    private String testName;
 
     /** File management component for IO targets during test executions.*/
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    @TempDir
+    Path tempFolder;
 
     /** Counter used to track the number of files created for a single test to assist with creating unique file references.*/
     private int fileIndex = 0;
@@ -65,8 +66,15 @@ public class EncryptedPropertiesUtilsTest {
      * @throws IOException If a new file could not be generated.
      */
     private final File getTempPropertiesFile() throws IOException {
-        return tempFolder.newFile(String.format("%s_%2d.properties", testName.getMethodName(), fileIndex++));
+        Path filePath = tempFolder.resolve(String.format("%s_%2d.properties", testName, fileIndex++));
+        return filePath.toFile();
     }
+    
+    @BeforeEach
+    void setup(TestInfo testInfo) {
+        testName = testInfo.getDisplayName();
+    }
+    
     /**
      * Test of creating and storing a new EncryptedProperties from scratch,
      * as if calling:
@@ -95,7 +103,9 @@ public class EncryptedPropertiesUtilsTest {
 
         //try reading in the resulting file
         ReferenceEncryptedProperties loadedProps = new ReferenceEncryptedProperties();
-        loadedProps.load(new FileReader(encryptedFile.getAbsolutePath()));
+        try (FileReader fileReader = new FileReader(encryptedFile.getAbsolutePath())) {
+            loadedProps.load(fileReader);
+        }
 
         assertEquals(VALUE1, loadedProps.getProperty(KEY1));
         assertEquals(VALUE2, loadedProps.getProperty(KEY2));
@@ -119,8 +129,10 @@ public class EncryptedPropertiesUtilsTest {
         Properties props = new Properties();
         props.setProperty(KEY3, VALUE3);
         props.setProperty(KEY4, VALUE4);
-
-        props.store(new FileOutputStream(plainTextFile.getAbsolutePath()), "Plaintext test file created by EncryptedPropertiesUtilsTest");
+        
+        try (FileOutputStream outStream = new FileOutputStream(plainTextFile.getAbsolutePath())) {
+            props.store(outStream, "Plaintext test file created by EncryptedPropertiesUtilsTest");
+        }
 
         //load the plaintext properties file
         props = EncryptedPropertiesUtils.loadProperties(plainTextFile.getAbsolutePath(), false);
@@ -134,7 +146,9 @@ public class EncryptedPropertiesUtilsTest {
 
         //try reading in the resulting file
         ReferenceEncryptedProperties loadedProps = new ReferenceEncryptedProperties();
-        loadedProps.load(new FileReader(encryptedFile.getAbsolutePath()));
+        try (FileReader fileReader = new FileReader(encryptedFile.getAbsolutePath())) {
+            loadedProps.load(fileReader);
+        }
 
         assertEquals(VALUE3, loadedProps.getProperty(KEY3));
         assertEquals(VALUE4, loadedProps.getProperty(KEY4));
@@ -169,7 +183,9 @@ public class EncryptedPropertiesUtilsTest {
 
         //try reading in the resulting file
         ReferenceEncryptedProperties loadedProps = new ReferenceEncryptedProperties();
-        loadedProps.load(new FileReader(encryptedFile2.getAbsolutePath()));
+        try (FileReader fileReader = new FileReader(encryptedFile2.getAbsolutePath())) {
+            loadedProps.load(fileReader);
+        }
 
         //test the values read in
         assertEquals(VALUE1, loadedProps.getProperty(KEY1));
