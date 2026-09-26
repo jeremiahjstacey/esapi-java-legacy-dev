@@ -11,7 +11,6 @@ import org.powermock.reflect.Whitebox;
 
 
 public class AbstractAccessReferenceMapTest {
-
     @Test
     public void testConcurrentAddDirectReference() throws Exception {
         @SuppressWarnings("unchecked")

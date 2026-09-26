@@ -19,17 +19,15 @@ import java.net.URL;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.junit.Test;
 import org.owasp.esapi.http.MockHttpServletRequest;
 import org.owasp.esapi.http.MockHttpServletResponse;
 
-import junit.framework.TestSuite;
+
 
 public class VirtualPatchTest extends WAFTestCase {
 
-    public static TestSuite suite() {
-        return new TestSuite(VirtualPatchTest.class);
-    }
-
+    @Test
     public void testNonAttacktAfterVirtualPatch() throws Exception {
         // should pass
         url = new URL( "https://www.example.com/virtualpatch.jsp" );
@@ -44,6 +42,7 @@ public class VirtualPatchTest extends WAFTestCase {
         createAndExecuteWAFResponseCodeTest( waf, request, response, HttpServletResponse.SC_OK );
     }
 
+    @Test
     public void testAttackAfterVirtualPatch() throws Exception {
         // should fail
         url = new URL( "https://www.example.com/foo.jsp" );

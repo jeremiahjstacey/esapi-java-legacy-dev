@@ -1,14 +1,16 @@
 package org.owasp.esapi.crypto;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 import javax.crypto.Cipher;
 
@@ -17,10 +19,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.codecs.Hex;
-import org.owasp.esapi.crypto.CipherSpec;
 
 /** JUnit test to test CipherSpec class. */
-public class CipherSpecTest extends TestCase {
+public class CipherSpecTest {
 
     private Cipher dfltAESCipher = null;
     private Cipher dfltECBCipher = null;    // will be "AES/ECB/NoPadding";
@@ -48,7 +49,8 @@ public class CipherSpecTest extends TestCase {
     }
 
     /** Test CipherSpec(String cipherXform, int keySize, int blockSize, final byte[] iv) */
-    @Test public void testCipherSpecStringIntIntByteArray() {
+    @Test
+    public void testCipherSpecStringIntIntByteArray() {
 
         cipherSpec = new CipherSpec( "AES/CBC/NoPadding",  128,  8, myIV);
         assertTrue( cipherSpec != null );
@@ -72,7 +74,8 @@ public class CipherSpecTest extends TestCase {
     }
 
     /** CipherSpec(final Cipher cipher, int keySize) */
-    @Test public void testCipherSpecCipherInt() {
+    @Test
+    public void testCipherSpecCipherInt() {
         cipherSpec = new CipherSpec(dfltOtherCipher, 112);
         assertTrue( cipherSpec != null );
         assertTrue( cipherSpec.getCipherAlgorithm().equals("Blowfish"));
@@ -87,7 +90,8 @@ public class CipherSpecTest extends TestCase {
     }
 
     /** Test CipherSpec(final byte[] iv) */
-    @Test public void testCipherSpecByteArray() {
+    @Test
+    public void testCipherSpecByteArray() {
         assertTrue( myIV != null );
         assertTrue( myIV.length > 0 );
         cipherSpec = new CipherSpec(myIV);
@@ -98,7 +102,8 @@ public class CipherSpecTest extends TestCase {
     }
 
     /** Test CipherSpec() */
-    @Test public void testCipherSpec() {
+    @Test
+    public void testCipherSpec() {
         cipherSpec = new CipherSpec( dfltECBCipher );
         assertTrue( cipherSpec.getCipherTransformation().equals("AES/ECB/NoPadding") );
         assertTrue( cipherSpec.getIV() == null );
@@ -108,7 +113,8 @@ public class CipherSpecTest extends TestCase {
     }
 
     /** Test setCipherTransformation(String cipherXform) */
-    @Test public void testSetCipherTransformation() {
+    @Test
+    public void testSetCipherTransformation() {
         cipherSpec = new CipherSpec();
         cipherSpec.setCipherTransformation("AlgName/Mode/Padding");
         cipherSpec.getCipherAlgorithm().equals("AlgName/Mode/Padding");
@@ -123,23 +129,27 @@ public class CipherSpecTest extends TestCase {
     }
 
     /** Test getCipherTransformation() */
-    @Test public void testGetCipherTransformation() {
+    @Test
+    public void testGetCipherTransformation() {
         assertTrue( (new CipherSpec()).getCipherTransformation().equals("AES/CBC/PKCS5Padding") );
     }
 
     /** Test setKeySize() */
-    @Test public void testSetKeySize() {
+    @Test
+    public void testSetKeySize() {
         assertTrue( (new CipherSpec()).setKeySize(56).getKeySize() == 56 );
     }
 
     /** Test getKeySize() */
-    @Test public void testGetKeySize() {
+    @Test
+    public void testGetKeySize() {
         assertTrue( (new CipherSpec()).getKeySize() ==
             ESAPI.securityConfiguration().getEncryptionKeyLength() );
     }
 
     /** Test setBlockSize() */
-    @Test public void testSetBlockSize() {
+    @Test
+    public void testSetBlockSize() {
         try {
             cipherSpec.setBlockSize(0); // Throws IllegalArgumentException
         } catch (IllegalArgumentException e) {
@@ -154,27 +164,32 @@ public class CipherSpecTest extends TestCase {
     }
 
     /** Test getBlockSize() */
-    @Test public void testGetBlockSize() {
+    @Test
+    public void testGetBlockSize() {
         assertTrue( cipherSpec.getBlockSize() == 8 );
     }
 
     /** Test getCipherAlgorithm() */
-    @Test public void testGetCipherAlgorithm() {
+    @Test
+    public void testGetCipherAlgorithm() {
         assertTrue( cipherSpec.getCipherAlgorithm().equals("Blowfish") );
     }
 
     /** Test getCipherMode */
-    @Test public void testGetCipherMode() {
+    @Test
+    public void testGetCipherMode() {
         assertTrue( cipherSpec.getCipherMode().equals("OFB8") );
     }
 
     /** Test getPaddingScheme() */
-    @Test public void testGetPaddingScheme() {
+    @Test
+    public void testGetPaddingScheme() {
         assertTrue( cipherSpec.getPaddingScheme().equals("PKCS5Padding") );
     }
 
     /** Test setIV() */
-    @Test public void testSetIV() {
+    @Test
+    public void testSetIV() {
         try {
             // Test that ECB mode allows a null IV
             cipherSpec = new CipherSpec(dfltECBCipher);
@@ -195,7 +210,8 @@ public class CipherSpecTest extends TestCase {
     }
 
     /** Test requiresIV() */
-    @Test public void testRequiresIV() {
+    @Test
+    public void testRequiresIV() {
         assertTrue( (new CipherSpec(dfltECBCipher)).requiresIV() == false );
         cipherSpec = new CipherSpec(dfltAESCipher);
         assertTrue( cipherSpec.getCipherMode().equals("ECB") );
@@ -204,7 +220,8 @@ public class CipherSpecTest extends TestCase {
     }
 
     /** Test serialization */
-    @Test public void testSerialization() {
+    @Test
+    public void testSerialization() {
         String filename = "cipherspec.ser";
         File serializedFile = new File(filename);
         boolean success = false;
@@ -259,13 +276,5 @@ public class CipherSpecTest extends TestCase {
         }
     }
 
-    /**
-     * Run all the test cases in this suite.
-     * This is to allow running from {@code org.owasp.esapi.AllTests}.
-     */
-    public static junit.framework.Test suite() {
-        TestSuite suite = new TestSuite(CipherSpecTest.class);
-
-        return suite;
-    }
+  
 }

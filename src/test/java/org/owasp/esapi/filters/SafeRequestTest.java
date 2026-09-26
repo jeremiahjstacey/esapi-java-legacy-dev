@@ -32,15 +32,6 @@ import org.owasp.esapi.http.MockHttpServletRequest;
  */
 public class SafeRequestTest {
 
-    @Before
-    public void setUp() throws Exception {
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        // none
-    }
-
     @Test
     public void testGetRequestParameters() {
         System.out.println( "getRequestParameters");
@@ -55,7 +46,6 @@ public class SafeRequestTest {
         for (int i = 0; i < params.length; i++ ) out += params[i];
         assertEquals( "134", out );
     }
-
     @Test
     public void testGetQueryStringNull()
     {
@@ -79,7 +69,6 @@ public class SafeRequestTest {
         SecurityWrapperRequest safeRequest = new SecurityWrapperRequest(request);
         assertNull("Expecting null value to be returned for non-existent parameter.", safeRequest.getParameterValues(paramName));
     }
-
     @Test
     public void testGetParameterValuesReturnsCorrectValueWhenParameterExistsInRequest() {
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -94,7 +83,6 @@ public class SafeRequestTest {
         final String actualParamValue = safeRequest.getParameterValues(paramName)[0];
         assertEquals(paramValue, actualParamValue);
     }
-
     @Test
     public void testGetParameterValuesReturnsCorrectValuesWhenParameterExistsMultipleTimesInRequest() {
         MockHttpServletRequest request = new MockHttpServletRequest();

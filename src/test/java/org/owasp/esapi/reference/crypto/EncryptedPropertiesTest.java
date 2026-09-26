@@ -15,61 +15,25 @@
  */
 package org.owasp.esapi.reference.crypto;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.StringBufferInputStream;
 import java.util.Iterator;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.owasp.esapi.ESAPI;
+import org.junit.Test;
 import org.owasp.esapi.errors.EncryptionException;
-import org.owasp.esapi.reference.crypto.DefaultEncryptedProperties;
 
 /**
  * The Class EncryptedPropertiesTest.
  *
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
-public class EncryptedPropertiesTest extends TestCase {
-
-    /**
-     * Instantiates a new encrypted properties test.
-     *
-     * @param testName
-     *            the test name
-     */
-    public EncryptedPropertiesTest(String testName) {
-        super(testName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void setUp() throws Exception {
-        // none
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void tearDown() throws Exception {
-        // none
-    }
-
-    /**
-     * Suite.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(EncryptedPropertiesTest.class);
-
-        return suite;
-    }
+public class EncryptedPropertiesTest {
 
     /**
      * Test of getProperty method, of class org.owasp.esapi.EncryptedProperties.
@@ -77,6 +41,7 @@ public class EncryptedPropertiesTest extends TestCase {
      * @throws EncryptionException
      *             the encryption exception
      */
+    @Test
     public void testGetProperty() throws EncryptionException {
         System.out.println("getProperty");
         DefaultEncryptedProperties instance = new DefaultEncryptedProperties();
@@ -94,6 +59,7 @@ public class EncryptedPropertiesTest extends TestCase {
      * @throws EncryptionException
      *             the encryption exception
      */
+    @Test
     public void testSetProperty() throws EncryptionException {
         System.out.println("setProperty");
         DefaultEncryptedProperties instance = new DefaultEncryptedProperties();
@@ -130,6 +96,7 @@ public class EncryptedPropertiesTest extends TestCase {
     /**
      * Test the behavior when the requested key does not exist.
      */
+    @Test
     public void testNonExistantKeyValue() throws Exception
     {
         DefaultEncryptedProperties instance = new DefaultEncryptedProperties();
@@ -139,6 +106,7 @@ public class EncryptedPropertiesTest extends TestCase {
     /**
      * Test of keySet method, of class org.owasp.esapi.EncryptedProperties.
      */
+    @Test
     public void testKeySet() throws Exception
     {
         boolean sawTwo = false;
@@ -174,6 +142,7 @@ public class EncryptedPropertiesTest extends TestCase {
     /**
      * Test storing and loading of encrypted properties.
      */
+    @Test
     public void testStoreLoad() throws Exception
     {
         DefaultEncryptedProperties toLoad = new DefaultEncryptedProperties();

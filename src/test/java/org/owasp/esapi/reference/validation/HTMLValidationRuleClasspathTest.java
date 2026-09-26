@@ -113,7 +113,6 @@ public class HTMLValidationRuleClasspathTest {
         thrownEx.expect(PolicyException.class);
         HTMLValidationRule.loadAntisamyPolicy(INVALID_ANTISAMY_POLICY_FILE);
     }
-
     @Test
     public void testGetValid() throws Exception {
         System.out.println("getValidCP");
@@ -126,7 +125,6 @@ public class HTMLValidationRuleClasspathTest {
 
         instance.getRule("testCP").getValid("test", "Test. <script>alert(document.cookie)</script>");
     }
-
     @Test
     public void testGetValidSafeHTML() throws Exception {
         System.out.println("getValidSafeHTML");

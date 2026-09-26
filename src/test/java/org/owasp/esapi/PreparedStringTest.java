@@ -16,15 +16,17 @@
 
 package org.owasp.esapi;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.fail;
 
+import org.junit.Test;
 import org.owasp.esapi.codecs.Codec;
 import org.owasp.esapi.codecs.HTMLEntityCodec;
 
-public class PreparedStringTest extends TestCase {
+public class PreparedStringTest {
 
     private final static Codec htmlEntityCodec = new HTMLEntityCodec();
 
+    @Test
     public void testPreparedString() {
         PreparedString ps1 = new PreparedString( "Test ? is ?", htmlEntityCodec );
         ps1.set( 1, "[]<>;\"\'PreparedString" );

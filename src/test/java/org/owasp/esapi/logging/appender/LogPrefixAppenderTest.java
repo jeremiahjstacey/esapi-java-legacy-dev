@@ -71,7 +71,6 @@ public class LogPrefixAppenderTest {
         verify(sisSpy, times(1)).setLogServerIp(true);
         verify(sisSpy, times(1)).setLogApplicationName(true, testApplicationName);
     }
-
     @Test
     public void testCtrArgFalsePassthroughToDelegates() throws Exception {
         when(etlsSpy.get()).thenReturn(ETL_RESULT);
@@ -92,7 +91,6 @@ public class LogPrefixAppenderTest {
         verify(sisSpy, times(1)).setLogServerIp(false);
         verify(sisSpy, times(1)).setLogApplicationName(false, null);
     }
-
     @Test
     public void testDelegateCtrArgs() throws Exception {
         ArgumentCaptor<EventType> eventTypeCapture = ArgumentCaptor.forClass(EventType.class);
@@ -108,38 +106,30 @@ public class LogPrefixAppenderTest {
         assertEquals(testEventType, eventTypeCapture.getValue());
         assertEquals(testLoggerName, logNameCapture.getValue());
     }
-
     @Test
     public void testLogContentWhenClientInfoEmpty() throws Exception {
         runTest(ETL_RESULT, UIS_RESULT, EMPTY_RESULT,SIS_RESULT, "[EVENT_TYPE USER_INFO -> SERVER_INFO]");
     }
-
-
     @Test
     public void testLogContentWhenUserInfoEmpty() throws Exception {
         runTest(ETL_RESULT, EMPTY_RESULT, CIS_RESULT,SIS_RESULT, "[EVENT_TYPE CLIENT_INFO -> SERVER_INFO]");
     }
-
     @Test
     public void testLogContentWhenClientInfoEmptyAndServerInfoEmpty() throws Exception {
         runTest(ETL_RESULT, UIS_RESULT, EMPTY_RESULT,EMPTY_RESULT, "[EVENT_TYPE USER_INFO]");
     }
-
     @Test
     public void testLogContentWhenUserInfoEmptyAndServerInfoEmpty() throws Exception {
         runTest(ETL_RESULT, EMPTY_RESULT, CIS_RESULT,EMPTY_RESULT, "[EVENT_TYPE CLIENT_INFO]");
     }
-
     @Test
     public void testLogContentWhenUserInfoAndClientInfoEmpty() throws Exception {
         runTest(ETL_RESULT, EMPTY_RESULT, EMPTY_RESULT, SIS_RESULT, "[EVENT_TYPE -> SERVER_INFO]");
     }
-
     @Test
     public void testLogContentWhenServerInfoEmpty() throws Exception {
         runTest(ETL_RESULT, UIS_RESULT, CIS_RESULT, EMPTY_RESULT, "[EVENT_TYPE USER_INFO:CLIENT_INFO]");
     }
-
     @Test
     public void testLogContentWhenUserInfoEmptyAndClientInfoEmptyAndServerInfoEmpty() throws Exception {
         runTest(ETL_RESULT, EMPTY_RESULT, EMPTY_RESULT, EMPTY_RESULT, "[EVENT_TYPE]");
@@ -162,27 +152,22 @@ public class LogPrefixAppenderTest {
 
         assertEquals(exResult + " " + testName.getMethodName() + "-MESSAGE", result);
     }
-
     @Test
     public void testLogContentWhenServerInfoEmptyAndIgnoreLogPrefix() throws Exception {
         runTestWithLogPrefixIgnore(ETL_RESULT, UIS_RESULT, CIS_RESULT, EMPTY_RESULT, false, "[ USER_INFO:CLIENT_INFO]");
     }
-
     @Test
     public void testLogContentWhenUserInfoEmptyAndServerInfoEmptyAndIgnoreLogPrefix() throws Exception {
         runTestWithLogPrefixIgnore(ETL_RESULT, EMPTY_RESULT, CIS_RESULT, EMPTY_RESULT, false, "[ CLIENT_INFO]");
     }
-
     @Test
     public void testLogContentWhenUserInfoEmptyAndClientInfoEmptyAndIgnoreLogPrefix() throws Exception {
         runTestWithLogPrefixIgnore(ETL_RESULT, EMPTY_RESULT, EMPTY_RESULT, SIS_RESULT, false, "[ -> SERVER_INFO]");
     }
-
     @Test
     public void testLogContentWhenClientInfoEmptyAndServerInfoEmptyAndIgnoreLogPrefix() throws Exception {
         runTestWithLogPrefixIgnore(ETL_RESULT, UIS_RESULT, EMPTY_RESULT, EMPTY_RESULT, false, "[ USER_INFO]");
     }
-
     @Test
     public void testLogContentWhenUserInfoEmptyAndClientInfoEmptyAndServerInfoEmptyAndIgnoreLogPrefix() throws Exception {
         runTestWithLogPrefixIgnore(ETL_RESULT, EMPTY_RESULT, EMPTY_RESULT, EMPTY_RESULT, false, "");

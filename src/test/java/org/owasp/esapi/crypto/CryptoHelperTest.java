@@ -1,16 +1,14 @@
 package org.owasp.esapi.crypto;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Random;
 
-import org.junit.Test;
-
 import javax.crypto.SecretKey;
 
-import junit.framework.JUnit4TestAdapter;
-
-import org.owasp.esapi.crypto.CryptoHelper;
+import org.junit.Test;
 import org.owasp.esapi.errors.EncryptionException;
 
 public class CryptoHelperTest {
@@ -185,11 +183,4 @@ public class CryptoHelperTest {
         return true;
     }
 
-    /**
-     * Run all the test cases in this suite. This is to allow running from
-     * {@code org.owasp.esapi.AllTests} which uses a JUnit 3 test runner.
-     */
-    public static junit.framework.Test suite() {
-        return new JUnit4TestAdapter(CryptoHelperTest.class);
-    }
 }

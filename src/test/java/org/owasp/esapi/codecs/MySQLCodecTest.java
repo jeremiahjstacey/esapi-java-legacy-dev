@@ -165,7 +165,6 @@ public class MySQLCodecTest {
 
         }
     }
-
     @Test
     public void testStandardEncodeWithImmuneSet() {
         //These values normally fall under the encodeNonAlphaNumeric test content.
@@ -319,21 +318,18 @@ public class MySQLCodecTest {
         Mockito.verify(mockPushback, Mockito.times(1)).reset();
 
     }
-
     @Test
     public void testCreateAnsiByInt() {
         MySQLCodec codec = new MySQLCodec(MySQLCodec.ANSI_MODE);
         Object configMode = Whitebox.getInternalState(codec, "mode");
         Assert.assertEquals(Mode.ANSI, configMode);
     }
-
     @Test
     public void testCreateStandardByInt() {
         MySQLCodec codec = new MySQLCodec(MySQLCodec.MYSQL_MODE);
         Object configMode = Whitebox.getInternalState(codec, "mode");
         Assert.assertEquals(Mode.STANDARD, configMode);
     }
-
     @Test
     public void testCreateUnsupportedModeByInt() {
         exEx.expect(IllegalArgumentException.class);

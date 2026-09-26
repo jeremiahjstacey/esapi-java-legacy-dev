@@ -65,7 +65,6 @@ public class ClientInfoSupplierTest {
 
         when(mockAuth.getCurrentUser()).thenReturn(mockUser);
     }
-
     @Test
     public void testHappyPath() throws Exception {
         ClientInfoSupplier cis = new ClientInfoSupplier();
@@ -81,7 +80,6 @@ public class ClientInfoSupplierTest {
 
         verifyNoMoreInteractions(mockAuth, mockRand, mockRequest, mockSession, mockUser);
     }
-
     @Test
     public void testLogUserOff() {
         ClientInfoSupplier cis = new ClientInfoSupplier();
@@ -92,7 +90,6 @@ public class ClientInfoSupplierTest {
 
         verifyNoMoreInteractions(mockAuth, mockRand, mockRequest, mockSession, mockUser);
     }
-
     @Test
     public void testLogUserNull() {
         when(mockAuth.getCurrentUser()).thenReturn(null);
@@ -108,7 +105,6 @@ public class ClientInfoSupplierTest {
 
         verifyNoMoreInteractions(mockAuth, mockRand, mockRequest, mockSession, mockUser);
     }
-
     @Test
     public void testNullRequest() throws Exception {
         when(ESAPI.class, "currentRequest").thenReturn(null);
@@ -124,7 +120,6 @@ public class ClientInfoSupplierTest {
 
         verifyNoMoreInteractions(mockAuth, mockRand, mockRequest, mockSession, mockUser);
     }
-
     @Test
     public void testNullSession() throws Exception {
         when(mockRequest.getSession(false)).thenReturn(null);
@@ -143,9 +138,6 @@ public class ClientInfoSupplierTest {
 
         verifyNoMoreInteractions(mockAuth, mockRand, mockRequest, mockSession, mockUser);
     }
-
-
-
     @Test
     public void testNullEsapiSession() throws Exception {
         when(mockSession.getAttribute(ESAPI_SESSION_ATTR)).thenReturn(null);

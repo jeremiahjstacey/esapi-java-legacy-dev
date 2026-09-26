@@ -71,7 +71,6 @@ public class SafeFileTest
     {
         FileTestUtils.deleteRecursively(testDir);
     }
-
     @Test
     public void testEscapeCharactersInFilename() {
         System.out.println("testEscapeCharactersInFilenameInjection");
@@ -87,7 +86,6 @@ public class SafeFileTest
         }
 
     }
-
     @Test
     public void testEscapeCharacterInDirectoryInjection() {
         System.out.println("testEscapeCharacterInDirectoryInjection");
@@ -97,7 +95,6 @@ public class SafeFileTest
             assertEquals("Invalid directory", e.getMessage());
         }
     }
-
     @Test
     public void testJavaFileInjectionGood() throws ValidationException
     {
@@ -110,7 +107,6 @@ public class SafeFileTest
             assertFalse("File \"" + TEST_FILE_NAME + ch + "\" should not exist ((int)ch=" + (int)ch.charAt(0) + ").", sf.exists());
         }
     }
-
     @Test
     public void testJavaFileInjectionBad()
     {
@@ -135,7 +131,6 @@ public class SafeFileTest
             }
         }
     }
-
     @Test
     public void testMultipleJavaFileInjectionGood() throws ValidationException
     {
@@ -149,7 +144,6 @@ public class SafeFileTest
             assertFalse("File \"" + TEST_FILE_NAME + ch + "\" should not exist ((int)ch=" + (int)ch.charAt(0) + ").", sf.exists());
         }
     }
-
     @Test
     public void testMultipleJavaFileInjectionBad()
     {
@@ -175,7 +169,6 @@ public class SafeFileTest
             }
         }
     }
-
     @Test
     public void testAlternateDataStream() {
         try
@@ -193,35 +186,30 @@ public class SafeFileTest
         final char[] array = { hexDigit[(b >> 4) & 0x0f], hexDigit[b & 0x0f] };
         return new String(array);
     }
-
     @Test
     public void testCreatePath() throws Exception
     {
         SafeFile sf = new SafeFile(testFile.getPath());
         assertTrue(sf.exists());
     }
-
     @Test
     public void testCreateParentPathName() throws Exception
     {
         SafeFile sf = new SafeFile(testDir, testFile.getName());
         assertTrue(sf.exists());
     }
-
     @Test
     public void testCreateParentFileName() throws Exception
     {
         SafeFile sf = new SafeFile(testFile.getParentFile(), testFile.getName());
         assertTrue(sf.exists());
     }
-
     @Test
     public void testCreateURI() throws Exception
     {
         SafeFile sf = new SafeFile(testFile.toURI());
         assertTrue(sf.exists());
     }
-
     @Test
     public void testCreateFileNamePercentNull()
     {
@@ -234,7 +222,6 @@ public class SafeFileTest
         {
         }
     }
-
     @Test
     public void testCreateFileNameQuestion()
     {
@@ -248,7 +235,6 @@ public class SafeFileTest
             // expected
         }
     }
-
     @Test
     public void testCreateFileNameNull()
     {
@@ -262,7 +248,6 @@ public class SafeFileTest
             // expected
         }
     }
-
     @Test
     public void testCreateFileHighByte()
     {
@@ -276,7 +261,6 @@ public class SafeFileTest
             // expected
         }
     }
-
     @Test
     public void testCreateParentPercentNull()
     {

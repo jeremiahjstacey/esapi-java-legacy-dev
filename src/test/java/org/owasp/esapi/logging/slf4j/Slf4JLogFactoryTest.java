@@ -38,14 +38,14 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class Slf4JLogFactoryTest {
     @Rule
     public TestName testName = new TestName();
-
     @Test
     public void testCreateLoggerByString() {
         Logger logger = new Slf4JLogFactory().getLogger("test");
         Assert.assertTrue(logger instanceof Slf4JLogger);
     }
 
-    @Test public void testCreateLoggerByClass() {
+    @Test
+    public void testCreateLoggerByClass() {
         Logger logger = new Slf4JLogFactory().getLogger(Slf4JLogBridgeImplTest.class);
         Assert.assertTrue(logger instanceof Slf4JLogger);
     }

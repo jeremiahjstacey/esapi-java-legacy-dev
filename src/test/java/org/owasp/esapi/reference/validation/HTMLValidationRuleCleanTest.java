@@ -106,7 +106,6 @@ public class HTMLValidationRuleCleanTest {
         );
 
     }
-
     @Test
     public void testGetValidSafeHTML() throws Exception {
         System.out.println("testGetValidSafeHTML");
@@ -166,6 +165,7 @@ public class HTMLValidationRuleCleanTest {
     // Note: This test assumes a standard default ESAPI.properties file. In
     // particular, the normal canonicalization has to be enabled.
     //
+    @Test
     public void testAntiSamy_CVE_2021_35043Fixed() throws Exception {
         System.out.println("testAntiSamy_CVE_2021_35043Fixed");
 
@@ -204,7 +204,6 @@ public class HTMLValidationRuleCleanTest {
 
         assertTrue(errors.size() == 0);
     }
-
     @Test
     public void testSmuggledTagsInStyleContentCase() throws Exception {
     	System.out.println("testSmuggledTagsInStyleContentCase");
@@ -242,7 +241,6 @@ public class HTMLValidationRuleCleanTest {
         assertTrue(errors.size() == 0);
         assertEquals(expected, output);
     }
-
     @Test
     public void testAntiSamy_CVE_2023_43643() {
       System.out.println("testAntiSamy_CVE_2023_43643");
@@ -393,7 +391,6 @@ public class HTMLValidationRuleCleanTest {
         assertEquals(expectEmpty, output);  // Because AntiSamy's CleanResults.getCleanHTML() should throw and is caught.
         assertTrue(errors.size() == 0);
     }
-
     @Test
     public void testIEConditionalComment() throws Exception {
         System.out.println("testIEConditionalComment");

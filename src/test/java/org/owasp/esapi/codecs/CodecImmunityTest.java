@@ -122,7 +122,6 @@ public class CodecImmunityTest {
          */
         this.immunityList = toTest.toCharArray();
     }
-
     @Test
     public void testImmuneEncode() {
         String encoded = codec.encode(immunityList, string);

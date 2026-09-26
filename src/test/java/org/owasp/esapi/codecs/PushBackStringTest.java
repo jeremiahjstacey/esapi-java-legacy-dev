@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class PushBackStringTest {
-
     @Test
     public void testPushbackString() {
         PushbackSequence<Character> pbs = new PushbackString("012345");
@@ -18,7 +17,6 @@ public class PushBackStringTest {
 
         assertEquals("0", new StringBuilder().appendCodePoint(first).toString());
     }
-
     @Test
     public void testPushbackSequence() {
         AbstractPushbackSequence<Integer> pbs = new PushBackSequenceImpl("&#49;2345");

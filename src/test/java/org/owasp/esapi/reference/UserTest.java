@@ -15,6 +15,11 @@
  */
 package org.owasp.esapi.reference;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -22,10 +27,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
+import org.junit.Test;
 import org.owasp.esapi.Authenticator;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.EncoderConstants;
@@ -41,27 +43,8 @@ import org.owasp.esapi.http.MockHttpSession;
  *
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
-public class UserTest extends TestCase {
+public class UserTest {
 
-    /**
-     * Suite.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(UserTest.class);
-        return suite;
-    }
-
-    /**
-     * Instantiates a new user test.
-     *
-     * @param testName
-     *            the test name
-     */
-    public UserTest(String testName) {
-        super(testName);
-    }
 
     /**
      * Creates the test user.
@@ -83,29 +66,12 @@ public class UserTest extends TestCase {
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @throws Exception
-     */
-    protected void setUp() throws Exception {
-        // none
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws Exception
-     */
-    protected void tearDown() throws Exception {
-        // none
-    }
-
-    /**
      * Test of testAddRole method, of class org.owasp.esapi.User.
      *
      * @exception Exception
      *                 any Exception thrown by testing addRole()
      */
+    @Test
     public void testAddRole() throws Exception {
         System.out.println("addRole");
         Authenticator instance = ESAPI.authenticator();
@@ -124,6 +90,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testAddRoles() throws AuthenticationException {
         System.out.println("addRoles");
         Authenticator instance = ESAPI.authenticator();
@@ -144,6 +111,7 @@ public class UserTest extends TestCase {
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testChangePassword() throws Exception {
         System.out.println("changePassword");
         Authenticator instance = ESAPI.authenticator();
@@ -182,6 +150,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testDisable() throws AuthenticationException {
         System.out.println("disable");
         Authenticator instance = ESAPI.authenticator();
@@ -199,6 +168,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testEnable() throws AuthenticationException {
         System.out.println("enable");
         Authenticator instance = ESAPI.authenticator();
@@ -218,6 +188,7 @@ public class UserTest extends TestCase {
      * @throws EncryptionException
      *             any EncryptionExceptions thrown by testing failedLoginLockout()
      */
+    @Test
     public void testFailedLoginLockout() throws AuthenticationException, EncryptionException {
         System.out.println("failedLoginLockout");
         DefaultUser user = createTestUser("failedLoginLockout");
@@ -259,6 +230,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testGetAccountName() throws AuthenticationException {
         System.out.println("getAccountName");
         DefaultUser user = createTestUser("getAccountName");
@@ -274,6 +246,7 @@ public class UserTest extends TestCase {
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testGetLastFailedLoginTime() throws Exception {
         System.out.println("getLastLoginTime");
         Authenticator instance = ESAPI.authenticator();
@@ -301,6 +274,7 @@ public class UserTest extends TestCase {
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testGetLastLoginTime() throws Exception {
         System.out.println("getLastLoginTime");
         Authenticator instance = ESAPI.authenticator();
@@ -320,6 +294,7 @@ public class UserTest extends TestCase {
      * @throws Exception
      *             the exception
      */
+    @Test
     public void testGetLastPasswordChangeTime() throws Exception {
         System.out.println("getLastPasswordChangeTime");
         DefaultUser user = createTestUser("getLastPasswordChangeTime");
@@ -336,6 +311,7 @@ public class UserTest extends TestCase {
      *
      * @throws Exception
      */
+    @Test
     public void testGetRoles() throws Exception {
         System.out.println("getRoles");
         Authenticator instance = ESAPI.authenticator();
@@ -354,6 +330,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testGetScreenName() throws AuthenticationException {
         System.out.println("getScreenName");
         DefaultUser user = createTestUser("getScreenName");
@@ -367,6 +344,7 @@ public class UserTest extends TestCase {
      *
      * @throws org.owasp.esapi.errors.AuthenticationException
      */
+    @Test
     public void testGetSessions() throws AuthenticationException {
         System.out.println("getSessions");
         Authenticator instance = ESAPI.authenticator();
@@ -392,6 +370,7 @@ public class UserTest extends TestCase {
     /**
      *
      */
+    @Test
     public void testAddSession() {
         // TODO
     }
@@ -399,6 +378,7 @@ public class UserTest extends TestCase {
     /**
      *
      */
+    @Test
     public void testRemoveSession() {
         // TODO
     }
@@ -409,6 +389,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testIncrementFailedLoginCount() throws AuthenticationException {
         System.out.println("incrementFailedLoginCount");
         DefaultUser user = createTestUser("incrementFailedLoginCount");
@@ -449,6 +430,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testIsEnabled() throws AuthenticationException {
         System.out.println("isEnabled");
         DefaultUser user = createTestUser("isEnabled");
@@ -466,6 +448,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testIsInRole() throws AuthenticationException {
         System.out.println("isInRole");
         DefaultUser user = createTestUser("isInRole");
@@ -482,6 +465,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testIsLocked() throws AuthenticationException {
         System.out.println("isLocked");
         DefaultUser user = createTestUser("isLocked");
@@ -498,6 +482,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testIsSessionAbsoluteTimeout() throws AuthenticationException {
         System.out.println("isSessionAbsoluteTimeout");
         Authenticator instance = ESAPI.authenticator();
@@ -526,6 +511,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testIsSessionTimeout() throws AuthenticationException {
         System.out.println("isSessionTimeout");
         Authenticator instance = ESAPI.authenticator();
@@ -553,6 +539,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testLock() throws AuthenticationException {
         System.out.println("lock");
         Authenticator instance = ESAPI.authenticator();
@@ -570,6 +557,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testLoginWithPassword() throws AuthenticationException {
         System.out.println("loginWithPassword");
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -610,6 +598,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testLogout() throws AuthenticationException {
         System.out.println("logout");
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -638,6 +627,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testRemoveRole() throws AuthenticationException {
         System.out.println("removeRole");
         String role = ESAPI.randomizer().getRandomString(8, EncoderConstants.CHAR_LOWERS);
@@ -654,6 +644,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testResetCSRFToken() throws AuthenticationException {
         System.out.println("resetCSRFToken");
         DefaultUser user = createTestUser("resetCSRFToken");
@@ -667,6 +658,7 @@ public class UserTest extends TestCase {
      *
      * @throws AuthenticationException
      */
+    @Test
     public void testSetAccountName() throws AuthenticationException {
         System.out.println("setAccountName");
         DefaultUser user = createTestUser("setAccountName");
@@ -681,6 +673,7 @@ public class UserTest extends TestCase {
      *
      * @throws Exception
      */
+    @Test
     public void testSetExpirationTime() throws Exception {
         Date longAgo = new Date(0);
         Date now = new Date();
@@ -698,6 +691,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testSetRoles() throws AuthenticationException {
         System.out.println("setRoles");
         DefaultUser user = createTestUser("setRoles");
@@ -719,6 +713,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testSetScreenName() throws AuthenticationException {
         System.out.println("setScreenName");
         DefaultUser user = createTestUser("setScreenName");
@@ -734,6 +729,7 @@ public class UserTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testUnlock() throws AuthenticationException {
         System.out.println("unlockAccount");
         Authenticator instance = ESAPI.authenticator();

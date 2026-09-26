@@ -19,17 +19,13 @@ import java.net.URL;
 
 import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.TestSuite;
-
+import org.junit.Test;
 import org.owasp.esapi.http.MockHttpServletRequest;
 import org.owasp.esapi.http.MockHttpServletResponse;
 
 public class RestrictMethodTest extends WAFTestCase {
 
-    public static TestSuite suite() {
-        return new TestSuite(RestrictMethodTest.class);
-    }
-
+    @Test
     public void testGoodMethod() throws Exception {
         // test good method
         url = new URL( "http://www.example.com/index.jsp" );
@@ -42,6 +38,7 @@ public class RestrictMethodTest extends WAFTestCase {
         createAndExecuteWAFResponseCodeTest(waf, request, response, HttpServletResponse.SC_OK );
     }
 
+    @Test
     public void testBadMethod() throws Exception {
         // test bad method
         url = new URL( "http://www.example.com/index.jsp" );

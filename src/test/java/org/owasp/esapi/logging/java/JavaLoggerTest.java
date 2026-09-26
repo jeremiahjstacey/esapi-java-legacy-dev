@@ -41,7 +41,6 @@ public class JavaLoggerTest {
         javaLogSpy = Mockito.spy(wrappedLogger);
         testLogger = new JavaLogger(javaLogSpy, mockBridge, Logger.ALL);
     }
-
     @Test
     public void testLevelEnablement() {
         testLogger.setLevel(Logger.INFO);
@@ -55,7 +54,6 @@ public class JavaLoggerTest {
 
         Assert.assertEquals(Logger.INFO, testLogger.getESAPILevel());
     }
-
     @Test
     public void testAllLevelEnablement() {
         testLogger.setLevel(Logger.ALL);
@@ -67,7 +65,6 @@ public class JavaLoggerTest {
         Assert.assertTrue(testLogger.isDebugEnabled());
         Assert.assertTrue(testLogger.isTraceEnabled());
     }
-
     @Test
     public void testOffLevelEnablement() {
         testLogger.setLevel(Logger.OFF);
@@ -93,7 +90,6 @@ public class JavaLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(1)).log(javaLogSpy, Logger.FATAL, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, javaLogSpy);
     }
-
     @Test
     public void testFatalWithMessageDisabled() {
         testLogger.setLevel(Logger.OFF);
@@ -109,7 +105,6 @@ public class JavaLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(0)).log(javaLogSpy, Logger.FATAL, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, javaLogSpy);
     }
-
     @Test
     public void testErrorWithMessage() {
         testLogger.error(Logger.EVENT_UNSPECIFIED, MSG);
@@ -124,7 +119,6 @@ public class JavaLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(1)).log(javaLogSpy, Logger.ERROR, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, javaLogSpy);
     }
-
     @Test
     public void testErrorWithMessageDisabled() {
         testLogger.setLevel(Logger.OFF);
@@ -140,7 +134,6 @@ public class JavaLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(0)).log(javaLogSpy, Logger.ERROR, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, javaLogSpy);
     }
-
     @Test
     public void testWarnWithMessage() {
         testLogger.warning(Logger.EVENT_UNSPECIFIED, MSG);
@@ -155,7 +148,6 @@ public class JavaLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(1)).log(javaLogSpy, Logger.WARNING, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, javaLogSpy);
     }
-
     @Test
     public void testWarnWithMessageDisabled() {
         testLogger.setLevel(Logger.OFF);
@@ -171,7 +163,6 @@ public class JavaLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(0)).log(javaLogSpy, Logger.WARNING, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, javaLogSpy);
     }
-
     @Test
     public void testInfoWithMessage() {
         testLogger.info(Logger.EVENT_UNSPECIFIED, MSG);
@@ -186,7 +177,6 @@ public class JavaLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(1)).log(javaLogSpy, Logger.INFO, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, javaLogSpy);
     }
-
     @Test
     public void testInfoWithMessageDisabled() {
         testLogger.setLevel(Logger.OFF);
@@ -216,7 +206,6 @@ public class JavaLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(1)).log(javaLogSpy, Logger.DEBUG, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, javaLogSpy);
     }
-
     @Test
     public void testDebugWithMessageDisabled() {
         testLogger.setLevel(Logger.OFF);
@@ -232,7 +221,6 @@ public class JavaLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(0)).log(javaLogSpy, Logger.DEBUG, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, javaLogSpy);
     }
-
     @Test
     public void testTraceWithMessage() {
         testLogger.trace(Logger.EVENT_UNSPECIFIED, MSG);
@@ -247,7 +235,6 @@ public class JavaLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(1)).log(javaLogSpy, Logger.TRACE, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, javaLogSpy);
     }
-
     @Test
     public void testTraceWithMessageDisabled() {
         testLogger.setLevel(Logger.OFF);
@@ -263,7 +250,6 @@ public class JavaLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(0)).log(javaLogSpy, Logger.TRACE, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, javaLogSpy);
     }
-
     @Test
     public void testAlwaysWithMessage() {
         testLogger.always(Logger.EVENT_UNSPECIFIED, MSG);
@@ -278,7 +264,6 @@ public class JavaLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(1)).log(javaLogSpy, Logger.ALL, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, javaLogSpy);
     }
-
     @Test
     public void testAlwaysWithMessageDisabled() {
         testLogger.setLevel(Logger.OFF);

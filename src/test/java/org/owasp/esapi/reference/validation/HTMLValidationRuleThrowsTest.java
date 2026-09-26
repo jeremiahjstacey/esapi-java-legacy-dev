@@ -85,7 +85,6 @@ public class HTMLValidationRuleThrowsTest {
         );
 
     }
-
     @Test
     public void testGetValid() throws Exception {
         System.out.println("getValid");
@@ -98,7 +97,6 @@ public class HTMLValidationRuleThrowsTest {
 
         instance.getRule("test").getValid("test", "Test. <script>alert(document.cookie)</script>");
     }
-
     @Test
     public void testGetValidSafeHTML() throws Exception {
         System.out.println("getValidSafeHTML");

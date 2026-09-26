@@ -17,14 +17,13 @@ package org.owasp.esapi.waf;
 
 import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.TestSuite;
+import org.junit.Test;
+
+
 
 public class RestrictUserAgentTest extends WAFTestCase {
 
-    public static TestSuite suite() {
-        return new TestSuite(RestrictUserAgentTest.class);
-    }
-
+    @Test
     public void testBadUserAgent() throws Exception {
 
         request.addHeader("User-Agent","GoogleBot");
@@ -34,6 +33,7 @@ public class RestrictUserAgentTest extends WAFTestCase {
         assert(response.getStatus() == 403);
     }
 
+    @Test
     public void testGoodUserAgent() throws Exception {
 
         request.addHeader("User-Agent","MSIE NT Compatible");

@@ -53,7 +53,6 @@ public class JavaLogBridgeImplTest {
         javaLogSpy = Mockito.spy(wrappedLogger);
         bridge = new JavaLogBridgeImpl(mockAppender, mockScrubber, levelLookup);
     }
-
     @Test
     public void testLogMessageWithUnmappedEsapiLevelThrowsException() {
         exEx.expect(IllegalArgumentException.class);
@@ -61,7 +60,6 @@ public class JavaLogBridgeImplTest {
         Map<Integer, JavaLogLevelHandler> emptyMap = Collections.emptyMap();
         new JavaLogBridgeImpl(mockAppender, mockScrubber, emptyMap).log(javaLogSpy, 0, Logger.EVENT_UNSPECIFIED, "This Should fail");
     }
-
     @Test
     public void testLogMessageAndExceptionWithUnmappedEsapiLevelThrowsException() {
         exEx.expect(IllegalArgumentException.class);
@@ -69,7 +67,6 @@ public class JavaLogBridgeImplTest {
         Map<Integer, JavaLogLevelHandler> emptyMap = Collections.emptyMap();
         new JavaLogBridgeImpl(mockAppender, mockScrubber, emptyMap).log(javaLogSpy, 0, Logger.EVENT_UNSPECIFIED, "This Should fail", testEx);
     }
-
     @Test
     public void testLogMessage() {
         EventType eventType = Logger.EVENT_UNSPECIFIED;
@@ -97,7 +94,6 @@ public class JavaLogBridgeImplTest {
 
         Mockito.verifyNoMoreInteractions(javaLogSpy, mockAppender, mockScrubber,mockHandler);
     }
-
     @Test
     public void testLogErrorMessageWithException() {
         EventType eventType = Logger.EVENT_UNSPECIFIED;
@@ -126,8 +122,6 @@ public class JavaLogBridgeImplTest {
 
         Mockito.verifyNoMoreInteractions(javaLogSpy, mockAppender, mockScrubber,mockHandler);
     }
-
-
     @Test
     public void testDisabledLogMessage() {
         Mockito.when(mockHandler.isEnabled(javaLogSpy)).thenReturn(false);
@@ -139,7 +133,6 @@ public class JavaLogBridgeImplTest {
         Mockito.verify(mockHandler, Mockito.times(0)).log(ArgumentMatchers.any(java.util.logging.Logger.class), ArgumentMatchers.any(String.class));
         Mockito.verify(mockHandler, Mockito.times(0)).log(ArgumentMatchers.any(java.util.logging.Logger.class), ArgumentMatchers.any(String.class), ArgumentMatchers.any(Throwable.class));
     }
-
     @Test
     public void testDisabledErrorLogWithException() {
         Mockito.when(mockHandler.isEnabled(javaLogSpy)).thenReturn(false);
@@ -152,7 +145,6 @@ public class JavaLogBridgeImplTest {
         Mockito.verify(mockHandler, Mockito.times(0)).log(ArgumentMatchers.any(java.util.logging.Logger.class), ArgumentMatchers.any(String.class), ArgumentMatchers.any(Throwable.class));
 
     }
-
     @Test
     public void testNullEventTypeWorks()
     {

@@ -1,26 +1,18 @@
 package org.owasp.esapi;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import org.owasp.esapi.StringUtilities;
+import org.junit.Test;
 
-public class StringUtilitiesTest extends TestCase {
+public class StringUtilitiesTest {
 
-    /**
-     * Run all the test cases in this suite.
-     * This is to allow running from {@code org.owasp.esapi.AllTests}.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(StringUtilitiesTest.class);
-        return suite;
-    }
-
+  
     /** Test the getLevenshteinDistance() method. */
+    @Test
     public void testGetLevenshteinDistance() {
         String src    = "GUMBO";
         String target = "GAMBOL";
@@ -46,6 +38,7 @@ public class StringUtilitiesTest extends TestCase {
     }
 
     /** Test the union() method. */
+    @Test
     public void testUnion() {
         char[] a1 = { 'a', 'b', 'c' };
         char[] a2 = { 'c', 'd', 'e' };
@@ -61,6 +54,7 @@ public class StringUtilitiesTest extends TestCase {
     }
 
     /** Test the notNullOrEmpty() method. */
+    @Test
     public void testNotNullOrEmpty() {
         String str = "A string";
         assertTrue( StringUtilities.notNullOrEmpty(str, false) );
@@ -79,6 +73,7 @@ public class StringUtilitiesTest extends TestCase {
         assertFalse( StringUtilities.notNullOrEmpty(str, true) );
     }
 
+    @Test
     public void testReplaceNull() {
         assertEquals( "TEST", StringUtilities.replaceNull( "TEST", "ABCD" ) );
         assertEquals( "REPLACED", StringUtilities.replaceNull( "NULL", "REPLACED" ) );
@@ -88,6 +83,7 @@ public class StringUtilitiesTest extends TestCase {
         assertEquals( "Replaced", StringUtilities.replaceNull( "     NULL ", "Replaced" ) );
     }
 
+    @Test
     public void testStripControls() {
         // valid characters are preserved
         assertEquals( "\u0021abc\u007e", StringUtilities.stripControls( "\u0021abc\u007e" ) );
@@ -99,6 +95,7 @@ public class StringUtilitiesTest extends TestCase {
         assertEquals( null, StringUtilities.stripControls( null ) );
     }
 
+    @Test
     public void testIsEmpty() {
         assertTrue(StringUtilities.isEmpty(null));
         assertTrue(StringUtilities.isEmpty(""));

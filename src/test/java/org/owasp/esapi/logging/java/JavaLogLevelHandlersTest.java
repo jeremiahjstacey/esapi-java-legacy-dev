@@ -29,7 +29,6 @@ public class JavaLogLevelHandlersTest {
     public TestName testName = new TestName();
 
     private Throwable testException = new Throwable("Expected for testing");
-
     @Test
     public void testErrorDelegation() {
         JavaLogLevelHandlers.ERROR.isEnabled(mockLogger);
@@ -43,7 +42,6 @@ public class JavaLogLevelHandlersTest {
         Mockito.verify(mockLogger, Mockito.times(1)).log(expectedJavaLevel, testName.getMethodName(), testException);
         Mockito.verifyNoMoreInteractions(mockLogger);
     }
-
     @Test
     public void testAlwaysDelegation() {
         JavaLogLevelHandlers.ALWAYS.isEnabled(mockLogger);
@@ -57,7 +55,6 @@ public class JavaLogLevelHandlersTest {
         Mockito.verify(mockLogger, Mockito.times(1)).log(expectedJavaLevel, testName.getMethodName(), testException);
         Mockito.verifyNoMoreInteractions(mockLogger);
     }
-
     @Test
     public void testWarnDelegation() {
         JavaLogLevelHandlers.WARNING.isEnabled(mockLogger);

@@ -76,7 +76,8 @@ public class EncryptedPropertiesUtilsTest {
      *
      * @throws Exception Any exception that occurs
      */
-    @Test public void testCreateNew() throws Exception {
+    @Test
+    public void testCreateNew() throws Exception {
         File encryptedFile = getTempPropertiesFile();
 
         //create a new properties with no input
@@ -109,7 +110,8 @@ public class EncryptedPropertiesUtilsTest {
      *
      * @throws Exception Any exception that occurs
      */
-    @Test public void testLoadPlaintextAndEncrypt() throws Exception {
+    @Test
+    public void testLoadPlaintextAndEncrypt() throws Exception {
         File encryptedFile = getTempPropertiesFile();
         File plainTextFile = getTempPropertiesFile();
 
@@ -147,7 +149,8 @@ public class EncryptedPropertiesUtilsTest {
      *
      * @throws Exception Any exception that occurs
      */
-    @Test public void testLoadEncryptedAndAdd() throws Exception {
+    @Test
+    public void testLoadEncryptedAndAdd() throws Exception {
         File encryptedFile = getTempPropertiesFile();
         File encryptedFile2 = getTempPropertiesFile();
         //load the plaintext properties file

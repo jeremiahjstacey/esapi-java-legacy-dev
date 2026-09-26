@@ -15,7 +15,8 @@
  */
 package org.owasp.esapi.filters;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -23,10 +24,7 @@ import java.util.Map;
 
 import javax.servlet.FilterConfig;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
-
 import org.owasp.esapi.http.MockFilterChain;
 import org.owasp.esapi.http.MockFilterConfig;
 import org.owasp.esapi.http.MockHttpServletRequest;
@@ -38,17 +36,6 @@ import org.owasp.esapi.http.MockHttpServletResponse;
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
 public class ClickjackFilterTest {
-
-    @Before
-    public void setUp() throws Exception {
-        // none
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        // none
-    }
-
 
     /**
      * Test of update method, of class org.owasp.esapi.AccessReferenceMap.

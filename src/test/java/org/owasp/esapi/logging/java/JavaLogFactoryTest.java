@@ -42,14 +42,14 @@ public class JavaLogFactoryTest {
 
     @Rule
     public ExpectedException exEx = ExpectedException.none();
-
     @Test
     public void testCreateLoggerByString() {
         Logger logger = new JavaLogFactory().getLogger("test");
         Assert.assertTrue(logger instanceof JavaLogger);
     }
 
-    @Test public void testCreateLoggerByClass() {
+    @Test
+    public void testCreateLoggerByClass() {
         Logger logger = new JavaLogFactory().getLogger(JavaLogBridgeImplTest.class);
         Assert.assertTrue(logger instanceof JavaLogger);
     }

@@ -60,7 +60,6 @@ public class BaseValidationRuleTest {
                 );
         assertNull(rule.getTypeName());
     }
-
     @Test
     public void testCtrNullEncoder() {
         String typename = "typename";
@@ -72,7 +71,6 @@ public class BaseValidationRuleTest {
         assertEquals(typename, rule.getTypeName());
         assertNull(rule.getEncoder());
     }
-
     @Test
     public void testCtrNullTypenameNullEncoder() {
         String typename = null;
@@ -84,7 +82,6 @@ public class BaseValidationRuleTest {
         assertNull(rule.getTypeName());
         assertNull(rule.getEncoder());
     }
-
     @Test
     public void testCtr2ArgHappyPath() {
         String typename = "typename";
@@ -96,7 +93,6 @@ public class BaseValidationRuleTest {
         assertEquals(typename, rule.getTypeName());
         assertEquals(encoder, rule.getEncoder());
     }
-
     @Test
     public void testCtr1ArgHappyPath() {
         String typename = "typename";
@@ -105,32 +101,27 @@ public class BaseValidationRuleTest {
                 .defaultAnswer(CALLS_REAL_METHODS)
                 );
     }
-
     @Test
     public void testSetTypeNameNull() {
         uit.setTypeName(null);
         assertNull(uit.getTypeName());
     }
-
     @Test
     public void testSetTypeName() {
         uit.setTypeName(STR_VAL);
         assertEquals(STR_VAL, uit.getTypeName());
     }
-
     @Test
     public void testSetEncoderNull() {
         uit.setEncoder(null);
         assertNull(uit.getEncoder());
     }
-
     @Test
     public void testSetEncoder() {
         Encoder mockEnc = mock(Encoder.class);
         uit.setEncoder(mockEnc);
         assertEquals(mockEnc, uit.getEncoder());
     }
-
     @Test
     public void testSetAllowNull() {
         uit.setAllowNull(true);
@@ -138,7 +129,6 @@ public class BaseValidationRuleTest {
         uit.setAllowNull(false);
         assertFalse(uit.isAllowNull());
     }
-
     @Test
     public void testAssertValidCallsGetValid() throws ValidationException {
         when(uit.getValid(STR_VAL, STR_VAL)).thenReturn(this);
@@ -156,7 +146,6 @@ public class BaseValidationRuleTest {
         when(uit.getValid(STR_VAL, STR_VAL)).thenThrow(testValidationEx);
         uit.assertValid(STR_VAL, STR_VAL);
     }
-
     @Test
     public void testGetValidErrorListCallsGetValid() throws ValidationException {
         ValidationErrorList vel = new ValidationErrorList();
@@ -165,7 +154,6 @@ public class BaseValidationRuleTest {
         assertEquals(this, vRef);
         verify(uit, times(1)).getValid(STR_VAL, STR_VAL);
     }
-
     @Test
     public void testGetValidExceptionAddedToErrorList() throws ValidationException {
         ValidationErrorList vel = new ValidationErrorList();
@@ -185,7 +173,6 @@ public class BaseValidationRuleTest {
         when(uit.getValid(STR_VAL, STR_VAL)).thenThrow(testValidationEx);
         uit.getValid(STR_VAL, STR_VAL, vel);
     }
-
     @Test
     public void testGetSafeCallsGetValid() throws ValidationException {
         when(uit.getValid(STR_VAL, STR_VAL)).thenReturn(this);
@@ -193,7 +180,6 @@ public class BaseValidationRuleTest {
         assertEquals(this, vRef);
         verify(uit, times(1)).getValid(STR_VAL, STR_VAL);
     }
-
     @Test
     public void testGetSafeOnExceptionCallsSanitize() throws ValidationException {
         when(uit.getValid(STR_VAL, STR_VAL)).thenThrow(testValidationEx);
@@ -203,14 +189,12 @@ public class BaseValidationRuleTest {
         verify(uit, times(1)).getValid(STR_VAL, STR_VAL);
         verify(uit, times(1)).sanitize(STR_VAL, STR_VAL);
     }
-
     @Test
     public void testIsValidCallsGetValid() throws ValidationException {
         when(uit.getValid(STR_VAL, STR_VAL)).thenReturn(this);
         assertTrue(uit.isValid(STR_VAL, STR_VAL));
         verify(uit, times(1)).getValid(STR_VAL, STR_VAL);
     }
-
     @Test
     public void testIsValidOnExceptionRetursFalse() throws ValidationException {
         when(uit.getValid(STR_VAL, STR_VAL)).thenThrow(testValidationEx);
@@ -226,7 +210,6 @@ public class BaseValidationRuleTest {
      *
      * Once Items are discussed and understood they should probably be well-commented and moved out of this area.
      */
-
     @Test
     public void testGetValidMultipleExceptionSameContextThrowsRuntimeException() throws ValidationException {
         exEx.expect(RuntimeException.class);
@@ -242,7 +225,6 @@ public class BaseValidationRuleTest {
     }
 
     //None of the Whitelist content belongs in this class, IMO.
-
     @Test
     public void testWhitelistCharArrayCleansString() {
         String myString = "AAAGaaadBBB12345*";
@@ -250,7 +232,6 @@ public class BaseValidationRuleTest {
         String result = uit.whitelist(myString, whitelist);
         assertEquals("Gd3*", result);
     }
-
     @Test
     public void testWhitelistNullCharArrayThrows() {
         exEx.expect(NullPointerException.class);
@@ -258,7 +239,6 @@ public class BaseValidationRuleTest {
         char[] whitelist = null;
         uit.whitelist(myString, whitelist);
     }
-
     @Test
     public void testWhitelistSetCleansString() {
         String myString = "AAAGaaadBBB12345*";
@@ -271,7 +251,6 @@ public class BaseValidationRuleTest {
         String result = uit.whitelist(myString, whitelist);
         assertEquals("Gd3*", result);
     }
-
     @Test
     public void testWhitelistNullSetThrows() {
         exEx.expect(NullPointerException.class);
@@ -279,9 +258,7 @@ public class BaseValidationRuleTest {
         Set<Character> whitelist = null;
         uit.whitelist(myString, whitelist);
     }
-
     @Test
-
     public void testWhitelistSetExtendedCharacterSets() {
         String myString = "𡘾𦴩<𥻂";
         //(55365 56894) (55387 56617) 60 (55383 57026)

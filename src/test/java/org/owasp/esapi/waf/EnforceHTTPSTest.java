@@ -19,22 +19,19 @@ import java.net.URL;
 
 import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.TestSuite;
-
+import org.junit.Before;
+import org.junit.Test;
 import org.owasp.esapi.http.MockHttpServletRequest;
 import org.owasp.esapi.http.MockHttpServletResponse;
 
 public class EnforceHTTPSTest extends WAFTestCase {
-
-    public static TestSuite suite() {
-        return new TestSuite(EnforceHTTPSTest.class);
-    }
-
+    @Before
     public void setUp() throws Exception {
         super.setUp();
         WAFTestUtility.setWAFPolicy( waf, "waf-policy.xml" );
     }
 
+    @Test
     public void testGoodSchemeSSLRequired() throws Exception {
         // test good scheme
         url = new URL( "https://www.example.com/" );
@@ -46,6 +43,7 @@ public class EnforceHTTPSTest extends WAFTestCase {
     }
 
 
+    @Test
     public void testBadSchemeSSLNotRequired () throws Exception {
         // test bad scheme
         url = new URL( "http://www.example.com/images/test.gif" );
@@ -56,6 +54,7 @@ public class EnforceHTTPSTest extends WAFTestCase {
         createAndExecuteWAFResponseCodeTest( waf, request, response, HttpServletResponse.SC_OK );
     }
 
+    @Test
     public void testBadSchemeSSLRequired () throws Exception {
         // test bad scheme
         url = new URL( "http://www.example.com/secure" );

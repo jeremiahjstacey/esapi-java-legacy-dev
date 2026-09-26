@@ -27,14 +27,12 @@ public class DefaultSecurityConfigurationTest {
         properties.setProperty(key, val);
         return new DefaultSecurityConfiguration(properties);
     }
-
     @Test
     public void testGetApplicationName() {
         final String expected = "ESAPI_UnitTests";
         DefaultSecurityConfiguration secConf = this.createWithProperty(APPLICATION_NAME, expected);
         assertEquals(expected, secConf.getApplicationName());
     }
-
     @Test
     public void testGetLogImplementation() {
         //test the default
@@ -45,7 +43,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(LOG_IMPLEMENTATION, expected);
         assertEquals(expected, secConf.getLogImplementation());
     }
-
     @Test
     public void testAuthenticationImplementation() {
         //test the default
@@ -56,7 +53,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(AUTHENTICATION_IMPLEMENTATION, expected);
         assertEquals(expected, secConf.getAuthenticationImplementation());
     }
-
     @Test
     public void testEncoderImplementation() {
         //test the default
@@ -67,7 +63,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(ENCODER_IMPLEMENTATION, expected);
         assertEquals(expected, secConf.getEncoderImplementation());
     }
-
     @Test
     public void testAccessControlImplementation() {
         //test the default
@@ -78,7 +73,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(ACCESS_CONTROL_IMPLEMENTATION, expected);
         assertEquals(expected, secConf.getAccessControlImplementation());
     }
-
     @Test
     public void testEncryptionImplementation() {
         //test the default
@@ -89,7 +83,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(ENCRYPTION_IMPLEMENTATION, expected);
         assertEquals(expected, secConf.getEncryptionImplementation());
     }
-
     @Test
     public void testIntrusionDetectionImplementation() {
         //test the default
@@ -100,7 +93,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(INTRUSION_DETECTION_IMPLEMENTATION, expected);
         assertEquals(expected, secConf.getIntrusionDetectionImplementation());
     }
-
     @Test
     public void testRandomizerImplementation() {
         //test the default
@@ -111,7 +103,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(RANDOMIZER_IMPLEMENTATION, expected);
         assertEquals(expected, secConf.getRandomizerImplementation());
     }
-
     @Test
     public void testExecutorImplementation() {
         //test the default
@@ -122,7 +113,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(EXECUTOR_IMPLEMENTATION, expected);
         assertEquals(expected, secConf.getExecutorImplementation());
     }
-
     @Test
     public void testHTTPUtilitiesImplementation() {
         //test the default
@@ -133,7 +123,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(HTTP_UTILITIES_IMPLEMENTATION, expected);
         assertEquals(expected, secConf.getHTTPUtilitiesImplementation());
     }
-
     @Test
     public void testValidationImplementation() {
         //test the default
@@ -144,7 +133,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(VALIDATOR_IMPLEMENTATION, expected);
         assertEquals(expected, secConf.getValidationImplementation());
     }
-
     @Test
     public void testGetEncryptionKeyLength() {
         // test the default
@@ -155,7 +143,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(KEY_LENGTH, String.valueOf(expected));
         assertEquals(expected, secConf.getEncryptionKeyLength());
     }
-
     @Test
     public void testGetKDFPseudoRandomFunction() {
         // test the default
@@ -166,7 +153,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(KDF_PRF_ALG, expected);
         assertEquals(expected, secConf.getKDFPseudoRandomFunction());
     }
-
     @Test
     public void testGetMasterSalt() {
         try {
@@ -185,7 +171,6 @@ public class DefaultSecurityConfigurationTest {
         DefaultSecurityConfiguration secConf = new DefaultSecurityConfiguration(properties);
         assertEquals(salt, new String(secConf.getMasterSalt()));
     }
-
     @Test
     public void testGetAllowedExecutables() {
         DefaultSecurityConfiguration secConf = new DefaultSecurityConfiguration(new Properties());
@@ -208,7 +193,6 @@ public class DefaultSecurityConfigurationTest {
         //at least we know that this behavior exists, the property should'nt have spaces between values
         assertEquals(" /bin/cvs", allowedExecutables.get(2));
     }
-
     @Test
     public void testGetAllowedFileExtensions() {
 
@@ -224,7 +208,6 @@ public class DefaultSecurityConfigurationTest {
         assertEquals(4, allowedFileExtensions.size());
         assertEquals(".html", allowedFileExtensions.get(2));
     }
-
     @Test
     public void testGetAllowedFileUploadSize() {
         DefaultSecurityConfiguration secConf = new DefaultSecurityConfiguration(new Properties());
@@ -235,7 +218,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(MAX_UPLOAD_FILE_BYTES, String.valueOf(expected));
         assertEquals(expected, secConf.getAllowedFileUploadSize());
     }
-
     @Test
     public void testGetParameterNames() {
         //test the default
@@ -250,7 +232,6 @@ public class DefaultSecurityConfigurationTest {
         assertEquals("j_password", secConf.getPasswordParameterName());
         assertEquals("j_username", secConf.getUsernameParameterName());
     }
-
     @Test
     public void testGetEncryptionAlgorithm() {
         //test the default
@@ -260,7 +241,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(ENCRYPTION_ALGORITHM, "3DES");
         assertEquals("3DES", secConf.getEncryptionAlgorithm());
     }
-
     @Test
     public void testGetCipherXProperties() {
         DefaultSecurityConfiguration secConf = new DefaultSecurityConfiguration(new Properties());
@@ -303,7 +283,6 @@ public class DefaultSecurityConfigurationTest {
         ivType = secConf.getIVType();
         assertEquals(ivType, "random");
     }
-
     @Test
     public void testGetAllowMultipleEncoding() {
         DefaultSecurityConfiguration secConf = new DefaultSecurityConfiguration(new Properties());
@@ -318,7 +297,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(ALLOW_MULTIPLE_ENCODING, "no");
         assertFalse(secConf.getAllowMultipleEncoding());
     }
-
     @Test
     public void testGetDefaultCanonicalizationCodecs() {
         DefaultSecurityConfiguration secConf = new DefaultSecurityConfiguration(new Properties());
@@ -328,7 +306,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(CANONICALIZATION_CODECS, property);
         assertTrue(secConf.getDefaultCanonicalizationCodecs().contains("org.owasp.esapi.codecs.TestCodec1"));
     }
-
     @Test
     public void testGetDisableIntrusionDetection() {
         DefaultSecurityConfiguration secConf = new DefaultSecurityConfiguration(new Properties());
@@ -343,7 +320,6 @@ public class DefaultSecurityConfigurationTest {
         secConf = this.createWithProperty(DISABLE_INTRUSION_DETECTION, "false");
         assertFalse(secConf.getDisableIntrusionDetection());
     }
-
     @Test
     public void testNoSuchPropFile(){
         try {
@@ -363,7 +339,6 @@ public class DefaultSecurityConfigurationTest {
     private String patternOrNull(Pattern p){
         return null==p?null:p.pattern();
     }
-
     @Test
     public void testRootCPLoading(){
         DefaultSecurityConfiguration secConf = new DefaultSecurityConfiguration("ESAPI-root-cp.properties");
@@ -371,7 +346,6 @@ public class DefaultSecurityConfigurationTest {
         assertNull(secConf.getValidationPattern("Test2"));
         assertNull(secConf.getValidationPattern("TestC"));
     }
-
     @Test
     public void testRootCPLoadingAlt(){
         // This should work also via the class loader.
@@ -380,7 +354,6 @@ public class DefaultSecurityConfigurationTest {
         assertNull(secConf.getValidationPattern("Test2"));
         assertNull(secConf.getValidationPattern("TestC"));
     }
-
     @Test
     public void testRootCPLoadingAlt2(){
         try {
@@ -395,7 +368,6 @@ public class DefaultSecurityConfigurationTest {
             fail("testNoSuchPropFile(): Unexpected exception type: " + t.getClass().getName() + "; ex msg: " + t);
         }
     }
-
     @Test
     public void testValidationsPropertiesFileOptions(){
         DefaultSecurityConfiguration secConf = new DefaultSecurityConfiguration("ESAPI-SingleValidatorFileChecker.properties");

@@ -55,7 +55,6 @@ public class Slf4JLogBridgeImplTest {
 
         bridge = new Slf4JLogBridgeImpl(mockAppender, mockScrubber, levelLookup);
     }
-
     @Test
     public void testLogMessageWithUnmappedEsapiLevelThrowsException() {
         exEx.expect(IllegalArgumentException.class);
@@ -63,7 +62,6 @@ public class Slf4JLogBridgeImplTest {
         Map<Integer, Slf4JLogLevelHandler> emptyMap = Collections.emptyMap();
         new Slf4JLogBridgeImpl(mockAppender, mockScrubber, emptyMap).log(mockSlf4JLogger, 0, Logger.EVENT_UNSPECIFIED, "This Should fail");
     }
-
     @Test
     public void testLogMessageAndExceptionWithUnmappedEsapiLevelThrowsException() {
         exEx.expect(IllegalArgumentException.class);
@@ -71,7 +69,6 @@ public class Slf4JLogBridgeImplTest {
         Map<Integer, Slf4JLogLevelHandler> emptyMap = Collections.emptyMap();
         new Slf4JLogBridgeImpl(mockAppender, mockScrubber, emptyMap).log(mockSlf4JLogger, 0, Logger.EVENT_UNSPECIFIED, "This Should fail", testEx);
     }
-
     @Test
     public void testLogMessage() {
         EventType eventType = Logger.EVENT_UNSPECIFIED;
@@ -101,7 +98,6 @@ public class Slf4JLogBridgeImplTest {
         Assert.assertEquals(Logger.EVENT_UNSPECIFIED.toString(), markerCapture.getValue().getName());
         Mockito.verifyNoMoreInteractions(mockSlf4JLogger, mockAppender, mockScrubber,mockHandler);
     }
-
     @Test
     public void testLogErrorMessageWithException() {
         EventType eventType = Logger.EVENT_UNSPECIFIED;
@@ -132,8 +128,6 @@ public class Slf4JLogBridgeImplTest {
         Assert.assertEquals(Logger.EVENT_UNSPECIFIED.toString(), markerCapture.getValue().getName());
         Mockito.verifyNoMoreInteractions(mockSlf4JLogger, mockAppender, mockScrubber,mockHandler);
     }
-
-
     @Test
     public void testDisabledLogMessage() {
         Mockito.when(mockHandler.isEnabled(mockSlf4JLogger)).thenReturn(false);
@@ -145,7 +139,6 @@ public class Slf4JLogBridgeImplTest {
         Mockito.verify(mockHandler, Mockito.times(0)).log(ArgumentMatchers.any(org.slf4j.Logger.class), ArgumentMatchers.any(Marker.class), ArgumentMatchers.any(String.class));
         Mockito.verify(mockHandler, Mockito.times(0)).log(ArgumentMatchers.any(org.slf4j.Logger.class), ArgumentMatchers.any(Marker.class), ArgumentMatchers.any(String.class), ArgumentMatchers.any(Throwable.class));
     }
-
     @Test
     public void testDisabledErrorLogWithException() {
         Mockito.when(mockHandler.isEnabled(mockSlf4JLogger)).thenReturn(false);
@@ -158,8 +151,6 @@ public class Slf4JLogBridgeImplTest {
         Mockito.verify(mockHandler, Mockito.times(0)).log(ArgumentMatchers.any(org.slf4j.Logger.class), ArgumentMatchers.any(Marker.class), ArgumentMatchers.any(String.class), ArgumentMatchers.any(Throwable.class));
 
     }
-
-
     @Test
     public void testNullEventTypeUsesUnspecified() {
         EventType computedEventType = Logger.EVENT_UNSPECIFIED;

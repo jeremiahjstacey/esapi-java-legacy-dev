@@ -21,7 +21,6 @@ import org.junit.Test;
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
 public class UserTest {
-
     @Test
     public void testAllMethods() throws Exception {
         // create a user to test Anonymous

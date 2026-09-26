@@ -74,7 +74,6 @@ public class SecurityWrapperResponseTest {
             goodHeaderValue = testName.getMethodName() + "_goodHeaderValue";
         }
     }
-
     @Test
     public void testSetHeaderHappyPath() throws Exception {
         String validateNameResponse = goodHeaderName;
@@ -106,7 +105,6 @@ public class SecurityWrapperResponseTest {
         verify(mockResponse, times(1)).setHeader(validateNameResponse, validateValueResponse);
         verify(mockLogger,times(0)).warning(ArgumentMatchers.any(org.owasp.esapi.Logger.EventType.class), anyString(), ArgumentMatchers.any(Exception.class));
     }
-
     @Test
     public void testSetHeaderNameNull() throws Exception {
         String validateNameResponse = null;
@@ -145,7 +143,6 @@ public class SecurityWrapperResponseTest {
         verify(mockLogger, times(0)).warning(ArgumentMatchers.any(org.owasp.esapi.Logger.EventType.class),anyString(),
                 ArgumentMatchers.any(Exception.class));
     }
-
     @Test
     public void testSetHeaderNameEmpty() throws Exception {
         String validateNameResponse = "     ";
@@ -184,7 +181,6 @@ public class SecurityWrapperResponseTest {
         verify(mockLogger, times(0)).warning(ArgumentMatchers.any(org.owasp.esapi.Logger.EventType.class),anyString(),
                 ArgumentMatchers.any(Exception.class));
     }
-
     @Test
     public void testSetHeaderNameThrowsValidationException() throws Exception {
         String validateValueResponse = goodHeaderValue;
@@ -224,7 +220,6 @@ public class SecurityWrapperResponseTest {
                 ArgumentMatchers.contains("Attempt to set invalid header NAME denied: HTTPHeaderName:"+ goodHeaderName),
                 ArgumentMatchers.any(Exception.class));
     }
-
     @Test
     public void testSetHeaderValueNull() throws Exception {
         String validateNameResponse = goodHeaderName;
@@ -263,7 +258,6 @@ public class SecurityWrapperResponseTest {
         verify(mockLogger, times(0)).warning(ArgumentMatchers.any(org.owasp.esapi.Logger.EventType.class),anyString(),
                 ArgumentMatchers.any(Exception.class));
     }
-
     @Test
     public void testSetHeaderValueEmpty() throws Exception {
         String validateNameResponse = goodHeaderName;
@@ -302,7 +296,6 @@ public class SecurityWrapperResponseTest {
         verify(mockLogger, times(0)).warning(ArgumentMatchers.any(org.owasp.esapi.Logger.EventType.class),anyString(),
                 ArgumentMatchers.any(Exception.class));
     }
-
     @Test
     public void testSetHeaderValueThrowsValidationException() throws Exception {
         String validateNameResponse = goodHeaderName;
@@ -342,7 +335,6 @@ public class SecurityWrapperResponseTest {
                 ArgumentMatchers.contains("Attempt to set invalid header VALUE denied: HTTPHeaderName:"+ goodHeaderName),
                 ArgumentMatchers.any(Exception.class));
     }
-
     @Test
     public void testAddHeaderHappyPath() throws Exception {
         String validateNameResponse = goodHeaderName;
@@ -374,7 +366,6 @@ public class SecurityWrapperResponseTest {
         verify(mockResponse, times(1)).addHeader(validateNameResponse, validateValueResponse);
         verify(mockLogger,times(0)).warning(ArgumentMatchers.any(org.owasp.esapi.Logger.EventType.class), anyString(), ArgumentMatchers.any(Exception.class));
     }
-
     @Test
     public void testAddHeaderNameNull() throws Exception {
         String validateNameResponse = null;
@@ -413,7 +404,6 @@ public class SecurityWrapperResponseTest {
         verify(mockLogger, times(0)).warning(ArgumentMatchers.any(org.owasp.esapi.Logger.EventType.class),anyString(),
                 ArgumentMatchers.any(Exception.class));
     }
-
     @Test
     public void testAddHeaderNameEmpty() throws Exception {
         String validateNameResponse = "     ";
@@ -452,7 +442,6 @@ public class SecurityWrapperResponseTest {
         verify(mockLogger, times(0)).warning(ArgumentMatchers.any(org.owasp.esapi.Logger.EventType.class),anyString(),
                 ArgumentMatchers.any(Exception.class));
     }
-
     @Test
     public void testAddHeaderNameThrowsValidationException() throws Exception {
         String validateValueResponse = goodHeaderValue;
@@ -492,7 +481,6 @@ public class SecurityWrapperResponseTest {
                 ArgumentMatchers.contains("Attempt to add invalid header NAME denied: HTTPHeaderName:"+ goodHeaderName ),
                 ArgumentMatchers.any(Exception.class));
     }
-
     @Test
     public void testAddHeaderValueNull() throws Exception {
         String validateNameResponse = goodHeaderName;
@@ -531,7 +519,6 @@ public class SecurityWrapperResponseTest {
         verify(mockLogger, times(0)).warning(ArgumentMatchers.any(org.owasp.esapi.Logger.EventType.class),anyString(),
                 ArgumentMatchers.any(Exception.class));
     }
-
     @Test
     public void testAddHeaderValueEmpty() throws Exception {
         String validateNameResponse = goodHeaderName;
@@ -570,7 +557,6 @@ public class SecurityWrapperResponseTest {
         verify(mockLogger, times(0)).warning(ArgumentMatchers.any(org.owasp.esapi.Logger.EventType.class),anyString(),
                 ArgumentMatchers.any(Exception.class));
     }
-
     @Test
     public void testAddHeaderValueThrowsValidationException() throws Exception {
         String validateNameResponse = goodHeaderName;
@@ -610,7 +596,6 @@ public class SecurityWrapperResponseTest {
                 ArgumentMatchers.contains("Attempt to add invalid header VALUE denied: HTTPHeaderName:"+ goodHeaderName),
                 ArgumentMatchers.any(Exception.class));
     }
-
     @Test
     public void testAddRefererHeader(){
         HttpServletResponse servResp = mock(HttpServletResponse.class);
@@ -618,7 +603,6 @@ public class SecurityWrapperResponseTest {
         resp.addReferer("http://127.0.0.1:3000/campaigns?goal=all&section=active&sort-by=-id&status=Draft%2CLaunched");
         verify(servResp, times(1)).addHeader("referer", "");
     }
-
     @Test
     public void testAddDateHeader(){
         HttpServletResponse servResp = mock(HttpServletResponse.class);
@@ -627,7 +611,6 @@ public class SecurityWrapperResponseTest {
         resp.addDateHeader("Foo", currentTime);
         verify(servResp, times(1)).addDateHeader("Foo", currentTime);
     }
-
     @Test
     public void testSetDateHeader(){
         HttpServletResponse servResp = mock(HttpServletResponse.class);
@@ -636,7 +619,6 @@ public class SecurityWrapperResponseTest {
         resp.setDateHeader("Foo", currentTime);
         verify(servResp, times(1)).setDateHeader("Foo", currentTime);
     }
-
     @Test
     public void testSetInvalidDateHeader(){
         HttpServletResponse servResp = mock(HttpServletResponse.class);
@@ -645,7 +627,6 @@ public class SecurityWrapperResponseTest {
         resp.setDateHeader("<scr", currentTime);
         verify(servResp, times(0)).setDateHeader("<scr", currentTime);
     }
-
     @Test
     public void testSetInvalidHeader(){
         HttpServletResponse servResp = mock(HttpServletResponse.class);
@@ -653,7 +634,6 @@ public class SecurityWrapperResponseTest {
         resp.setHeader("foo", "<script>alert</script>");
         verify(servResp, times(0)).setHeader("foo", "<script>alert</script>");
     }
-
     @Test
     public void testInvalidDateHeader(){
         HttpServletResponse servResp = mock(HttpServletResponse.class);
@@ -662,7 +642,6 @@ public class SecurityWrapperResponseTest {
         resp.addDateHeader("Foo\\r\\n", currentTime);
         verify(servResp, times(0)).addDateHeader("Foo", currentTime);
     }
-
     @Test
     public void testAddHeaderInvalidValueLength(){
         //refactor this to use a spy.
@@ -673,7 +652,6 @@ public class SecurityWrapperResponseTest {
         resp.addHeader("Foo", TestUtils.generateStringOfLength(4097));
         verify(servResp, times(0)).addHeader("Foo", "bar");
     }
-
     @Test
     public void testAddHeaderInvalidKeyLength(){
         HttpServletResponse servResp = mock(HttpServletResponse.class);
@@ -681,7 +659,6 @@ public class SecurityWrapperResponseTest {
         resp.addHeader(TestUtils.generateStringOfLength(257), "bar");
         verify(servResp, times(0)).addHeader("Foo", "bar");
     }
-
     @Test
     public void testAddIntHeader(){
         HttpServletResponse servResp = mock(HttpServletResponse.class);
@@ -689,7 +666,6 @@ public class SecurityWrapperResponseTest {
         resp.addIntHeader("aaaa", 4);
         verify(servResp, times(1)).addIntHeader("aaaa", 4);
     }
-
     @Test
     public void testAddInvalidIntHeader(){
         HttpServletResponse servResp = mock(HttpServletResponse.class);
@@ -697,7 +673,6 @@ public class SecurityWrapperResponseTest {
         resp.addIntHeader(TestUtils.generateStringOfLength(257), Integer.MIN_VALUE);
         verify(servResp, times(0)).addIntHeader(TestUtils.generateStringOfLength(257), Integer.MIN_VALUE);
     }
-
     @Test
     public void testContainsHeader(){
         HttpServletResponse servResp = new MockHttpServletResponse();
@@ -708,7 +683,6 @@ public class SecurityWrapperResponseTest {
         verify(servResp, times(1)).addIntHeader("aaaa", Integer.MIN_VALUE);
         assertEquals(true, servResp.containsHeader("aaaa"));
     }
-
     @Test
     public void testAddValidCookie(){
         HttpServletResponse servResp = new MockHttpServletResponse();
@@ -729,7 +703,6 @@ public class SecurityWrapperResponseTest {
          */
         verify(servResp, times(1)).addHeader("Set-Cookie", "Foo=aaaaaaaaaa; Max-Age=5000; Secure; HttpOnly");
     }
-
     @Test
     public void testAddValidCookieWithDomain(){
         HttpServletResponse servResp = new MockHttpServletResponse();
@@ -743,7 +716,6 @@ public class SecurityWrapperResponseTest {
         spyResp.addCookie(cookie);
         verify(servResp, times(1)).addHeader("Set-Cookie", "Foo=aaaaaaaaaa; Domain=evil.com; Secure; HttpOnly");
     }
-
     @Test
     public void testAddValidCookieWithPath(){
         HttpServletResponse servResp = new MockHttpServletResponse();
@@ -757,7 +729,6 @@ public class SecurityWrapperResponseTest {
         spyResp.addCookie(cookie);
         verify(servResp, times(1)).addHeader("Set-Cookie", "Foo=aaaaaaaaaa; Domain=evil.com; Path=/foo/bar; Secure; HttpOnly");
     }
-
     @Test
     public void testAddInValidCookie(){
         HttpServletResponse servResp = new MockHttpServletResponse();
@@ -770,7 +741,6 @@ public class SecurityWrapperResponseTest {
         spyResp.addCookie(cookie);
         verify(servResp, times(0)).addHeader("Set-Cookie", "Foo=" + TestUtils.generateStringOfLength(5000) + "; Secure; HttpOnly");
     }
-
     @Test
     public void testSendError() throws Exception{
         HttpServletResponse servResp = new MockHttpServletResponse();
@@ -782,7 +752,6 @@ public class SecurityWrapperResponseTest {
 
         verify(servResp, times(1)).sendError(200, "HTTP error code: 200");;
     }
-
     @Test
     public void testSendStatus() throws Exception{
         HttpServletResponse servResp = new MockHttpServletResponse();
@@ -794,7 +763,6 @@ public class SecurityWrapperResponseTest {
 
         verify(servResp, times(1)).setStatus(200);;
     }
-
     @Test
     public void testSendStatusWithString() throws Exception{
         HttpServletResponse servResp = new MockHttpServletResponse();

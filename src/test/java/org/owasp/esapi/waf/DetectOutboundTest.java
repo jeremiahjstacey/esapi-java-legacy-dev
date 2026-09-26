@@ -19,17 +19,13 @@ import java.net.URL;
 
 import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.TestSuite;
-
+import org.junit.Test;
 import org.owasp.esapi.http.MockHttpServletRequest;
 import org.owasp.esapi.http.MockHttpServletResponse;
 
 public class DetectOutboundTest extends WAFTestCase {
 
-    public static TestSuite suite() {
-        return new TestSuite(DetectOutboundTest.class);
-    }
-
+    @Test
     public void testBadDetectOutbound() throws Exception {
 
         System.out.println("detectOutboundPolicy - Fires if response has \"2008\" in it" );
@@ -46,6 +42,7 @@ public class DetectOutboundTest extends WAFTestCase {
 
     }
 
+    @Test
     public void testGoodDetectOutbound() throws Exception {
 
         System.out.println("detectOutboundPolicy - should not fire even if response has \"2008\" in it because the content type is image/jpeg" );

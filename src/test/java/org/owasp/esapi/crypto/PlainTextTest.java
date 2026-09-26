@@ -1,13 +1,13 @@
 package org.owasp.esapi.crypto;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
-import junit.framework.JUnit4TestAdapter;
 import org.junit.Test;
-import org.owasp.esapi.crypto.PlainText;
 
 public class PlainTextTest {
 
@@ -113,12 +113,4 @@ public class PlainTextTest {
         }
     }
 
-    /**
-     * Run all the test cases in this suite.
-     * This is to allow running from {@code org.owasp.esapi.AllTests} which
-     * uses a JUnit 3 test runner.
-     */
-    public static junit.framework.Test suite() {
-        return new JUnit4TestAdapter(PlainTextTest.class);
-    }
 }

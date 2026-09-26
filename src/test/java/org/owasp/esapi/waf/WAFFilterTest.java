@@ -16,9 +16,9 @@
  */
 package org.owasp.esapi.waf;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import org.junit.Test;
+
 
 /**
  * This is the main TestSuite for all the WAF tests. Some of the WAF
@@ -32,45 +32,9 @@ import junit.framework.TestSuite;
  * won't interfere with each other.
  */
 
-public class WAFFilterTest extends TestCase {
+public class WAFFilterTest {
 
-    /**
-     * Instantiates a new WAF test.
-     *
-     * @param testName the test name
-     */
-    public WAFFilterTest(String testName) {
-        super(testName);
-    }
-
-
-    /**
-     * Suite.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-
-        TestSuite suite = new TestSuite(WAFFilterTest.class);
-
-        suite.addTest(AddHeaderTest.suite());
-        suite.addTest(BeanShellTest.suite());
-        suite.addTest(DetectOutboundTest.suite());
-        suite.addTest(EnforceAuthenticationTest.suite());
-        suite.addTest(EnforceHTTPSTest.suite());
-        suite.addTest(GoodRequestTest.suite());
-        suite.addTest(HttpOnlyTest.suite());
-        suite.addTest(MustMatchTest.suite());
-        suite.addTest(DynamicInsertionTest.suite());
-        suite.addTest(RestrictContentTypeTest.suite());
-        suite.addTest(RestrictExtensionTest.suite());
-        suite.addTest(RestrictMethodTest.suite());
-        suite.addTest(RestrictUserAgentTest.suite());
-        suite.addTest(VirtualPatchTest.suite());
-
-        return suite;
-    }
-
+    @Test
     public void testConfigurationCanBeRead() throws Exception {
 
         ESAPIWebApplicationFirewallFilter waf = new ESAPIWebApplicationFirewallFilter();

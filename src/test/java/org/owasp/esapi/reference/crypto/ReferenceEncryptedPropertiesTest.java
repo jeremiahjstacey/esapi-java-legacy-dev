@@ -47,7 +47,8 @@ public class ReferenceEncryptedPropertiesTest {
      * @throws EncryptionException
      *             the encryption exception
      */
-    @Test public void testGetProperty() throws EncryptionException {
+    @Test
+    public void testGetProperty() throws EncryptionException {
         System.out.println("getProperty");
         ReferenceEncryptedProperties instance = new ReferenceEncryptedProperties();
         String name = "name";
@@ -64,7 +65,8 @@ public class ReferenceEncryptedPropertiesTest {
      * @throws EncryptionException
      *             the encryption exception
      */
-    @Test public void testSetProperty() throws EncryptionException {
+    @Test
+    public void testSetProperty() throws EncryptionException {
         System.out.println("setProperty");
         ReferenceEncryptedProperties instance = new ReferenceEncryptedProperties();
         String name = "name";
@@ -100,7 +102,8 @@ public class ReferenceEncryptedPropertiesTest {
     /**
      * Test the behavior when the requested key does not exist.
      */
-    @Test public void testNonExistantKeyValue() throws Exception
+    @Test
+    public void testNonExistantKeyValue() throws Exception
     {
         ReferenceEncryptedProperties instance = new ReferenceEncryptedProperties();
         assertNull(instance.getProperty("not.there"));
@@ -109,7 +112,8 @@ public class ReferenceEncryptedPropertiesTest {
     /**
      * Test of keySet method, of class org.owasp.esapi.EncryptedProperties.
      */
-    @Test public void testKeySet() throws Exception
+    @Test
+    public void testKeySet() throws Exception
     {
         boolean sawTwo = false;
         boolean sawOne = false;
@@ -144,7 +148,8 @@ public class ReferenceEncryptedPropertiesTest {
     /**
      * Test storing and loading of encrypted properties.
      */
-    @Test public void testStoreLoad() throws Exception
+    @Test
+    public void testStoreLoad() throws Exception
     {
         ReferenceEncryptedProperties toLoad = new ReferenceEncryptedProperties();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -203,7 +208,8 @@ public class ReferenceEncryptedPropertiesTest {
     /**
      * Test storing and loading of encrypted properties.
      */
-    @Test public void testStoreLoadWithReader() throws Exception
+    @Test
+    public void testStoreLoadWithReader() throws Exception
     {
 /*
         //create an EncryptedProperties to store
@@ -269,7 +275,8 @@ public class ReferenceEncryptedPropertiesTest {
     /**
      * Test overridden put method.
      */
-    @Test public void testPut() throws Exception
+    @Test
+    public void testPut() throws Exception
     {
         ReferenceEncryptedProperties props = new ReferenceEncryptedProperties();
 
@@ -336,7 +343,8 @@ public class ReferenceEncryptedPropertiesTest {
      * Test that ReferenceEncryptedProperties can be properly constructed
      * with an instance of Properties.
      */
-    @Test public void testConstructWithProperties() {
+    @Test
+    public void testConstructWithProperties() {
         Properties props = new Properties();
         props.setProperty("one", "two");
         props.setProperty("two", "three");
@@ -390,7 +398,8 @@ public class ReferenceEncryptedPropertiesTest {
      * Test that ReferenceEncryptedProperties can be properly constructed
      * with an instance of EncryptedProperties.
      */
-    @Test public void testConstructWithEncryptedProperties() throws Exception {
+    @Test
+    public void testConstructWithEncryptedProperties() throws Exception {
         ReferenceEncryptedProperties props = new ReferenceEncryptedProperties();
         props.setProperty("one", "two");
         props.setProperty("two", "three");
@@ -444,7 +453,8 @@ public class ReferenceEncryptedPropertiesTest {
     /**
      * Test overridden methods from Properties and Hashtable.
      */
-    @Test public void testOverriddenMethods() throws Exception {
+    @Test
+    public void testOverriddenMethods() throws Exception {
         Properties props = new ReferenceEncryptedProperties();
         props.setProperty("one", "two");
         props.setProperty("two", "three");

@@ -15,18 +15,17 @@
  */
 package org.owasp.esapi.reference;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
+import org.junit.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.EncoderConstants;
 import org.owasp.esapi.Randomizer;
-import org.owasp.esapi.codecs.AbstractCodec;
 import org.owasp.esapi.errors.EncryptionException;
 
 /**
@@ -34,47 +33,13 @@ import org.owasp.esapi.errors.EncryptionException;
  *
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
-public class RandomizerTest extends TestCase {
+public class RandomizerTest {
 
-    /**
-     * Instantiates a new randomizer test.
-     *
-     * @param testName
-     *            the test name
-     */
-    public RandomizerTest(String testName) {
-        super(testName);
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws Exception
-     */
-    protected void setUp() throws Exception {
-        // none
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws Exception
-     */
-    protected void tearDown() throws Exception {
-        // none
-    }
-
-    /**
-     * Suite.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(RandomizerTest.class);
-        return suite;
-    }
 
     /**
      * Test of getRandomString method, of class org.owasp.esapi.Randomizer.
      */
+    @Test
     public void testGetRandomString() {
         System.out.println("getRandomString");
         int length = 20;
@@ -110,6 +75,7 @@ public class RandomizerTest extends TestCase {
     /**
      * Test of getRandomInteger method, of class org.owasp.esapi.Randomizer.
      */
+    @Test
     public void testGetRandomInteger() {
         System.out.println("getRandomInteger");
         int min = -20;
@@ -128,6 +94,7 @@ public class RandomizerTest extends TestCase {
     /**
      * Test of getRandomReal method, of class org.owasp.esapi.Randomizer.
      */
+    @Test
     public void testGetRandomReal() {
         System.out.println("getRandomReal");
         float min = -20.5234F;
@@ -148,6 +115,7 @@ public class RandomizerTest extends TestCase {
      * Test of getRandomGUID method, of class org.owasp.esapi.Randomizer.
      * @throws EncryptionException
      */
+    @Test
     public void testGetRandomGUID() throws EncryptionException {
         System.out.println("getRandomGUID");
         Randomizer instance = ESAPI.randomizer();

@@ -29,7 +29,6 @@ public class Slf4JLoggerTest {
 
     private Throwable testEx = new Throwable(MSG + "_Exception");
     private Logger testLogger = new Slf4JLogger(mockLogDelegate, mockBridge, Logger.ALL);
-
     @Test
     public void testLevelEnablement() {
         testLogger.setLevel(Logger.INFO);
@@ -43,7 +42,6 @@ public class Slf4JLoggerTest {
 
         Assert.assertEquals(Logger.INFO, testLogger.getESAPILevel());
     }
-
     @Test
     public void testAllLevelEnablement() {
         testLogger.setLevel(Logger.ALL);
@@ -55,7 +53,6 @@ public class Slf4JLoggerTest {
         Assert.assertTrue(testLogger.isDebugEnabled());
         Assert.assertTrue(testLogger.isTraceEnabled());
     }
-
     @Test
     public void testOffLevelEnablement() {
         testLogger.setLevel(Logger.OFF);
@@ -81,7 +78,6 @@ public class Slf4JLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(1)).log(mockLogDelegate, Logger.FATAL, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, mockLogDelegate);
     }
-
     @Test
     public void testFatalWithMessageDisabled() {
         testLogger.setLevel(Logger.OFF);
@@ -97,7 +93,6 @@ public class Slf4JLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(0)).log(mockLogDelegate, Logger.FATAL, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, mockLogDelegate);
     }
-
     @Test
     public void testErrorWithMessage() {
         testLogger.error(Logger.EVENT_UNSPECIFIED, MSG);
@@ -112,7 +107,6 @@ public class Slf4JLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(1)).log(mockLogDelegate, Logger.ERROR, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, mockLogDelegate);
     }
-
     @Test
     public void testErrorWithMessageDisabled() {
         testLogger.setLevel(Logger.OFF);
@@ -128,7 +122,6 @@ public class Slf4JLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(0)).log(mockLogDelegate, Logger.ERROR, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, mockLogDelegate);
     }
-
     @Test
     public void testWarnWithMessage() {
         testLogger.warning(Logger.EVENT_UNSPECIFIED, MSG);
@@ -143,7 +136,6 @@ public class Slf4JLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(1)).log(mockLogDelegate, Logger.WARNING, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, mockLogDelegate);
     }
-
     @Test
     public void testWarnWithMessageDisabled() {
         testLogger.setLevel(Logger.OFF);
@@ -159,7 +151,6 @@ public class Slf4JLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(0)).log(mockLogDelegate, Logger.WARNING, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, mockLogDelegate);
     }
-
     @Test
     public void testInfoWithMessage() {
         testLogger.info(Logger.EVENT_UNSPECIFIED, MSG);
@@ -174,7 +165,6 @@ public class Slf4JLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(1)).log(mockLogDelegate, Logger.INFO, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, mockLogDelegate);
     }
-
     @Test
     public void testInfoWithMessageDisabled() {
         testLogger.setLevel(Logger.OFF);
@@ -204,7 +194,6 @@ public class Slf4JLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(1)).log(mockLogDelegate, Logger.DEBUG, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, mockLogDelegate);
     }
-
     @Test
     public void testDebugWithMessageDisabled() {
         testLogger.setLevel(Logger.OFF);
@@ -220,7 +209,6 @@ public class Slf4JLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(0)).log(mockLogDelegate, Logger.DEBUG, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, mockLogDelegate);
     }
-
     @Test
     public void testTraceWithMessage() {
         testLogger.trace(Logger.EVENT_UNSPECIFIED, MSG);
@@ -235,7 +223,6 @@ public class Slf4JLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(1)).log(mockLogDelegate, Logger.TRACE, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, mockLogDelegate);
     }
-
     @Test
     public void testTraceWithMessageDisabled() {
         testLogger.setLevel(Logger.OFF);
@@ -251,7 +238,6 @@ public class Slf4JLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(0)).log(mockLogDelegate, Logger.TRACE, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, mockLogDelegate);
     }
-
     @Test
     public void testAlwaysWithMessage() {
         testLogger.always(Logger.EVENT_UNSPECIFIED, MSG);
@@ -266,7 +252,6 @@ public class Slf4JLoggerTest {
         Mockito.verify(mockBridge, Mockito.times(1)).log(mockLogDelegate, Logger.ALL, Logger.EVENT_UNSPECIFIED, MSG, testEx);
         Mockito.verifyNoMoreInteractions(mockBridge, mockLogDelegate);
     }
-
     @Test
     public void testAlwaysWithMessageDisabled() {
         testLogger.setLevel(Logger.OFF);

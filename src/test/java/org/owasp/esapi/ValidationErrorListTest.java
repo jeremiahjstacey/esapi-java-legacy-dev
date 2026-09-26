@@ -44,40 +44,36 @@ public class ValidationErrorListTest {
         exEx.expectMessage("Context cannot be null");
         vel.addError(null, vex);
     }
-
     @Test
     public void testAddErrorNullExceptionThrows() {
         exEx.expect(RuntimeException.class);
         exEx.expectMessage("ValidationException cannot be null");
         vel.addError(testName.getMethodName(), null);
     }
+    @Test
     public void testAddErrorDuplicateContextThrows() {
         exEx.expect(RuntimeException.class);
         exEx.expectMessage("already exists, must be unique");
         vel.addError(testName.getMethodName(), vex);
         vel.addError(testName.getMethodName(), vex);
     }
-
     @Test
     public void testErrors() throws Exception {
         vel.addError("context",  vex );
         assertTrue("Validation Errors List should contain the added ValidationException Reference",vel.errors().contains( vex) );
     }
-
     @Test
     public void testGetError() throws Exception {
         vel.addError("context",  vex );
         assertTrue( vel.getError( "context" ) == vex );
         assertNull( vel.getError( "ridiculous" ) );
     }
-
     @Test
     public void testIsEmpty() throws Exception {
         assertTrue( vel.isEmpty() );
         vel.addError("context",  vex );
         assertFalse( vel.isEmpty() );
     }
-
     @Test
     public void testSize() throws Exception {
         assertEquals(0, vel.size() );

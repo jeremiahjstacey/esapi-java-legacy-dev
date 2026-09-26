@@ -7,7 +7,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class EncodingPatternPreservationTest {
-
     @Test
     public void testReplaceAndRestore() {
         Pattern numberRegex = Pattern.compile("(ABC)");
@@ -20,7 +19,6 @@ public class EncodingPatternPreservationTest {
         String restored = epp.restoreOriginalContent(replacedStr);
         assertEquals(origStr, restored);
     }
-
     @Test
     public void testReplaceMultipleAndRestore() {
         Pattern numberRegex = Pattern.compile("(ABC)");
@@ -33,7 +31,6 @@ public class EncodingPatternPreservationTest {
         String restored = epp.restoreOriginalContent(replacedStr);
         assertEquals(origStr, restored);
     }
-
     @Test
     public void testSetMarker() {
         Pattern numberRegex = Pattern.compile("(ABC)");

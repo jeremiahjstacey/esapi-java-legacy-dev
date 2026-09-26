@@ -40,7 +40,6 @@ public class DateValidationRulePowerMockTest {
         mockEncoder = Mockito.mock(Encoder.class);
         testFormat = Mockito.spy(testFormat);
     }
-
     @Test
     public void testSetDateFormatLenientTrueFromCtr() {
         Mockito.when(mockSecConfig.getLenientDatesAccepted()).thenReturn(true);
@@ -63,7 +62,6 @@ public class DateValidationRulePowerMockTest {
 
 
     }
-
     @Test
     public void testSetDateFormatLenientFalseFromCtr() {
         Mockito.when(mockSecConfig.getLenientDatesAccepted()).thenReturn(false);
@@ -84,7 +82,6 @@ public class DateValidationRulePowerMockTest {
 
         PowerMockito.verifyNoMoreInteractions(ObjFactory.class);
     }
-
     @Test
     public void testSetDateFormatLenientFalseFromSetter() {
         Mockito.when(mockSecConfig.getLenientDatesAccepted()).thenReturn(false);
@@ -111,7 +108,6 @@ public class DateValidationRulePowerMockTest {
 
         PowerMockito.verifyNoMoreInteractions(ObjFactory.class);
     }
-
     @Test
     public void testSetDateFormatLenientTrueFromSetter() {
         Mockito.when(mockSecConfig.getLenientDatesAccepted()).thenReturn(true);

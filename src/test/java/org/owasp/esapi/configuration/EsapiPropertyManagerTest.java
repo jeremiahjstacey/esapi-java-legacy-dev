@@ -56,7 +56,6 @@ public class EsapiPropertyManagerTest {
                 "esapi" + File.separator + "ESAPI-test-2.xml";
 
     }
-
     @Test
     public void testPropertyManagerInitialized() {
         // given
@@ -74,7 +73,6 @@ public class EsapiPropertyManagerTest {
         assertNotNull(testPropertyManager.loaders);
         assertNotSame(0, testPropertyManager.loaders.size());
     }
-
     @Test
     public void testStringPropFoundInLoader() {
         // given
@@ -93,7 +91,6 @@ public class EsapiPropertyManagerTest {
         // then
         assertEquals(expectedPropertyValue, propertyValue);
     }
-
     @Test
     public void testStringPropertyLoadedFromFileWithHigherPriority() {
         // given
@@ -114,7 +111,6 @@ public class EsapiPropertyManagerTest {
         // then
         assertEquals(expectedValue, propertyValue);
     }
-
     @Test
     public void testStringPropertyLoadedFromPropFileWithHigherPriority() {
         // given
@@ -134,7 +130,6 @@ public class EsapiPropertyManagerTest {
         // then
         assertEquals(expectedValue, propertyValue);
     }
-
     @Test
     public void testStringPropertyLoadedFromXmlFileWithHigherPriority() {
         // given
@@ -172,7 +167,6 @@ public class EsapiPropertyManagerTest {
 
         // then expect exception
     }
-
     @Test
     public void testIntPropFoundInLoader() {
         // given
@@ -191,7 +185,6 @@ public class EsapiPropertyManagerTest {
         // then
         assertEquals(expectedPropertyValue, propertyValue);
     }
-
     @Test
     public void testIntPropertyLoadedFromFileWithHigherPriority() {
         // given
@@ -211,7 +204,6 @@ public class EsapiPropertyManagerTest {
         // then
         assertEquals(expectedValue, propertyValue);
     }
-
     @Test
     public void testIntPropertyLoadedFromPropFileWithHigherPriority() {
         // given
@@ -231,7 +223,6 @@ public class EsapiPropertyManagerTest {
         // then
         assertEquals(expectedValue, propertyValue);
     }
-
     @Test
     public void testIntPropertyLoadedFromXmlFileWithHigherPriority() {
         // given
@@ -268,7 +259,6 @@ public class EsapiPropertyManagerTest {
 
         // then expect exception
     }
-
     @Test
     public void testBooleanPropFoundInLoader() {
         // given
@@ -303,7 +293,6 @@ public class EsapiPropertyManagerTest {
 
         // then expect exception
     }
-
     @Test
     public void testByteArrayPropFoundInLoader() {
         // given
@@ -327,7 +316,6 @@ public class EsapiPropertyManagerTest {
         // then
         assertEquals(expectedValue, propertyValue);
     }
-
     @Test
     public void testByteArrayPropertyLoadedFromFileWithHigherPriority() {
         // given
@@ -352,7 +340,6 @@ public class EsapiPropertyManagerTest {
         // then
         assertEquals(expectedValue, propertyValue);
     }
-
     @Test
     public void testByteArrayPropertyLoadedFromPropFileWithHigherPriority() {
         // given
@@ -377,7 +364,6 @@ public class EsapiPropertyManagerTest {
         // then
         assertEquals(expectedValue, propertyValue);
     }
-
     @Test
     public void testByteArrayPropertyLoadedFromXmlFileWithHigherPriority() {
         // given
@@ -418,8 +404,6 @@ public class EsapiPropertyManagerTest {
 
         // then expect exception
     }
-
-
     @Test
     public void testExpectFileNotFoundException() {
         // given

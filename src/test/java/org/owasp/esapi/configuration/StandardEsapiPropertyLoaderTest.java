@@ -45,7 +45,6 @@ public class StandardEsapiPropertyLoaderTest {
                 "esapi" + File.separator + "ESAPI-test.properties";
         priority = 1;
     }
-
     @Test
     public void testPropertiesLoaded() {
         // when
@@ -58,7 +57,6 @@ public class StandardEsapiPropertyLoaderTest {
         // then
         assertFalse(testPropertyLoader.properties.isEmpty());
     }
-
     @Test
     public void testPriority() {
         // given
@@ -75,7 +73,6 @@ public class StandardEsapiPropertyLoaderTest {
         // then
         assertEquals(expectedValue, value);
     }
-
     @Test
     public void testLoadersAreEqual() {
         // given
@@ -94,7 +91,6 @@ public class StandardEsapiPropertyLoaderTest {
         // then
         assertEquals(expectedValue, value);
     }
-
     @Test
     public void testCompareWithOtherLoaderWithHigherPriority() {
         // given
@@ -114,7 +110,6 @@ public class StandardEsapiPropertyLoaderTest {
         // then
         assertEquals(expectedValue, value);
     }
-
     @Test
     public void testCompareWithOtherLoaderWithLowerPriority() {
         // given
@@ -134,7 +129,6 @@ public class StandardEsapiPropertyLoaderTest {
         // then
         assertEquals(expectedValue, value);
     }
-
     @Test
     public void testGetIntProp() {
         // given
@@ -183,7 +177,6 @@ public class StandardEsapiPropertyLoaderTest {
 
         // then expect exception
     }
-
     @Test
     public void testGetStringProp() {
         // given
@@ -217,7 +210,6 @@ public class StandardEsapiPropertyLoaderTest {
 
         // then expect exception
     }
-
     @Test
     public void testGetBooleanProp() {
         // given
@@ -238,7 +230,6 @@ public class StandardEsapiPropertyLoaderTest {
         // then
         assertEquals(expectedValue, value);
     }
-
     @Test
     public void testGetBooleanYesProperty() {
         // given
@@ -256,7 +247,6 @@ public class StandardEsapiPropertyLoaderTest {
         // then
         assertEquals(expectedValue, value);
     }
-
     @Test
     public void testGetBooleanNoProperty() {
         // given
@@ -309,7 +299,6 @@ public class StandardEsapiPropertyLoaderTest {
 
         // then expect exception
     }
-
     @Test
     public void testGetByteArrayProp() {
         // given

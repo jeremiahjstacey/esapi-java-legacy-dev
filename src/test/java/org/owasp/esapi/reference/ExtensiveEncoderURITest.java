@@ -50,7 +50,6 @@ public class ExtensiveEncoderURITest {
         }
         return lines;
     }
-
     @Test
     public void testUrlsFromFile() {
         assertEquals(this.expected, v.isValidURI("URL", uri, false));

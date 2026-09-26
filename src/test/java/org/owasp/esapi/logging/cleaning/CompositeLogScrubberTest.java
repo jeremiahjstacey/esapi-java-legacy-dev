@@ -28,7 +28,6 @@ public class CompositeLogScrubberTest {
 
     @Rule
     public ExpectedException exEx = ExpectedException.none();
-
     @Test
     public void testNullListThrowsException() {
         exEx.expect(IllegalArgumentException.class);
@@ -36,14 +35,12 @@ public class CompositeLogScrubberTest {
 
         new CompositeLogScrubber(null);
     }
-
     @Test
     public void testPassthroughOnEmpty() {
         String str = "Testing Content";
         String cleaned = new CompositeLogScrubber(new ArrayList<LogScrubber>()).cleanMessage(str);
         assertEquals(str, cleaned);
     }
-
     @Test
     public void testListIteration() {
         LogScrubber scrub1 = Mockito.mock(LogScrubber.class);

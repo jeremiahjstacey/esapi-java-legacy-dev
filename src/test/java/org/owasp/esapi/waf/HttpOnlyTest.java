@@ -23,15 +23,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
+import org.junit.Test;
 import org.owasp.esapi.http.MockFilterChain;
 
-import junit.framework.TestSuite;
+
 
 public class HttpOnlyTest extends WAFTestCase {
-
-    public static TestSuite suite() {
-        return new TestSuite(HttpOnlyTest.class);
-    }
 
     /*
      * Test all aspects of the HTTPOnly protection. Note that attaching HTTPOnly to
@@ -46,6 +43,7 @@ public class HttpOnlyTest extends WAFTestCase {
     // this has been commented because we decided not to try to make this work. too much
     // hackery.
     /*
+    @Test
     public void testAddHttpOnlyOnSessionCookie() throws Exception {
 
          System.out.println("addHttpOnlyPolicy - Response should have httpOnly set on the session ID (JSESSIONID) cookie added to response" );
@@ -57,6 +55,7 @@ public class HttpOnlyTest extends WAFTestCase {
     }
     */
 
+    @Test
     public void testAddHttpOnlyOnCustomCookie() throws Exception {
 
         System.out.println("addHttpOnlyPolicy - Response should have httpOnly set on a custom cookie (FOOBAR) added to the response" );

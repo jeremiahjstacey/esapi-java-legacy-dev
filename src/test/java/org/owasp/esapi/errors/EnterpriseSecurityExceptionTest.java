@@ -15,76 +15,22 @@
  */
 package org.owasp.esapi.errors;
 
-import org.owasp.esapi.errors.AccessControlException;
-import org.owasp.esapi.errors.AuthenticationAccountsException;
-import org.owasp.esapi.errors.AuthenticationCredentialsException;
-import org.owasp.esapi.errors.AuthenticationException;
-import org.owasp.esapi.errors.AuthenticationHostException;
-import org.owasp.esapi.errors.AuthenticationLoginException;
-import org.owasp.esapi.errors.AvailabilityException;
-import org.owasp.esapi.errors.CertificateException;
-import org.owasp.esapi.errors.EncodingException;
-import org.owasp.esapi.errors.EncryptionException;
-import org.owasp.esapi.errors.EnterpriseSecurityException;
-import org.owasp.esapi.errors.ExecutorException;
-import org.owasp.esapi.errors.IntegrityException;
-import org.owasp.esapi.errors.IntrusionException;
-import org.owasp.esapi.errors.ValidationAvailabilityException;
-import org.owasp.esapi.errors.ValidationException;
-import org.owasp.esapi.errors.ValidationUploadException;
+import static org.junit.Assert.assertEquals;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
+
 
 /**
  * The Class AccessReferenceMapTest.
  *
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
-public class EnterpriseSecurityExceptionTest extends TestCase {
-
-    /**
-     * Instantiates a new access reference map test.
-     *
-     * @param testName
-     *            the test name
-     */
-    public EnterpriseSecurityExceptionTest(String testName) {
-        super(testName);
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws Exception
-     */
-    protected void setUp() throws Exception {
-        // none
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws Exception
-     */
-    protected void tearDown() throws Exception {
-        // none
-    }
-
-    /**
-     * Suite.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(EnterpriseSecurityExceptionTest.class);
-        return suite;
-    }
-
-
+public class EnterpriseSecurityExceptionTest {
     /**
      * Test of update method, of class org.owasp.esapi.AccessReferenceMap.
      *
      */
+    @Test
     public void testExceptions() {
         System.out.println("exceptions");
         EnterpriseSecurityException e = null;

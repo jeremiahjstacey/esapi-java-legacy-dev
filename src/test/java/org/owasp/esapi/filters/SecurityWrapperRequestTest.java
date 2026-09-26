@@ -183,7 +183,6 @@ public class SecurityWrapperRequestTest {
         verify(mockSecConfig, times(1)).getIntProp(SECURITY_CONFIGURATION_PARAMETER_STRING_LENGTH_KEY_NAME);
         verify(mockRequest, times(1)).getParameter(testParameterName);
     }
-
     @Test
     public void testGetParameterStringBoolean() throws Exception{
         ValidatorTestContainer validatorTester = new ValidatorTestContainer(mockValidator);
@@ -202,7 +201,6 @@ public class SecurityWrapperRequestTest {
         verify(mockSecConfig, times(1)).getIntProp(SECURITY_CONFIGURATION_PARAMETER_STRING_LENGTH_KEY_NAME);
         verify(mockRequest, times(1)).getParameter(testParameterName);
     }
-
     @Test
     public void testGetParameterStringBooleanInt() throws Exception{
         ValidatorTestContainer validatorTester = new ValidatorTestContainer(mockValidator);
@@ -218,7 +216,6 @@ public class SecurityWrapperRequestTest {
 
         verify(mockRequest, times(1)).getParameter(testParameterName);
     }
-
     @Test
     public void testGetParameterStringBooleanIntString() throws Exception{
         ValidatorTestContainer validatorTester = new ValidatorTestContainer(mockValidator);
@@ -235,8 +232,6 @@ public class SecurityWrapperRequestTest {
 
         verify(mockRequest, times(1)).getParameter(testParameterName);
     }
-
-
     @Test
     public void testGetParameterStringNullEvalPassthrough() throws Exception{
         ValidatorTestContainer validatorTester = new ValidatorTestContainer(mockValidator);
@@ -256,7 +251,6 @@ public class SecurityWrapperRequestTest {
         verify(mockSecConfig, times(1)).getIntProp(SECURITY_CONFIGURATION_PARAMETER_STRING_LENGTH_KEY_NAME);
         verify(mockRequest, times(1)).getParameter(testParameterName);
     }
-
     @Test
     public void testGetParameterStringBooleanNullEvalPassthrough() throws Exception{
         ValidatorTestContainer validatorTester = new ValidatorTestContainer(mockValidator);
@@ -276,7 +270,6 @@ public class SecurityWrapperRequestTest {
         verify(mockSecConfig, times(1)).getIntProp(SECURITY_CONFIGURATION_PARAMETER_STRING_LENGTH_KEY_NAME);
         verify(mockRequest, times(1)).getParameter(testParameterName);
     }
-
     @Test
     public void testGetParameterStringBooleanIntNullEvalPassthrough() throws Exception{
         ValidatorTestContainer validatorTester = new ValidatorTestContainer(mockValidator);
@@ -292,7 +285,6 @@ public class SecurityWrapperRequestTest {
 
         verify(mockRequest, times(1)).getParameter(testParameterName);
     }
-
     @Test
     public void testGetParameterStringBooleanIntStringNullEvalPassthrough() throws Exception{
         ValidatorTestContainer validatorTester = new ValidatorTestContainer(mockValidator);
@@ -307,7 +299,6 @@ public class SecurityWrapperRequestTest {
 
         verify(mockRequest, times(1)).getParameter(testParameterName);
     }
-
     @Test
     public void testGetParameterStringNullOnException() throws Exception{
         ValidatorTestContainer validatorTester = new ValidatorTestContainer(mockValidator);
@@ -327,9 +318,6 @@ public class SecurityWrapperRequestTest {
         verify(mockSecConfig, times(1)).getIntProp(SECURITY_CONFIGURATION_PARAMETER_STRING_LENGTH_KEY_NAME);
         verify(mockRequest, times(1)).getParameter(testParameterName);
     }
-
-
-
     @Test
     public void testGetParameterStringBooleanNullOnException() throws Exception{
         ValidatorTestContainer validatorTester = new ValidatorTestContainer(mockValidator);
@@ -349,7 +337,6 @@ public class SecurityWrapperRequestTest {
         verify(mockSecConfig, times(1)).getIntProp(SECURITY_CONFIGURATION_PARAMETER_STRING_LENGTH_KEY_NAME);
         verify(mockRequest, times(1)).getParameter(testParameterName);
     }
-
     @Test
     public void testGetParameterStringBooleanIntNullOnException() throws Exception{
         ValidatorTestContainer validatorTester = new ValidatorTestContainer(mockValidator);
@@ -364,7 +351,6 @@ public class SecurityWrapperRequestTest {
         validatorTester.verify(testParameterValue, PARAMETER_STRING_CANONCALIZE_TYPE_KEY, testMaximumLength, false);
         verify(mockRequest, times(1)).getParameter(testParameterName);
     }
-
     @Test
     public void testGetParameterStringBooleanIntStringNullOnException() throws Exception{
         ValidatorTestContainer validatorTester = new ValidatorTestContainer(mockValidator);
@@ -380,7 +366,6 @@ public class SecurityWrapperRequestTest {
 
         verify(mockRequest, times(1)).getParameter(testParameterName);
     }
-
     @Test
     public void testGetCookie() throws Exception {
         PowerMockito.when(mockSecConfig.getIntProp(SECURITY_CONFIGURATION_HEADER_NAME_LENGTH_KEY_NAME)).thenReturn(
@@ -418,7 +403,6 @@ public class SecurityWrapperRequestTest {
         Mockito.verify(mockValidator, times(1)).getValidInput(anyString(), ArgumentMatchers.eq(ck1.getDomain()), ArgumentMatchers.eq(COOKIE_DOMAIN_TYPE_KEY), ArgumentMatchers.eq(SECURITY_CONFIGURATION_TEST_LENGTH), ArgumentMatchers.eq(false));
         Mockito.verify(mockValidator, times(1)).getValidInput(anyString(), ArgumentMatchers.eq(ck1.getPath()), ArgumentMatchers.eq(COOKIE_PATH_TYPE_KEY), ArgumentMatchers.eq(SECURITY_CONFIGURATION_TEST_LENGTH), ArgumentMatchers.eq(false));
     }
-
     @Test
     public void testGetCookieNullDomainPath() throws Exception {
         PowerMockito.when(mockSecConfig.getIntProp(SECURITY_CONFIGURATION_HEADER_NAME_LENGTH_KEY_NAME)).thenReturn(
@@ -454,7 +438,6 @@ public class SecurityWrapperRequestTest {
         Mockito.verify(mockValidator, times(0)).getValidInput(anyString(), ArgumentMatchers.eq(ck1.getDomain()), ArgumentMatchers.eq(COOKIE_DOMAIN_TYPE_KEY), ArgumentMatchers.eq(SECURITY_CONFIGURATION_TEST_LENGTH), ArgumentMatchers.eq(false));
         Mockito.verify(mockValidator, times(0)).getValidInput(anyString(), ArgumentMatchers.eq(ck1.getPath()), ArgumentMatchers.eq(COOKIE_PATH_TYPE_KEY), ArgumentMatchers.eq(SECURITY_CONFIGURATION_TEST_LENGTH), ArgumentMatchers.eq(false));
     }
-
     @Test
     public void testGetCookieNullRequestCookies() {
                   PowerMockito.when(mockRequest.getParameter(testParameterName)).thenReturn(testParameterValue);
@@ -463,7 +446,6 @@ public class SecurityWrapperRequestTest {
           Cookie[] cookies = request.getCookies();
           assertEquals(0, cookies.length);
     }
-
     @Test
     public void testGetCookieSkipOnBadName() throws Exception {
         PowerMockito.when(mockSecConfig.getIntProp(SECURITY_CONFIGURATION_HEADER_NAME_LENGTH_KEY_NAME)).thenReturn(
@@ -495,7 +477,6 @@ public class SecurityWrapperRequestTest {
 
         //I would have liked to verify the logging occurred, but it's giving me trouble at this time.
     }
-
     @Test
     public void testGetCookieSkipOnBadValue() throws Exception {
         PowerMockito.when(mockSecConfig.getIntProp(SECURITY_CONFIGURATION_HEADER_NAME_LENGTH_KEY_NAME)).thenReturn(
@@ -528,7 +509,6 @@ public class SecurityWrapperRequestTest {
 
         //I would have liked to verify the logging occurred, but it's giving me trouble at this time.
     }
-
     @Test
     public void testGetCookieSkipOnBadDomain() throws Exception {
         PowerMockito.when(mockSecConfig.getIntProp(SECURITY_CONFIGURATION_HEADER_NAME_LENGTH_KEY_NAME)).thenReturn(
@@ -562,8 +542,6 @@ public class SecurityWrapperRequestTest {
 
         //I would have liked to verify the logging occurred, but it's giving me trouble at this time.
     }
-
-
     @Test
     public void testGetCookieSkipOnBadPath() throws Exception {
         PowerMockito.when(mockSecConfig.getIntProp(SECURITY_CONFIGURATION_HEADER_NAME_LENGTH_KEY_NAME)).thenReturn(

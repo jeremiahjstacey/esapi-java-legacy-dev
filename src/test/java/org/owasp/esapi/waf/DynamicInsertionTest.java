@@ -15,26 +15,18 @@
  */
 package org.owasp.esapi.waf;
 
-import java.io.IOException;
 import java.net.URL;
 
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import org.owasp.esapi.http.MockFilterChain;
+import org.junit.Test;
 import org.owasp.esapi.http.MockHttpServletRequest;
 
-import junit.framework.TestSuite;
+
 
 public class DynamicInsertionTest extends WAFTestCase {
 
-    public static TestSuite suite() {
-        return new TestSuite(DynamicInsertionTest.class);
-    }
-
+    @Test
     public void testShouldReplaceContent() throws Exception {
 
         System.out.println("dynamicInsertionPolicy - replaces </body> with 'this is a test'" );
@@ -51,6 +43,7 @@ public class DynamicInsertionTest extends WAFTestCase {
 
     }
 
+    @Test
     public void testShouldNotReplaceContent() throws Exception {
 
         System.out.println("dynamicInsertionPolicy - should not replace '< /body>' or </body > or </bo dy> with anything" );

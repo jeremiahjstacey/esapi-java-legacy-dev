@@ -17,7 +17,6 @@ import org.junit.Test;
 public class HashTrieTest
 {
     private static final Class<HashTrieTest> CLASS = HashTrieTest.class;
-
     @Test
     public void testSingleInsertLookup()
     {
@@ -30,7 +29,6 @@ public class HashTrieTest
         assertNull(trie.get("trueX"));
         assertEquals("true".length(), trie.getMaxKeyLength());
     }
-
     @Test
     public void testEmpty()
     {
@@ -40,7 +38,6 @@ public class HashTrieTest
         assertNull(trie.get(""));
         assertTrue(trie.getMaxKeyLength()<0);
     }
-
     @Test
     public void testTwoInsertLookup()
     {
@@ -52,7 +49,6 @@ public class HashTrieTest
         assertEquals(Boolean.FALSE, trie.get("false"));
         assertEquals("false".length(),trie.getMaxKeyLength());
     }
-
     @Test
     public void testMatchingPrefix()
     {
@@ -63,7 +59,6 @@ public class HashTrieTest
         assertEquals(Boolean.TRUE, trie.get("pretrue"));
         assertEquals(Boolean.FALSE, trie.get("prefalse"));
     }
-
     @Test
     public void testPrefixIsValidKey()
     {
@@ -74,7 +69,6 @@ public class HashTrieTest
         assertEquals(Boolean.TRUE, trie.get("pre"));
         assertEquals(Boolean.FALSE, trie.get("prefalse"));
     }
-
     @Test
     public void testDuplicateAdd()
     {
@@ -84,7 +78,6 @@ public class HashTrieTest
         assertTrue(trie.put("dup", Boolean.FALSE));
         assertFalse(trie.get("dup"));
     }
-
     @Test
     public void testTwoInsertLongestLookup()
     {
@@ -119,7 +112,6 @@ public class HashTrieTest
         assertNull(trie.getLongestMatch("tru"));
         assertNull(trie.getLongestMatch("fals"));
     }
-
     @Test
     public void testContainsKey()
     {
@@ -131,7 +123,6 @@ public class HashTrieTest
         assertTrue(trie.containsKey("false"));
         assertFalse(trie.containsKey("not there"));
     }
-
     @Test
     public void testContainsValue()
     {
@@ -143,7 +134,6 @@ public class HashTrieTest
         assertTrue(trie.containsValue(2));
         assertFalse(trie.containsValue(3));
     }
-
     @Test
     public void testKeySet()
     {
@@ -156,7 +146,6 @@ public class HashTrieTest
         trie.put("false", Boolean.FALSE);
         assertEquals(expected,trie.keySet());
     }
-
     @Test
     public void testValues()
     {
@@ -173,7 +162,6 @@ public class HashTrieTest
         Collections.sort(expected);
         assertEquals(expected,actual);
     }
-
     @Test
     public void testEntrySet()
     {
@@ -186,7 +174,6 @@ public class HashTrieTest
         trie.put("false", Boolean.FALSE);
         assertEquals(equivMap.entrySet(),trie.entrySet());
     }
-
     @Test
     public void testEquals()
     {
@@ -199,7 +186,6 @@ public class HashTrieTest
         trie.put("false", Boolean.FALSE);
         assertTrue(trie.equals(equivMap));
     }
-
     @Test
     public void testHashCode()
     {

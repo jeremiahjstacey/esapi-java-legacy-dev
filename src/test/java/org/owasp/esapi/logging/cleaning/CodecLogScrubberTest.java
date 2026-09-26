@@ -27,7 +27,6 @@ import org.owasp.esapi.codecs.Codec;
 public class CodecLogScrubberTest {
     @Rule
     public ExpectedException exEx = ExpectedException.none();
-
     @Test
     public void testNullCodecThrowsException() {
         exEx.expect(IllegalArgumentException.class);
@@ -35,7 +34,6 @@ public class CodecLogScrubberTest {
 
         new CodecLogScrubber(null, new char[0]);
     }
-
     @Test
     public void testNullImmuneIsEmpty() {
         String message = "cleanThis";
@@ -53,7 +51,6 @@ public class CodecLogScrubberTest {
 
         assertEquals(0, immuneCapture.getValue().length);
     }
-
     @Test
     public void testCleanMessage() {
         char[] immune = new char[] { 'a', 'b', 'c' };

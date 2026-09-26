@@ -19,17 +19,14 @@ import java.net.URL;
 
 import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.TestSuite;
-
+import org.junit.Test;
 import org.owasp.esapi.http.MockHttpServletRequest;
 import org.owasp.esapi.http.MockHttpServletResponse;
 
 public class RestrictExtensionTest extends WAFTestCase {
 
-    public static TestSuite suite() {
-        return new TestSuite(RestrictExtensionTest.class);
-    }
 
+    @Test
     public void testGoodExtension() throws Exception {
 
         System.out.println("restrictExtensionPolicy - approve this URL (doesn't end in .log or anything else evil)" );
@@ -43,6 +40,7 @@ public class RestrictExtensionTest extends WAFTestCase {
         assertTrue( response.getStatus() != HttpServletResponse.SC_MOVED_PERMANENTLY );
     }
 
+    @Test
     public void testBadExtension() throws Exception {
 
         System.out.println("restrictExtensionPolicy - reject any URL ending in .log" );

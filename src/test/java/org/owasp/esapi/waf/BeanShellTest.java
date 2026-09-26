@@ -20,17 +20,15 @@ import java.net.URL;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.junit.Test;
 import org.owasp.esapi.http.MockFilterChain;
 import org.owasp.esapi.http.MockHttpServletRequest;
 
-import junit.framework.TestSuite;
+
 
 public class BeanShellTest extends WAFTestCase {
 
-    public static TestSuite suite() {
-        return new TestSuite(BeanShellTest.class);
-    }
-
+    @Test
     public void testRedirectBeanShellRule() throws Exception {
 
         request = new MockHttpServletRequest( new URL( "http://www.example.com/beanshelltest" ) );

@@ -43,7 +43,6 @@ public class XmlEsapiPropertyLoaderTest {
                 "esapi" + File.separator + "ESAPI-test.xml";
         priority = 1;
     }
-
     @Test
     public void testPropertiesLoaded() {
         // when
@@ -56,7 +55,6 @@ public class XmlEsapiPropertyLoaderTest {
         // then
         assertFalse(testPropertyLoader.properties.isEmpty());
     }
-
     @Test
     public void testInvalidPropertyFile() {
         // given - the file exists, but does not conform to the schema.
@@ -75,7 +73,6 @@ public class XmlEsapiPropertyLoaderTest {
 
         fail("Failed to catch expected ConfigurationException for invalid property file name: " + invalidFilename);
     }
-
     @Test
     public void testPriority() {
         // given
@@ -92,7 +89,6 @@ public class XmlEsapiPropertyLoaderTest {
         // then
         assertEquals(expectedValue, value);
     }
-
     @Test
     public void testLoadersAreEqual() {
         // given
@@ -111,7 +107,6 @@ public class XmlEsapiPropertyLoaderTest {
         // then
         assertEquals(expectedValue, value);
     }
-
     @Test
     public void testCompareWithOtherLoaderWithHigherPriority() {
         // given
@@ -131,7 +126,6 @@ public class XmlEsapiPropertyLoaderTest {
         // then
         assertEquals(expectedValue, value);
     }
-
     @Test
     public void testCompareWithOtherLoaderWithLowerPriority() {
         // given
@@ -151,7 +145,6 @@ public class XmlEsapiPropertyLoaderTest {
         // then
         assertEquals(expectedValue, value);
     }
-
     @Test
     public void testGetIntProp() {
         // given
@@ -201,7 +194,6 @@ public class XmlEsapiPropertyLoaderTest {
 
         // then expect exception
     }
-
     @Test
     public void testGetStringProp() {
         // given
@@ -235,7 +227,6 @@ public class XmlEsapiPropertyLoaderTest {
 
         // then expect exception
     }
-
     @Test
     public void testGetBooleanProp() {
         // given
@@ -253,7 +244,6 @@ public class XmlEsapiPropertyLoaderTest {
         // then
         assertEquals(expectedValue, value);
     }
-
     @Test
     public void testGetBooleanYesProperty() {
         // given
@@ -271,7 +261,6 @@ public class XmlEsapiPropertyLoaderTest {
         // then
         assertEquals(expectedValue, value);
     }
-
     @Test
     public void testGetBooleanNoProperty() {
         // given
@@ -321,7 +310,6 @@ public class XmlEsapiPropertyLoaderTest {
 
         // then expect exception
     }
-
     @Test
     public void testGetByteArrayProp() {
         // given

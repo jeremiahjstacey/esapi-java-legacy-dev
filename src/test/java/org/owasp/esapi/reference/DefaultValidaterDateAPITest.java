@@ -81,7 +81,6 @@ public class DefaultValidaterDateAPITest {
     public void tearDown() {
         verifyNoMoreInteractions(spyDateRule, errors);
     }
-
     @Test
     public void testIsValidDate() {
         doReturn(testDate).when(spyDateRule).sanitize(eq(contextStr), eq(dateString), isA(ValidationErrorList.class));
@@ -94,7 +93,6 @@ public class DefaultValidaterDateAPITest {
         verify(spyDateRule, times(1)).setAllowNull(true);
         verify(spyDateRule, times(1)).sanitize(eq(contextStr), eq(dateString), isA(ValidationErrorList.class));
     }
-
     @Test
     public void testIsValidDateErrorList() {
         doReturn(testDate).when(spyDateRule).sanitize(eq(contextStr), eq(dateString), isA(ValidationErrorList.class));
@@ -107,7 +105,6 @@ public class DefaultValidaterDateAPITest {
         verify(spyDateRule, times(1)).setAllowNull(true);
         verify(spyDateRule, times(1)).sanitize(eq(contextStr), eq(dateString), eq(errors));
     }
-
     @Test
     public void testGetValidDate() throws IntrusionException, ValidationException {
         doReturn(testDate).when(spyDateRule).sanitize(eq(contextStr), eq(dateString), isA(ValidationErrorList.class));
@@ -119,7 +116,6 @@ public class DefaultValidaterDateAPITest {
         verify(spyDateRule, times(1)).setAllowNull(true);
         verify(spyDateRule, times(1)).sanitize(eq(contextStr), eq(dateString), isA(ValidationErrorList.class));
     }
-
     @Test
     public void testGetValidDateErrorList() {
         doReturn(testDate).when(spyDateRule).sanitize(eq(contextStr), eq(dateString), isA(ValidationErrorList.class));
@@ -131,8 +127,6 @@ public class DefaultValidaterDateAPITest {
         verify(spyDateRule, times(1)).setAllowNull(true);
         verify(spyDateRule, times(1)).sanitize(eq(contextStr), eq(dateString), eq(errors));
     }
-
-
     @Test
     public void testIsValidDateOnValidationError() {
         doReturn(false).when(errors).isEmpty();
@@ -148,7 +142,6 @@ public class DefaultValidaterDateAPITest {
         verify(spyDateRule, times(1)).setAllowNull(true);
         verify(spyDateRule, times(1)).sanitize(eq(contextStr), eq(dateString), isA(ValidationErrorList.class));
     }
-
     @Test
     public void testIsValidDateErrorListOnValidationError() {
         doReturn(false).when(errors).isEmpty();
@@ -180,7 +173,6 @@ public class DefaultValidaterDateAPITest {
             verify(spyDateRule, times(1)).sanitize(eq(contextStr), eq(dateString), isA(ValidationErrorList.class));
         }
     }
-
     @Test
     public void testGetValidDateErrorListOnValidationError() {
         doReturn(false).when(errors).isEmpty();

@@ -32,7 +32,6 @@ public class ESAPIContractAPITest {
 
         PowerMockito.when(mockSecConfig.getValidationImplementation()).thenReturn("MOCK_TEST_VALIDATOR");
     }
-
     @Test
     public void testValidatorFromConfiguration() {
         Validator validator = ESAPI.validator();

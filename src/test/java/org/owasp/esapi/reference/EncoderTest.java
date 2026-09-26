@@ -15,7 +15,12 @@
  */
 package org.owasp.esapi.reference;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -24,35 +29,33 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Ignore;
+import org.junit.After;
+import org.junit.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
 import org.owasp.esapi.EncoderConstants;
+import org.owasp.esapi.Randomizer;
 import org.owasp.esapi.SecurityConfiguration;
 import org.owasp.esapi.SecurityConfigurationWrapper;
 import org.owasp.esapi.codecs.Codec;
 import org.owasp.esapi.codecs.HTMLEntityCodec;
 import org.owasp.esapi.codecs.MySQLCodec;
 import org.owasp.esapi.codecs.OracleCodec;
-import org.owasp.esapi.codecs.JSONCodec;
 import org.owasp.esapi.codecs.PushbackString;
 import org.owasp.esapi.codecs.UnixCodec;
 import org.owasp.esapi.codecs.WindowsCodec;
 import org.owasp.esapi.errors.EncodingException;
 import org.owasp.esapi.errors.IntrusionException;
-import org.owasp.esapi.Randomizer;
 
-
-import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
 
 /**
  * The Class EncoderTest.
  *
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
-public class EncoderTest extends TestCase {
+public class EncoderTest {
 
     private static class Conf extends SecurityConfigurationWrapper
     {
@@ -77,40 +80,14 @@ public class EncoderTest extends TestCase {
     }
     private static final String PREFERRED_ENCODING = "UTF-8";
 
-    /**
-     * Instantiates a new encoder test.
-     *
-     * @param testName
-     *            the test name
-     */
-    public EncoderTest(String testName) {
-        super(testName);
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws Exception
-     */
-    protected void setUp() throws Exception {
-        // none
-    }
 
     /**
      * {@inheritDoc}s
      * @throws Exception
      */
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         ESAPI.override(null); // Restore
-    }
-
-    /**
-     * Suite.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(EncoderTest.class);
-        return suite;
     }
 
     /**
@@ -118,6 +95,7 @@ public class EncoderTest extends TestCase {
      *
      * @throws EncodingException
      */
+    @Test
     public void testCanonicalize() throws EncodingException {
         System.out.println("canonicalize");
 
@@ -291,6 +269,7 @@ public class EncoderTest extends TestCase {
      *
      * @throws EncodingException
      */
+    @Test
     public void testDoubleEncodingCanonicalization() throws EncodingException {
         System.out.println("doubleEncodingCanonicalization");
         Encoder instance = ESAPI.encoder();
@@ -370,6 +349,7 @@ public class EncoderTest extends TestCase {
      *
      * @throws Exception
      */
+    @Test
     public void testEncodeForHTML() throws Exception {
         System.out.println("encodeForHTML");
         Encoder instance = ESAPI.encoder();
@@ -391,6 +371,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of encodeForHTMLAttribute method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testEncodeForHTMLAttribute() {
         System.out.println("encodeForHTMLAttribute");
         Encoder instance = ESAPI.encoder();
@@ -404,6 +385,7 @@ public class EncoderTest extends TestCase {
     /**
      *
      */
+    @Test
     public void testencodeForCSS() {
         System.out.println("encodeForCSS");
         Encoder instance = ESAPI.encoder();
@@ -416,24 +398,28 @@ public class EncoderTest extends TestCase {
         assertEquals("red", instance.encodeForCSS("red"));
     }
 
+    @Test
     public void testCSSTripletLeadString() {
         System.out.println("CSSTripletLeadString");
         Encoder instance = ESAPI.encoder();
         assertEquals("rgb(255,255,255)\\21 ", instance.encodeForCSS("rgb(255,255,255)!"));
         assertEquals("rgb(25%,25%,25%)\\21 ", instance.encodeForCSS("rgb(25%,25%,25%)!"));
     }
+    @Test
     public void testCSSTripletTailString() {
         System.out.println("CSSTripletTailString");
         Encoder instance = ESAPI.encoder();
         assertEquals("\\24 field\\3d rgb(255,255,255)\\21 ", instance.encodeForCSS("$field=rgb(255,255,255)!"));
         assertEquals("\\24 field\\3d rgb(25%,25%,25%)\\21 ", instance.encodeForCSS("$field=rgb(25%,25%,25%)!"));
     }
+    @Test
     public void testCSSTripletStringPart() {
         System.out.println("CSSTripletStringPart");
         Encoder instance = ESAPI.encoder();
         assertEquals("\\24 field\\3d rgb(255,255,255)\\21 ", instance.encodeForCSS("$field=rgb(255,255,255)!"));
         assertEquals("\\24 field\\3d rgb(25%,25%,25%)\\21 ", instance.encodeForCSS("$field=rgb(25%,25%,25%)!"));
     }
+    @Test
     public void testCSSTripletStringMultiPart() {
         System.out.println("CSSTripletMultiPart");
         Encoder instance = ESAPI.encoder();
@@ -446,6 +432,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of encodeForJavaScript method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testEncodeForJavascript() {
         System.out.println("encodeForJavascript");
         Encoder instance = ESAPI.encoder();
@@ -468,6 +455,7 @@ public class EncoderTest extends TestCase {
     /**
      *
      */
+    @Test
     public void testEncodeForVBScript() {
         System.out.println("encodeForVBScript");
         Encoder instance = ESAPI.encoder();
@@ -483,6 +471,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of encodeForXPath method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testEncodeForXPath() {
         System.out.println("encodeForXPath");
         Encoder instance = ESAPI.encoder();
@@ -495,6 +484,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of encodeForSQL method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testEncodeForSQL() {
         System.out.println("encodeForSQL");
         Encoder instance = ESAPI.encoder();
@@ -512,6 +502,7 @@ public class EncoderTest extends TestCase {
         assertEquals("Oracle", "Jeff'' or ''1''=''1", instance.encodeForSQL(oracle, "Jeff' or '1'='1"));
     }
 
+    @Test
     public void testMySQLANSIModeQuoteInjection() {
         System.out.println("mySQLANSIModeQuoteInjection");
         Encoder instance = ESAPI.encoder();
@@ -526,6 +517,7 @@ public class EncoderTest extends TestCase {
      *
      * Additional tests: https://www.cl.cam.ac.uk/~mgk25/ucs/examples/UTF-8-test.txt
      */
+    @Test
     public void testEncodeForLDAP() {
         System.out.println("encodeForLDAP");
         Encoder instance = ESAPI.encoder();
@@ -559,6 +551,7 @@ public class EncoderTest extends TestCase {
      *
      * Additional tests: https://www.cl.cam.ac.uk/~mgk25/ucs/examples/UTF-8-test.txt
      */
+    @Test
     public void testEncodeForLDAPWithoutEncodingWildcards() {
         System.out.println("encodeForLDAPWithoutEncodingWildcards");
         Encoder instance = ESAPI.encoder();
@@ -594,6 +587,7 @@ public class EncoderTest extends TestCase {
      *
      * Additional tests: https://www.cl.cam.ac.uk/~mgk25/ucs/examples/UTF-8-test.txt
      */
+    @Test
     public void testEncodeForDN() {
         System.out.println("encodeForDN");
         Encoder instance = ESAPI.encoder();
@@ -635,6 +629,7 @@ public class EncoderTest extends TestCase {
     /**
      * Longstanding issue of always lowercasing named HTML entities.  This will be set right now.
      */
+    @Test
     public void testNamedUpperCaseDecoding(){
         System.out.println("namedUpperCaseDecoding");
         String input = "&Uuml;";
@@ -642,72 +637,84 @@ public class EncoderTest extends TestCase {
         assertEquals(expected, ESAPI.encoder().decodeForHTML(input));
     }
 
+    @Test
     public void testEncodeForXMLNull() {
         System.out.println("encodeFormXMLNull");
         Encoder instance = ESAPI.encoder();
         assertEquals(null, instance.encodeForXML(null));
     }
 
+    @Test
     public void testEncodeForXMLSpace() {
         System.out.println("encodeFormXMLSpace");
         Encoder instance = ESAPI.encoder();
         assertEquals(" ", instance.encodeForXML(" "));
     }
 
+    @Test
     public void testEncodeForXMLScript() {
         System.out.println("encodeForXMLScript");
         Encoder instance = ESAPI.encoder();
         assertEquals("&#x3c;script&#x3e;", instance.encodeForXML("<script>"));
     }
 
+    @Test
     public void testEncodeForXMLImmune() {
         System.out.println("encodeForXML");
         Encoder instance = ESAPI.encoder();
         assertEquals(",.-_", instance.encodeForXML(",.-_"));
     }
 
+    @Test
     public void testEncodeForXMLSymbol() {
         System.out.println("encodeForXMLSymbol");
         Encoder instance = ESAPI.encoder();
         assertEquals("&#x21;&#x40;&#x24;&#x25;&#x28;&#x29;&#x3d;&#x2b;&#x7b;&#x7d;&#x5b;&#x5d;", instance.encodeForXML("!@$%()=+{}[]"));
     }
 
+    @Test
     public void testEncodeForXMLPound() {
         System.out.println("encodeForXMLPound");
         Encoder instance = ESAPI.encoder();
         assertEquals("&#xa3;", instance.encodeForXML("\u00A3"));
     }
 
+    @Test
     public void testEncodeForXMLAttributeNull() {
         System.out.println("encodeForXMLAttributeNull");
         Encoder instance = ESAPI.encoder();
         assertEquals(null, instance.encodeForXMLAttribute(null));
     }
 
+    @Test
     public void testEncodeForXMLAttributeSpace() {
         System.out.println("encodeForXMLAttributeSpace");
         Encoder instance = ESAPI.encoder();
         assertEquals(" ", instance.encodeForXMLAttribute(" "));
     }
 
+    @Test
     public void testEncodeForXMLAttributeScript() {
         System.out.println("encodeForXMLAttributeScript");
         Encoder instance = ESAPI.encoder();
         assertEquals("&#x3c;script&#x3e;", instance.encodeForXMLAttribute("<script>"));
     }
 
+    @Test
     public void testEncodeForXMLAttributeImmune() {
         System.out.println("encodeFormXMLAttributeImmune");
         Encoder instance = ESAPI.encoder();
         assertEquals(",.-_", instance.encodeForXMLAttribute(",.-_"));
     }
 
+    @Test
     public void testEncodeForXMLAttributeSymbol() {
         System.out.println("encodeFormXMLAttributeSymbol");
         Encoder instance = ESAPI.encoder();
         assertEquals(" &#x21;&#x40;&#x24;&#x25;&#x28;&#x29;&#x3d;&#x2b;&#x7b;&#x7d;&#x5b;&#x5d;", instance.encodeForXMLAttribute(" !@$%()=+{}[]"));
     }
 
+    @Test
     public void testEncodeForXMLAttributePound() {
         System.out.println("encodeFormXMLAttributePound");
         Encoder instance = ESAPI.encoder();
@@ -719,6 +726,7 @@ public class EncoderTest extends TestCase {
      *
      * @throws Exception
      */
+    @Test
     public void testEncodeForURL() throws Exception {
         System.out.println("encodeForURL");
         Encoder instance = ESAPI.encoder();
@@ -731,6 +739,7 @@ public class EncoderTest extends TestCase {
      *
      * @throws Exception
      */
+    @Test
     public void testDecodeFromURL() throws Exception {
         System.out.println("decodeFromURL");
         Encoder instance = ESAPI.encoder();
@@ -753,6 +762,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of encodeForBase64 method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testEncodeForBase64() {
         System.out.println("encodeForBase64");
         Encoder instance = ESAPI.encoder();
@@ -775,6 +785,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of decodeFromBase64 method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testDecodeFromBase64() {
         System.out.println("decodeFromBase64");
         Encoder instance = ESAPI.encoder();
@@ -805,6 +816,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of WindowsCodec
      */
+    @Test
     public void testWindowsCodec() {
         System.out.println("WindowsCodec");
         Encoder instance = ESAPI.encoder();
@@ -839,6 +851,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of UnixCodec
      */
+    @Test
     public void testUnixCodec() {
         System.out.println("UnixCodec");
         Encoder instance = ESAPI.encoder();
@@ -875,6 +888,7 @@ public class EncoderTest extends TestCase {
         assertEquals("\\/etc\\/hosts\\;\\ ls\\ -l", instance.encodeForOS(unix, "/etc/hosts; ls -l"));
     }
 
+    @Test
     public void testCanonicalizePerformance() throws Exception {
         System.out.println("Canonicalization Performance");
         Encoder encoder = ESAPI.encoder();
@@ -932,6 +946,7 @@ public class EncoderTest extends TestCase {
     }
 
 
+    @Test
     public void testConcurrency() {
         System.out.println("Encoder Concurrency");
         for (int i = 0; i < 10; i++) {
@@ -967,6 +982,7 @@ public class EncoderTest extends TestCase {
         }
     }
 
+    @Test
     public void testGetCanonicalizedUri() throws Exception {
         System.out.println("getCanonicalizedUri");
         Encoder e = ESAPI.encoder();
@@ -982,6 +998,7 @@ public class EncoderTest extends TestCase {
 
     }
     
+    @Test
     public void testGetCanonicalizedUriWithAnHTMLEntityCollision() throws Exception {
         System.out.println("GetCanonicalizedUriWithAnHTMLEntityCollision");
         Encoder e = ESAPI.encoder();
@@ -1011,7 +1028,8 @@ public class EncoderTest extends TestCase {
         assertEquals(expectedUri, e.getCanonicalizedURI(uri));
 
     }	
-	    public void testGetCanonicalizedUriWithMultQueryParams() throws Exception {
+	    @Test
+    public void testGetCanonicalizedUriWithMultQueryParams() throws Exception {
         System.out.println("getCanonicalizedUri");
         Encoder e = ESAPI.encoder();
 
@@ -1026,6 +1044,7 @@ public class EncoderTest extends TestCase {
 
     }
 
+    @Test
     public void testGetCanonicalizedUriPiazza() throws Exception {
         System.out.println("getCanonicalizedUriPiazza");
         Encoder e = ESAPI.encoder();
@@ -1041,6 +1060,7 @@ public class EncoderTest extends TestCase {
 
     }
     
+    @Test
     public void testIssue824() throws Exception {
         System.out.println("getCanonicalizedUriPiazza");
         Encoder e = ESAPI.encoder();
@@ -1076,6 +1096,7 @@ public class EncoderTest extends TestCase {
         }
     }
 
+    @Test
     public void testGetCanonicalizedUriWithMailto() throws Exception {
         System.out.println("getCanonicalizedUriWithMailto");
         Encoder e = ESAPI.encoder();
@@ -1090,6 +1111,7 @@ public class EncoderTest extends TestCase {
         assertEquals(expectedUri, e.getCanonicalizedURI(uri));
     }
 
+    @Test
     public void testHtmlEncodeStrSurrogatePair()
     {
         System.out.println("htmlEncodeStrSurrogatePair");
@@ -1104,6 +1126,7 @@ public class EncoderTest extends TestCase {
         assertEquals(expected, result);
     }
 
+    @Test
     public void testHtmlDecodeHexEntititesSurrogatePair()
     {
         System.out.println("htmlDecodeHexEntitiesSurrogatePair");
@@ -1113,6 +1136,7 @@ public class EncoderTest extends TestCase {
         assertEquals( expected, htmlCodec.decode("&#x2f804;") );
     }
 
+    @Test
     public void testUnicodeCanonicalize() {
         System.out.println("UnicodeCanonicalize");
         Encoder e = ESAPI.encoder();
@@ -1122,6 +1146,7 @@ public class EncoderTest extends TestCase {
         assertEquals(expected, output);
     }
 
+    @Test
     public void testUnicodeCanonicalizePercentEncoding() {
         System.out.println("UnicodeCanonicalizePercentEncoding");
         //TODO:  We need to find a way to specify the encoding type for percent encoding.
@@ -1134,6 +1159,7 @@ public class EncoderTest extends TestCase {
     }
 
     // Test for GitHub Issue 686.
+    @Test
     public void testGetDefaultCanonicalizationCodecs() {
         System.out.println("getDefaultCanonicalizationCodecs");
 
@@ -1198,6 +1224,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of encodeForJSON method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testEncodeForJSON_EmptyStrings() {
         System.out.println("testEncodeForJSON_EmptyStrings");
         Encoder instance = ESAPI.encoder();
@@ -1211,6 +1238,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of encodeForJSON method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testEncodeForJSON_7BitClean() {
         System.out.println("testEncodeForJSON_7BitClean");
         Encoder instance = ESAPI.encoder();
@@ -1226,6 +1254,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of encodeForJSON method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testEncodeForJSON_2CharEscapeSequences() {
         System.out.println("testEncodeForJSON_2CharEscapeSequences");
         Encoder instance = ESAPI.encoder();
@@ -1245,6 +1274,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of encodeForJSON method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testEncodeForJSON_ControlCharacters() {
         System.out.println("testEncodeForJSON_ControlCharacters");
         Encoder instance = ESAPI.encoder();
@@ -1267,6 +1297,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of encodeForJSON method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testEncodeForJSON_PrintableChars() {
         System.out.println("testEncodeForJSON_PrintableChars");
         Encoder instance = ESAPI.encoder();
@@ -1286,6 +1317,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of decodeFromJSON method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testDecodeFromJSON_EmptyStrings() {
         System.out.println("testDecodeFromJSON_EmptyStrings");
         Encoder instance = ESAPI.encoder();
@@ -1299,6 +1331,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of decodeFromJSON method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testDecodeFromJSON_7BitClean() {
         System.out.println("testDecodeFromJSON_7BitClean");
         Encoder instance = ESAPI.encoder();
@@ -1314,6 +1347,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of decodeFromJSON method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testDecodeFromJSON_2CharEscapeSequences() {
         System.out.println("testDecodeFromJSON_2CharEscapeSequences");
         Encoder instance = ESAPI.encoder();
@@ -1333,6 +1367,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of decodeFromJSON method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testDecodeFromJSON_ControlCharacters() {
         System.out.println("testDecodeFromJSON_ControlCharacters");
         Encoder instance = ESAPI.encoder();
@@ -1351,6 +1386,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of decodeFromJSON method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testDecodeFromJSON_PrintableChars() {
         System.out.println("testDecodeFromJSON_PrintableChars");
         Encoder instance = ESAPI.encoder();
@@ -1367,6 +1403,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of decodeFromJSON method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testDecodeFromJSON_Slashes() {
         System.out.println("testDecodeFromJSON_Slashes");
         Encoder instance = ESAPI.encoder();
@@ -1381,6 +1418,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of decodeFromJSON method, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testDecodeFromJSON_Malformed() {
         System.out.println("testDecodeFromJSON_Malformed");
         Encoder instance = ESAPI.encoder();
@@ -1491,6 +1529,7 @@ public class EncoderTest extends TestCase {
      * Test of encodeForJSON and decodeFromJSON methods, of class org.owasp.esapi.Encoder.
      * https://github.com/ESAPI/esapi-java-legacy/pull/722#discussion_r922860329
      */
+    @Test
     public void testRoundtripWithJSON_SupplementaryUnicode () {
         System.out.println("testRoundtripWithJSON_SupplementaryUnicode");
         Encoder instance = ESAPI.encoder();
@@ -1504,6 +1543,7 @@ public class EncoderTest extends TestCase {
     /**
      * Test of encodeForJSON and decodeFromJSON methods, of class org.owasp.esapi.Encoder.
      */
+    @Test
     public void testRoundtripWithJSON_Random6CharEscapes () {
         System.out.println("testRoundtripWithJSON_Random6CharEscapes");
         Encoder instance = ESAPI.encoder();

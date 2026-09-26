@@ -1,7 +1,6 @@
 package org.owasp.esapi.util;
 
-import static org.junit.Assert.*;
-import junit.framework.JUnit4TestAdapter;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.owasp.esapi.codecs.Hex;
@@ -69,15 +68,7 @@ public class ByteConversionUtilTest {
         }
     }
 
-    /**
-     * Run all the test cases in this suite.
-     * This is to allow running from {@code org.owasp.esapi.AllTests} which
-     * uses a JUnit 3 test runner.
-     */
-    public static junit.framework.Test suite() {
-        return new JUnit4TestAdapter(ByteConversionUtilTest.class);
-    }
-
+  
     private void debug(String msg) {
         if ( VERBOSE ) {
             System.err.println(msg);

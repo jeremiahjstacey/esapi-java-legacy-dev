@@ -13,34 +13,24 @@
  */
 package org.owasp.esapi.codecs;
 
-import java.util.Collections;
-import java.util.HashSet;
+import static org.junit.Assert.assertEquals;
+
 import java.util.Set;
 
+import org.junit.Test;
 import org.owasp.esapi.util.CollectionsUtil;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-public class XMLEntityCodecTest extends TestCase
+public class XMLEntityCodecTest
 {
     private static final char[] EMPTY_CHAR_ARRAY = new char[0];
     private static final String ALPHA_NUMERIC_STR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final String UNENCODED_STR = ALPHA_NUMERIC_STR + " \t";
     private static final Set<Character> UNENCODED_SET = CollectionsUtil.strToUnmodifiableSet(UNENCODED_STR);
-    private XMLEntityCodec codec = null;
+    private XMLEntityCodec codec = new XMLEntityCodec();
 
-    protected void setUp()
-    {
-        codec = new XMLEntityCodec();
-    }
-
-    protected void tearDown()
-    {
-        codec = null;
-    }
-
+ 
+    @Test
     public void testEncodeUnencoded()
     {
         StringBuilder sb = new StringBuilder("AB_YZ");
@@ -54,6 +44,7 @@ public class XMLEntityCodecTest extends TestCase
         }
     }
 
+    @Test
     public void testEncodeOthers()
     {
         StringBuilder inSb = new StringBuilder("AB_YZ");
@@ -80,6 +71,7 @@ public class XMLEntityCodecTest extends TestCase
         }
     }
 
+    @Test
     public void testDecodeUnencoded()
     {
         StringBuilder sb = new StringBuilder("AB_YZ");
@@ -93,6 +85,7 @@ public class XMLEntityCodecTest extends TestCase
         }
     }
 
+    @Test
     public void testDecodeHex()
     {
         StringBuilder expectedSb = new StringBuilder("AB_YZ");
@@ -116,6 +109,7 @@ public class XMLEntityCodecTest extends TestCase
         }
     }
 
+    @Test
     public void testDecodeDec()
     {
         StringBuilder expectedSb = new StringBuilder("AB_YZ");
@@ -139,6 +133,7 @@ public class XMLEntityCodecTest extends TestCase
         }
     }
 
+    @Test
     public void testDecodeLt()
     {
         String in = "AB&lt;YZ";
@@ -147,6 +142,7 @@ public class XMLEntityCodecTest extends TestCase
         assertEquals(expected,result);
     }
 
+    @Test
     public void testDecodeGt()
     {
         String in = "AB&gt;YZ";
@@ -155,6 +151,7 @@ public class XMLEntityCodecTest extends TestCase
         assertEquals(expected,result);
     }
 
+    @Test
     public void testDecodeAmp()
     {
         String in = "AB&amp;YZ";
@@ -163,6 +160,7 @@ public class XMLEntityCodecTest extends TestCase
         assertEquals(expected,result);
     }
 
+    @Test
     public void testDecodeApos()
     {
         String in = "AB&apos;YZ";
@@ -171,6 +169,7 @@ public class XMLEntityCodecTest extends TestCase
         assertEquals(expected,result);
     }
 
+    @Test
     public void testDecodeQuot()
     {
         String in = "AB&quot;YZ";
@@ -179,6 +178,7 @@ public class XMLEntityCodecTest extends TestCase
         assertEquals(expected,result);
     }
 
+    @Test
     public void testDecodeNamedTail()
     {
         String in = "AB&quot;";
@@ -187,6 +187,7 @@ public class XMLEntityCodecTest extends TestCase
         assertEquals(expected,result);
     }
 
+    @Test
     public void testDecodeNamedHead()
     {
         String in = "&quot;YZ";
@@ -195,6 +196,7 @@ public class XMLEntityCodecTest extends TestCase
         assertEquals(expected,result);
     }
 
+    @Test
     public void testDecodeNamedLone()
     {
         String in = "&quot;";
@@ -203,6 +205,7 @@ public class XMLEntityCodecTest extends TestCase
         assertEquals(expected,result);
     }
 
+    @Test
     public void testDecodeNamedNoSemiColonTail()
     {
         String in = "AB&quot";
@@ -211,6 +214,7 @@ public class XMLEntityCodecTest extends TestCase
         assertEquals(expected,result);
     }
 
+    @Test
     public void testDecodeNamedNoSemiColonHead()
     {
         String in = "&quotYZ";
@@ -219,6 +223,7 @@ public class XMLEntityCodecTest extends TestCase
         assertEquals(expected,result);
     }
 
+    @Test
     public void testDecodeNamedNoSemiColonLone()
     {
         String in = "&quot";
@@ -227,6 +232,7 @@ public class XMLEntityCodecTest extends TestCase
         assertEquals(expected,result);
     }
 
+    @Test
     public void testDecodeNamedInvalidTail()
     {
         String in = "AB&pound;";
@@ -235,6 +241,7 @@ public class XMLEntityCodecTest extends TestCase
         assertEquals(expected,result);
     }
 
+    @Test
     public void testDecodeNamedInvalidHead()
     {
         String in = "&pound;YZ";
@@ -243,6 +250,7 @@ public class XMLEntityCodecTest extends TestCase
         assertEquals(expected,result);
     }
 
+    @Test
     public void testDecodeNamedInvalidLone()
     {
         String in = "&pound;";

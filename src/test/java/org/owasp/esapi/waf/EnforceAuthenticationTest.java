@@ -19,17 +19,13 @@ import java.net.URL;
 
 import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.TestSuite;
-
+import org.junit.Test;
 import org.owasp.esapi.http.MockHttpServletRequest;
 import org.owasp.esapi.http.MockHttpServletResponse;
 
 public class EnforceAuthenticationTest extends WAFTestCase {
 
-    public static TestSuite suite() {
-        return new TestSuite(EnforceAuthenticationTest.class);
-    }
-
+    @Test
     public void testAuthenticatedRequest() throws Exception {
         // authentication test
         url = new URL( "https://www.example.com/authenticated" );
@@ -40,6 +36,7 @@ public class EnforceAuthenticationTest extends WAFTestCase {
         createAndExecuteWAFResponseCodeTest( waf, request, response, HttpServletResponse.SC_OK );
     }
 
+    @Test
     public void testUnauthenticatedRequest() throws Exception {
         // authentication test
         url = new URL( "http://www.example.com/authenticated" );

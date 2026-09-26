@@ -51,7 +51,6 @@ public class UserInfoSupplierTest {
 
         when(mockAuth.getCurrentUser()).thenReturn(mockUser);
     }
-
     @Test
     public void testHappyPath() throws Exception {
         UserInfoSupplier uis = new UserInfoSupplier();
@@ -65,7 +64,6 @@ public class UserInfoSupplierTest {
 
         verifyNoMoreInteractions(mockAuth, mockUser);
     }
-
     @Test
     public void testLogUserOff() {
         UserInfoSupplier uis = new UserInfoSupplier();
@@ -77,7 +75,6 @@ public class UserInfoSupplierTest {
 
         verifyNoMoreInteractions(mockAuth, mockUser);
     }
-
     @Test
     public void testLogUserNull() {
         when(mockAuth.getCurrentUser()).thenReturn(null);

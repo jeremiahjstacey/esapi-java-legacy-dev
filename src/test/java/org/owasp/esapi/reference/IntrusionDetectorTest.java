@@ -15,10 +15,10 @@
  */
 package org.owasp.esapi.reference;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
+import static org.junit.Assert.assertFalse;
+
+import org.junit.Test;
 import org.owasp.esapi.Authenticator;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.EncoderConstants;
@@ -35,46 +35,7 @@ import org.owasp.esapi.http.MockHttpServletResponse;
  *
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
-public class IntrusionDetectorTest extends TestCase {
-
-    /**
-     * Instantiates a new intrusion detector test.
-     *
-     * @param testName
-     *            the test name
-     */
-    public IntrusionDetectorTest(String testName) {
-        super(testName);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws Exception
-     */
-    protected void setUp() throws Exception {
-        // none
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws Exception
-     */
-    protected void tearDown() throws Exception {
-        // none
-    }
-
-    /**
-     * Suite.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(IntrusionDetectorTest.class);
-
-        return suite;
-    }
+public class IntrusionDetectorTest {
 
     /**
      * Test of addException method, of class org.owasp.esapi.IntrusionDetector.
@@ -82,6 +43,7 @@ public class IntrusionDetectorTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testAddException() throws AuthenticationException {
         System.out.println("addException");
         ESAPI.intrusionDetector().addException( new RuntimeException("message") );
@@ -111,6 +73,7 @@ public class IntrusionDetectorTest extends TestCase {
      * @throws AuthenticationException
      *             the authentication exception
      */
+    @Test
     public void testAddEvent() throws AuthenticationException {
         System.out.println("addEvent");
         String username = ESAPI.randomizer().getRandomString(8, EncoderConstants.CHAR_ALPHANUMERICS);

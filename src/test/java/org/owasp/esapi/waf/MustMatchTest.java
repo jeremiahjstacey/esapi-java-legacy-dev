@@ -19,17 +19,13 @@ import java.net.URL;
 
 import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.TestSuite;
-
+import org.junit.Test;
 import org.owasp.esapi.http.MockHttpServletRequest;
 import org.owasp.esapi.http.MockHttpServletResponse;
 
 public class MustMatchTest extends WAFTestCase {
 
-    public static TestSuite suite() {
-        return new TestSuite(MustMatchTest.class);
-    }
-
+    @Test
     public void testUnauthorizedRequest () throws Exception {
         // Test bad request (no x-roles header)
         url = new URL( "https://www.example.com/admin/config" );
@@ -41,6 +37,7 @@ public class MustMatchTest extends WAFTestCase {
         createAndExecuteWAFResponseCodeTest( waf, request, response, HttpServletResponse.SC_MOVED_PERMANENTLY );
     }
 
+    @Test
     public void testAuthorizedRequest() throws Exception {
         // Test good request (request has x-roles header)
         url = new URL( "https://www.example.com/admin/config" );

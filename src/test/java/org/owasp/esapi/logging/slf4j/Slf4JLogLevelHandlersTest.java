@@ -30,7 +30,6 @@ public class Slf4JLogLevelHandlersTest {
 
     private Marker marker = new BasicMarkerFactory().getMarker(Slf4JLogLevelHandlersTest.class.getSimpleName());
     private Throwable testException = new Throwable("Expected for testing");
-
     @Test
     public void testErrorDelegation() {
         Slf4JLogLevelHandlers.ERROR.isEnabled(mockLogger);
@@ -42,7 +41,6 @@ public class Slf4JLogLevelHandlersTest {
         Mockito.verify(mockLogger, Mockito.times(1)).error(marker, testName.getMethodName(), testException);
         Mockito.verifyNoMoreInteractions(mockLogger);
     }
-
     @Test
     public void testWarnDelegation() {
         Slf4JLogLevelHandlers.WARN.isEnabled(mockLogger);

@@ -1,61 +1,25 @@
 package org.owasp.esapi.util;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.security.Key;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import org.junit.Test;
 import org.owasp.esapi.errors.ConfigurationException;
 
-public class ObjFactoryTest extends TestCase {
-
-    // Purpose of this is to prevent a default, no-arg, public CTOR to be generated.
-    // We want to prevent this so we can use this class to test the case of where
-    // ObjectFactory<T>.make() throws an IllegalAccessException.
-    @SuppressWarnings("unused")
-    private ObjFactoryTest(int i) { ; }
-
-    /**
-     * Instantiates a new object factory test.
-     *
-     * @param testName
-     *            the test name
-     */
-    public ObjFactoryTest(String testName) {
-        super(testName);
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws Exception
-     */
-    protected void setUp() throws Exception {
-        // none
-    }
-
-    /**
-     * {@inheritDoc}
-     * @throws Exception
-     */
-    protected void tearDown() throws Exception {
-        // none
-    }
-
-    /**
-     * Run all the test cases in this suite.
-     * This is to allow running from {@code org.owasp.esapi.AllTests}.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(ObjFactoryTest.class);
-        return suite;
+public class ObjFactoryTest {
+    
+    public static class ConstructorTestTarget {
+        private ConstructorTestTarget(int i) {};
     }
 
     /** Test that NullCipher object is correctly returned. */
+    @Test
     public void testMakeNullCipher() throws ConfigurationException {
         String className = "javax.crypto.NullCipher";
         javax.crypto.Cipher nullCipher =
@@ -67,6 +31,7 @@ public class ObjFactoryTest extends TestCase {
     /** Test that InstantiationException is thrown as the root cause when the
      * specified class name is an abstract class or interface.
      */
+    @Test
     public void testInterface() throws ConfigurationException {
         Key key = null;
         try {
@@ -85,14 +50,15 @@ public class ObjFactoryTest extends TestCase {
      *  FIXME: Need new test. This also throws an InstantiationException as the
      *  root cause. The goal is to have it throw IllegalAccessException.
      */
+    @Test
     public void testMakeNoPublicConstructor() throws ConfigurationException {
-        ObjFactoryTest oft = null;
+        ConstructorTestTarget oft = null;
         try {
             // CHECKME: As I read
             //      http://java.sun.com/docs/books/tutorial/reflect/member/ctorTrouble.html
             // this should cause an IllegalAccessException to be thrown because it has no public,
             // no-arg CTOR. However, it doesn't. It throws a InstantiationException instead.
-            oft = ObjFactory.make(ObjFactoryTest.class.getName(), "ObjectFactoryTest");
+            oft = ObjFactory.make(ConstructorTestTarget.class.getName(), "ConstructorTestTarget");
             assertFalse("Should not be reached - no public CTOR", oft != null);
         } catch(ConfigurationException ex) {
             Throwable cause = ex.getCause();
@@ -104,6 +70,7 @@ public class ObjFactoryTest extends TestCase {
     /** Test that ClassNotFoundException is thrown as the root cause when
      * the class name to be created is not a class name that exists anywhere.
      */
+    @Test
     public void testMakeNoSuchClass() throws ConfigurationException {
         Object obj = null;
 
@@ -120,6 +87,7 @@ public class ObjFactoryTest extends TestCase {
      * created class is not a subclass / does not implement the specified type.
      * (In this case, String is not a subclass / does not implement Key.)
      */
+    @Test
     public void testMakeNotASubclass() throws ConfigurationException {
         Key key = null;
         try {
@@ -137,6 +105,7 @@ public class ObjFactoryTest extends TestCase {
     /** Test that IllegalArgumentException is thrown as the cause when the
      * class name is specified as an empty string.
      */
+    @Test
     public void testMakeEmptyClassName() throws ConfigurationException {
         Object obj = null;
         try {
@@ -152,6 +121,7 @@ public class ObjFactoryTest extends TestCase {
      * root cause. Had to use special external class here because strangely, this didn't
      * work as an inner class. (Threw InstantiationException in that case instead.)
      */
+    @Test
     public void testMakeOtherException() throws ConfigurationException {
         @SuppressWarnings("unused")
         ThePrefectClass ford = null;
@@ -164,6 +134,7 @@ public class ObjFactoryTest extends TestCase {
     }
 
     /** Test case where typeName is null or empty string. */
+    @Test
     public void testNullorEmptyTypeName() throws ConfigurationException {
         String className = "javax.crypto.NullCipher";
         javax.crypto.Cipher nullCipher =
@@ -178,6 +149,7 @@ public class ObjFactoryTest extends TestCase {
      * Javadoc for {@code Class.newInstance()} one would think this should
      * throw an {@code IllegalAccessException} because {@code SecretKeySpec}
      * has two public CTORs that both take arguments. */
+    @Test
     public void testMakeCipher() throws ConfigurationException {
         try {
             String className = "javax.crypto.spec.SecretKeySpec";
@@ -194,6 +166,7 @@ public class ObjFactoryTest extends TestCase {
      * default), and then create 100k instances with cache disabled. Time each.
      * The cached version should save some time.
      */
+    @Test
     public void testObjFactoryCache() throws Exception {
         final int reps = 100000;
         System.out.println("testObjFactoryCache: " + reps + " iterations.");

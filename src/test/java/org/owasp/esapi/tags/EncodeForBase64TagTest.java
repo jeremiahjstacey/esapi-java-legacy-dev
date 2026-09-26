@@ -28,7 +28,6 @@ public class EncodeForBase64TagTest {
         Mockito.verify(encoder, Mockito.times(1)).encodeForBase64(input.getBytes("UTF-8"), false);
         
     }
-    
     @Test
     public void testSettersGetters() {
         EncodeForBase64Tag uit = new EncodeForBase64Tag();

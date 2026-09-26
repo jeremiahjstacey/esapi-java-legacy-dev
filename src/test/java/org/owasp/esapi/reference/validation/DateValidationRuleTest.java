@@ -58,20 +58,17 @@ public class DateValidationRuleTest {
         exEx.expectMessage("DateValidationRule.setDateFormat requires a non-null DateFormat");
         new DateValidationRule("context", mockEncoder, null);
     }
-
     @Test
     public void testCtrSetDateFormat() {
         DateFormat uitFormat = Whitebox.getInternalState(uit, "format");
         Assert.assertEquals(testFormat, uitFormat);
     }
-
     @Test
     public void testsetDateFormatNullThrows() {
         exEx.expect(IllegalArgumentException.class);
         exEx.expectMessage("DateValidationRule.setDateFormat requires a non-null DateFormat");
         uit.setDateFormat(null);
     }
-
     @Test
     public void testsetDateFormat() {
         boolean acceptLenient = ESAPI.securityConfiguration().getBooleanProp( ACCEPT_LENIENT_DATES );
@@ -85,14 +82,12 @@ public class DateValidationRuleTest {
         Assert.assertEquals(newFormat, uitFormat);
         Mockito.verify(newFormat).setLenient(acceptLenient);
     }
-
     @Test
     public void testGetValidNullInputAllowed() throws ValidationException {
         uit.setAllowNull(true);
         Date vDate = uit.getValid(contextStr, null);
         Assert.assertNull(vDate);
     }
-
     @Test
     public void testGetValidNullInputNotAllowed() throws ValidationException {
         exEx.expect(ValidationException.class);
@@ -100,7 +95,6 @@ public class DateValidationRuleTest {
         uit.setAllowNull(false);
         uit.getValid(contextStr, null);
     }
-
     @Test
     public void testGetValidNullInputNotAllowedEmptyString() throws ValidationException {
         exEx.expect(ValidationException.class);
@@ -108,7 +102,6 @@ public class DateValidationRuleTest {
         uit.setAllowNull(false);
         uit.getValid(contextStr, "");
     }
-
     @Test
     public void testGetValidBadDateThrows() throws ValidationException, ParseException {
         exEx.expect(ValidationException.class);
@@ -126,7 +119,6 @@ public class DateValidationRuleTest {
 
         uit.getValid(contextStr, dateString);
     }
-
     @Test
     public void testGetValidHappyPath() throws ValidationException, ParseException {
         Mockito.when(mockEncoder.canonicalize(dateString)).thenReturn(canonDateString);
@@ -135,7 +127,6 @@ public class DateValidationRuleTest {
         Date date = uit.getValid(contextStr, dateString);
         Assert.assertEquals(testDate, date);
     }
-
     @Test
     public void testGetValidDateWithCruft() throws ValidationException, ParseException {
         String cruftyDate = canonDateString + "' union select * from another_table where user_id like '%";
@@ -145,29 +136,24 @@ public class DateValidationRuleTest {
         Date date = uit.getValid(contextStr, cruftyDate);
         Assert.assertEquals(testDate, date);
     }
-
-
     @Test
     public void testSanitizeNullInputAllowed() throws ValidationException {
         uit.setAllowNull(true);
         Date vDate = uit.sanitize(contextStr, null);
         Assert.assertNull(vDate);
     }
-
     @Test
     public void testSanitizeNullInputNotAllowed() throws ValidationException {
         uit.setAllowNull(false);
         Date date = uit.sanitize(contextStr, null);
         Assert.assertEquals(0, date.getTime());
     }
-
     @Test
     public void testSanitizeNullInputNotAllowedEmptyString() throws ValidationException {
         uit.setAllowNull(false);
         Date date = uit.sanitize(contextStr, "");
         Assert.assertEquals(0, date.getTime());
     }
-
     @Test
     public void testSanitizeBadDateReturnsDefault() throws ValidationException, ParseException {
         Mockito.when(mockEncoder.canonicalize(dateString)).thenReturn(canonDateString);
@@ -176,7 +162,6 @@ public class DateValidationRuleTest {
         Date date =  uit.sanitize(contextStr, dateString);
         Assert.assertEquals(0, date.getTime());
     }
-
     @Test
     public void testSanitizeErrorListContainsError() throws ValidationException, ParseException {
         ValidationErrorList vel = new ValidationErrorList();
@@ -189,7 +174,6 @@ public class DateValidationRuleTest {
         ValidationException wrapper = vel.errors().get(0);
         Assert.assertEquals(testParseEx, wrapper.getCause());
     }
-
     @Test
     public void testSanitizeHappyPath() throws ValidationException, ParseException {
         Mockito.when(mockEncoder.canonicalize(dateString)).thenReturn(canonDateString);
@@ -207,7 +191,6 @@ public class DateValidationRuleTest {
         Date date = uit.sanitize(contextStr, cruftyDate);
         Assert.assertEquals(0, date.getTime());
     }
-
     @Test
     public void testGithubIssue299() throws ParseException, ValidationException {
         Map<DateFormat, String> formatDateMap = new HashMap<>();

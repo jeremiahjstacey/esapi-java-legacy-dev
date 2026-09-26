@@ -81,7 +81,6 @@ public class ExecutorTest {
         //Object ref is ignored since field is static.
         singletonField.set(new Object(), null);
     }
-
     @Test
     public void testPlatformResoveWindows() throws Exception {
         String origName = System.getProperty("os.name");
@@ -105,7 +104,6 @@ public class ExecutorTest {
             resetSingletonField();
         }
     }
-
     @Test
     public void testPlatformResolveNx() throws Exception{
         String origName = System.getProperty("os.name");

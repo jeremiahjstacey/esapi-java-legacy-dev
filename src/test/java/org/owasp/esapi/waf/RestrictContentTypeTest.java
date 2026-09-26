@@ -17,14 +17,13 @@ package org.owasp.esapi.waf;
 
 import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.TestSuite;
+import org.junit.Test;
+
+
 
 public class RestrictContentTypeTest extends WAFTestCase {
 
-    public static TestSuite suite() {
-        return new TestSuite(RestrictContentTypeTest.class);
-    }
-
+    @Test
     public void testNoContentType() throws Exception {
 
         WAFTestUtility.createAndExecuteWAFTransaction( "waf-policies/restrict-content-type-policy.xml", request, response );
@@ -32,6 +31,7 @@ public class RestrictContentTypeTest extends WAFTestCase {
         assert(response.getStatus() == HttpServletResponse.SC_OK);
     }
 
+    @Test
     public void testGoodContentType() throws Exception {
         request.addHeader("Content-Type","text/html");
 
@@ -40,6 +40,7 @@ public class RestrictContentTypeTest extends WAFTestCase {
         assert(response.getStatus() == HttpServletResponse.SC_OK);
     }
 
+    @Test
     public void testBadContentType() throws Exception {
         request.addHeader("Content-Type","multipart/form-upload");
 

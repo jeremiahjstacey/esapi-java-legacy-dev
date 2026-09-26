@@ -15,14 +15,18 @@
  */
 package org.owasp.esapi.reference.crypto;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.UnsupportedEncodingException;
 
 import javax.crypto.SecretKey;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
+import org.junit.Before;
+import org.junit.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.EncoderConstants;
 import org.owasp.esapi.Encryptor;
@@ -32,7 +36,6 @@ import org.owasp.esapi.crypto.PlainText;
 import org.owasp.esapi.errors.EncryptionException;
 import org.owasp.esapi.errors.EnterpriseSecurityException;
 import org.owasp.esapi.errors.IntegrityException;
-import org.owasp.esapi.reference.crypto.JavaEncryptor;
 
 /**
  * The Class EncryptorTest.
@@ -40,7 +43,7 @@ import org.owasp.esapi.reference.crypto.JavaEncryptor;
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  * @author kevin.w.wall@gmail.com
  */
-public class EncryptorTest extends TestCase {
+public class EncryptorTest {
 
     public static boolean unlimitedStrengthJurisdictionPolicyInstalled = false;
     static {
@@ -55,53 +58,27 @@ public class EncryptorTest extends TestCase {
         }
     }
 
-    /**
-     * Instantiates a new encryptor test.
-     *
-     * @param testName
-     *            the test name
-     */
-    public EncryptorTest(String testName) {
-        super(testName);
-    }
 
     /**
      * {@inheritDoc}
      * @throws Exception
      */
+    @Before
     @SuppressWarnings("deprecation")
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         // This is only mechanism to change this for now. Will do this with
         // a soon to be CryptoControls class or equivalent mechanism in a
         // future release.
         ESAPI.securityConfiguration().setCipherTransformation("AES/CBC/PKCS5Padding");
     }
 
-    /**
-     * {@inheritDoc}
-     * @throws Exception
-     */
-    protected void tearDown() throws Exception {
-        // none
-    }
-
-    /**
-     * Run all the test cases in this suite.
-     * This is to allow running from {@code org.owasp.esapi.AllTests}.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(EncryptorTest.class);
-
-        return suite;
-    }
 
     /**
      * Test of hash method, of class org.owasp.esapi.Encryptor.
      *
      * @throws EncryptionException
      */
+    @Test
     public void testHash() throws EncryptionException {
         System.out.println("testHash()");
         Encryptor instance = ESAPI.encryptor();
@@ -120,6 +97,7 @@ public class EncryptorTest extends TestCase {
      * @throws EncryptionException
      *             the encryption exception
      */
+    @Test
     public void testEncryptDecrypt1() throws EncryptionException {
         System.out.println("testEncryptDecrypt2()");
         Encryptor instance = ESAPI.encryptor();
@@ -138,6 +116,7 @@ public class EncryptorTest extends TestCase {
      * Test of new encrypt / decrypt method for Strings whose length is
      * same as cipher block size (16 bytes for AES).
      */
+    @Test
     public void testEncryptDecrypt2() {
         System.out.println("testEncryptDecrypt2()");
         Encryptor instance = ESAPI.encryptor();
@@ -155,6 +134,7 @@ public class EncryptorTest extends TestCase {
     /**
      * Test of encrypt methods for empty String.
      */
+    @Test
     public void testEncryptEmptyStrings() {
         System.out.println("testEncryptEmptyStrings()");
         Encryptor instance = ESAPI.encryptor();
@@ -172,6 +152,7 @@ public class EncryptorTest extends TestCase {
     /**
      * Test encryption method for null.
      */
+    @Test
     public void testEncryptNull() {
         System.out.println("testEncryptNull()");
         Encryptor instance = ESAPI.encryptor();
@@ -187,6 +168,7 @@ public class EncryptorTest extends TestCase {
     /**
      * Test decryption method for null.
      */
+    @Test
     public void testDecryptNull() {
         System.out.println("testDecryptNull()");
         Encryptor instance = ESAPI.encryptor();
@@ -202,6 +184,7 @@ public class EncryptorTest extends TestCase {
     /**
      * Test of new encrypt / decrypt methods added in ESAPI 2.0.
      */
+    @Test
     public void testNewEncryptDecrypt() {
         System.out.println("testNewEncryptDecrypt()");
         try {
@@ -229,6 +212,7 @@ public class EncryptorTest extends TestCase {
      * min key size specified as Encryptor.EncryptionKeyLength in the file
      * src/test/resources/esapi/ESAPI.properties.
      */
+    @Test
     public void testWithTooShortKey() {
         boolean desTestFailed = false;
         try {
@@ -428,6 +412,7 @@ public class EncryptorTest extends TestCase {
      * @throws EncryptionException
      *             the encryption exception
      */
+    @Test
     public void testSign() throws EncryptionException {
         System.out.println("testSign()");
         Encryptor instance = ESAPI.encryptor();
@@ -444,6 +429,7 @@ public class EncryptorTest extends TestCase {
      * @throws EncryptionException
      *             the encryption exception
      */
+    @Test
     public void testVerifySignature() throws EncryptionException {
         System.out.println("testVerifySignature()");
         Encryptor instance = ESAPI.encryptor();
@@ -458,6 +444,7 @@ public class EncryptorTest extends TestCase {
      *
      * @throws IntegrityException
      */
+    @Test
     public void testSeal() throws IntegrityException {
         System.out.println("testSeal()");
         Encryptor instance = ESAPI.encryptor();
@@ -508,6 +495,7 @@ public class EncryptorTest extends TestCase {
      *
      * @throws EnterpriseSecurityException
      */
+    @Test
     public void testVerifySeal() throws EnterpriseSecurityException {
         final int NSEC = 5;
         System.out.println("testVerifySeal()");
@@ -566,6 +554,7 @@ public class EncryptorTest extends TestCase {
 
 
     @SuppressWarnings("deprecation")
+    @Test
     public void testEncryptionSerialization() throws EncryptionException {
         String secretMsg = "Secret Message";
         ESAPI.securityConfiguration().setCipherTransformation("AES/CBC/PKCS5Padding");
@@ -584,6 +573,7 @@ public class EncryptorTest extends TestCase {
      * visual inspection for now. (Needs improvement.)
      * @throws Exception
      */
+    @Test
     public void testMain() throws Exception {
         System.out.println("testMain(): Encryptor Main with '-print' argument.");
         String[] args = {};

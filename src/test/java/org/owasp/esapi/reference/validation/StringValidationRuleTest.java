@@ -1,16 +1,15 @@
 package org.owasp.esapi.reference.validation;
 
-import junit.framework.Assert;
 
+
+import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.owasp.esapi.Encoder;
 import org.owasp.esapi.ValidationErrorList;
 import org.owasp.esapi.errors.ValidationException;
 
 public class StringValidationRuleTest {
-
     @Test
     public void testWhitelistPattern() throws ValidationException {
 
@@ -28,7 +27,6 @@ public class StringValidationRuleTest {
         Assert.assertEquals("MagnumPI", validationRule.getValid("", "MagnumPI"));
 
     }
-
     @Test
     public void testWhitelistPattern_Invalid() throws ValidationException {
 
@@ -63,7 +61,6 @@ public class StringValidationRuleTest {
             Assert.assertNotNull(ie.getMessage());
         }
     }
-
     @Test
     public void testWhitelist() {
         StringValidationRule validationRule = new StringValidationRule("");
@@ -71,7 +68,6 @@ public class StringValidationRuleTest {
         char[] whitelistArray = new char[] {'a', 'b', 'c'};
         Assert.assertEquals("abc", validationRule.whitelist("12345abcdef", whitelistArray));
     }
-
     @Test
     public void testBlacklistPattern() throws ValidationException {
 
@@ -88,7 +84,6 @@ public class StringValidationRuleTest {
         }
         Assert.assertEquals("beg script end", validationRule.getValid("", "beg script end"));
     }
-
     @Test
     public void testBlacklistPattern_Invalid() throws ValidationException {
 
@@ -123,7 +118,6 @@ public class StringValidationRuleTest {
             Assert.assertNotNull(ie.getMessage());
         }
     }
-
     @Test
     public void testCheckLengths() throws ValidationException {
 
@@ -144,7 +138,6 @@ public class StringValidationRuleTest {
         Assert.assertEquals(null, validationRule.getValid("", "123456789012345", errorList));
         Assert.assertEquals(1, errorList.size());
     }
-
     @Test
     public void testAllowNull() throws ValidationException {
 
@@ -157,7 +150,6 @@ public class StringValidationRuleTest {
         Assert.assertTrue(validationRule.isAllowNull());
         Assert.assertTrue(validationRule.isValid("", null));
     }
-
     @Test
     public void testSetCanonicalize() throws ValidationException {
         String context = "test-scope";

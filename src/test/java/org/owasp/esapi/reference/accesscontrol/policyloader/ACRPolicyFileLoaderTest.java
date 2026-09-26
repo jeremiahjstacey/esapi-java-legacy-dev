@@ -22,7 +22,6 @@ public class ACRPolicyFileLoaderTest {
     public void setUp() throws Exception {
         accessController = ESAPI.accessController();
     }
-
     @Test
     public void testSetup() throws AccessControlException {
         /**

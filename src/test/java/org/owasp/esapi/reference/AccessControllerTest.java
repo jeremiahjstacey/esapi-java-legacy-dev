@@ -15,15 +15,19 @@
  */
 package org.owasp.esapi.reference;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.owasp.esapi.ESAPI;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import org.junit.Test;
 import org.owasp.esapi.AccessController;
 import org.owasp.esapi.Authenticator;
+import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.User;
 import org.owasp.esapi.errors.AccessControlException;
+
+import junit.framework.TestSuite;
 
 
 /**
@@ -31,7 +35,7 @@ import org.owasp.esapi.errors.AccessControlException;
  *
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
-public class AccessControllerTest extends TestCase {
+public class AccessControllerTest {
 
     /**
      * Instantiates a new access controller test.
@@ -40,8 +44,7 @@ public class AccessControllerTest extends TestCase {
      *            the test name
      * @throws Exception
      */
-    public AccessControllerTest(String testName) throws Exception {
-        super(testName);
+    public AccessControllerTest() throws Exception {
 
         Authenticator authenticator = ESAPI.authenticator();
         String password = authenticator.generateStrongPassword();
@@ -69,36 +72,12 @@ public class AccessControllerTest extends TestCase {
         mitch.addRole("user");
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @throws Exception
-     */
-    protected void setUp() throws Exception {
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @throws Exception
-     */
-    protected void tearDown() throws Exception {
-        // none
-    }
-
-    /**
-     * Suite.
-     *
-     * @return the test
-     */
-    public static Test suite() {
-        TestSuite suite = new TestSuite(AccessControllerTest.class);
-        return suite;
-    }
+  
 
     /**
      *
      */
+    @Test
     public void testMatchRule() {
         ESAPI.authenticator().setCurrentUser(null);
         assertFalse(ESAPI.accessController().isAuthorizedForURL("/nobody"));
@@ -110,6 +89,7 @@ public class AccessControllerTest extends TestCase {
      *
      * @throws Exception
      */
+    @Test
     public void testIsAuthorizedForURL() throws Exception {
         System.out.println("isAuthorizedForURL");
         AccessController instance = ESAPI.accessController();
@@ -163,6 +143,7 @@ public class AccessControllerTest extends TestCase {
      * Test of isAuthorizedForFunction method, of class
      * org.owasp.esapi.AccessController.
      */
+    @Test
     public void testIsAuthorizedForFunction() {
         System.out.println("isAuthorizedForFunction");
         AccessController instance = ESAPI.accessController();
@@ -205,6 +186,7 @@ public class AccessControllerTest extends TestCase {
      * Test of isAuthorizedForData method, of class
      * org.owasp.esapi.AccessController.
      */
+    @Test
     public void testIsAuthorizedForData() {
         System.out.println("isAuthorizedForData");
         AccessController instance = ESAPI.accessController();
@@ -286,6 +268,7 @@ public class AccessControllerTest extends TestCase {
      * Test of isAuthorizedForFile method, of class
      * org.owasp.esapi.AccessController.
      */
+    @Test
     public void testIsAuthorizedForFile() {
         System.out.println("isAuthorizedForFile");
         AccessController instance = ESAPI.accessController();
@@ -322,6 +305,7 @@ public class AccessControllerTest extends TestCase {
      * Test of isAuthorizedForService method, of class
      * org.owasp.esapi.AccessController.
      */
+    @Test
     public void testIsAuthorizedForService() {
         System.out.println("isAuthorizedForService");
         AccessController instance = ESAPI.accessController();
