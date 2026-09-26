@@ -47,8 +47,6 @@ import org.owasp.esapi.codecs.WindowsCodec;
 import org.owasp.esapi.errors.EncodingException;
 import org.owasp.esapi.errors.IntrusionException;
 
-import junit.framework.TestSuite;
-
 
 /**
  * The Class EncoderTest.
