@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.ExecuteResult;
 import org.owasp.esapi.Executor;

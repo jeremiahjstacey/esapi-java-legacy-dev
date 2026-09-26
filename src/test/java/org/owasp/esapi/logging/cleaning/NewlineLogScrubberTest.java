@@ -15,7 +15,7 @@
 package org.owasp.esapi.logging.cleaning;
 
 import static org.junit.Assert.assertEquals;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class NewlineLogScrubberTest {
 

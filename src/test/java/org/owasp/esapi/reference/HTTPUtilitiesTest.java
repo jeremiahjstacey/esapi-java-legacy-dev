@@ -38,7 +38,7 @@ import javax.servlet.http.HttpSession;
 
 // import org.junit.Ignore;     // Doesn't seem to work with TestSuite.
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
 import org.owasp.esapi.Authenticator;
 import org.owasp.esapi.ESAPI;

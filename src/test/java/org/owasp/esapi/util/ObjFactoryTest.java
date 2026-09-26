@@ -9,7 +9,7 @@ import java.security.Key;
 
 import javax.crypto.spec.SecretKeySpec;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.errors.ConfigurationException;
 
 public class ObjFactoryTest {

@@ -18,7 +18,7 @@ package org.owasp.esapi.reference;
 
 import static org.junit.Assert.assertFalse;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.Authenticator;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.EncoderConstants;

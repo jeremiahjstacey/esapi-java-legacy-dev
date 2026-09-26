@@ -24,7 +24,7 @@ import java.util.Map;
 
 import javax.servlet.FilterConfig;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.http.MockFilterChain;
 import org.owasp.esapi.http.MockFilterConfig;
 import org.owasp.esapi.http.MockHttpServletRequest;

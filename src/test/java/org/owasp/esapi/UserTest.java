@@ -15,7 +15,7 @@
  */
 package org.owasp.esapi;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)

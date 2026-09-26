@@ -3,7 +3,7 @@ package org.owasp.esapi.reference.validation;
 
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.owasp.esapi.Encoder;
 import org.owasp.esapi.ValidationErrorList;

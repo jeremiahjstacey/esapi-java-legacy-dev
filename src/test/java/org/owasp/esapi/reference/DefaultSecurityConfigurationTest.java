@@ -10,7 +10,7 @@ import static org.junit.Assert.fail;
 import java.util.regex.Pattern;
 import java.util.Properties;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Logger;

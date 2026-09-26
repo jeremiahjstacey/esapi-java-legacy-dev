@@ -3,7 +3,7 @@ package org.owasp.esapi.codecs;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class HTMLEntityCodecTest {
     Codec<Integer> codec = new HTMLEntityCodec();

@@ -2,7 +2,7 @@ package org.owasp.esapi.waf.actions;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DefaultActionTest {
 

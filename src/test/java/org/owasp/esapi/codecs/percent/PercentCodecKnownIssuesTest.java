@@ -17,7 +17,7 @@ package org.owasp.esapi.codecs.percent;
 import static org.junit.Assert.assertEquals;
 import static org.owasp.esapi.codecs.percent.PercentCodecStringTest.PERCENT_CODEC_IMMUNE;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.codecs.PercentCodec;
 /**
  * This test class holds the proof of known deficiencies, inconsistencies, or bugs with the PercentCodec implementation.
