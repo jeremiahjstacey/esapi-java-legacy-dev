@@ -1,16 +1,16 @@
 package org.owasp.esapi.codecs;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hamcrest.Matcher;
-import org.hamcrest.core.IsEqual;
 import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ErrorCollector;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
 import org.owasp.esapi.codecs.MySQLCodec.Mode;
 import org.powermock.reflect.Whitebox;
@@ -33,14 +33,9 @@ public class MySQLCodecTest {
     private MySQLCodec uitAnsi = new MySQLCodec(Mode.ANSI);
     private MySQLCodec uitMySqlStandard = new MySQLCodec(Mode.STANDARD);
 
+    private String testName;
 
-    @Rule
-    public ErrorCollector errorCollector = new ErrorCollector();
-    @Rule
-    public ExpectedException exEx = ExpectedException.none();
-
-
-    @BeforeClass
+    @BeforeAll
     public static void createCodecEscapeMaps () {
         Map<Character, String> escapesStd = new HashMap<>();
         escapesStd.put( (char)0x00,  "\\0");
@@ -62,6 +57,10 @@ public class MySQLCodecTest {
         ANSI_ESCAPES = escapesAnsi;
     }
 
+    public void setup(TestInfo testInfo) {
+        this.testName = testInfo.getDisplayName();
+    }
+
     /**
      * ANSI
      * Test showing that for characters up to 256, the only encoded value is the single tick.
@@ -76,17 +75,22 @@ public class MySQLCodecTest {
 
 
             String charAsString = "" + refChar;
-            String expected = charAsString;
-            String encodeMsg = String.format("%s (%s) should not be altered when Encoded through the ANSI MySQLCodec", charAsString, ref);
-            String decodeMsg = String.format("%s (%s) [%s] should match original value when DECODED through the ANSI MySQLCodec", charAsString, ref, expected);
+            final String expected;
+            final String encodeMsg;
             if (shouldEscape) {
                 expected = ANSI_ESCAPES.get(refChar);
                 encodeMsg = String.format("%s (%s) should have been escaped when Encoded through the ANSI MySQLCodec", charAsString, ref);
+            } else {
+                expected = charAsString;
+                encodeMsg = String.format("%s (%s) should not be altered when Encoded through the ANSI MySQLCodec", charAsString, ref);
             }
-            Matcher<String> encodeExpect = new IsEqual<>(expected);
-            Matcher<String> decodeExpect = new IsEqual<>(charAsString);
-            errorCollector.checkThat(encodeMsg, uitAnsi.encode(EMPTY_CHAR_ARRAY, charAsString), encodeExpect);
-            errorCollector.checkThat(decodeMsg, uitAnsi.decode(expected), decodeExpect);
+
+            String decodeMsg = String.format("%s (%s) [%s] should match original value when DECODED through the ANSI MySQLCodec", charAsString, ref, expected);
+
+            assertAll(testName,
+                    () -> assertEquals(expected, uitAnsi.encode(EMPTY_CHAR_ARRAY, charAsString), encodeMsg),
+                    () -> assertEquals(charAsString, uitAnsi.decode(expected), decodeMsg)
+                    );
         }
     }
     @Test
@@ -101,10 +105,10 @@ public class MySQLCodecTest {
             String encodeMsg = String.format("%s (%s) should not be escaped when in the immunity list provided to Encoded through the ANSI MySQLCodec", charAsString, refChar);
             String decodeMsg = String.format("%s (%s) [%s] should match original value when Encoded through the ANSI MySQLCodec", charAsString, ref, expected);
 
-            Matcher<String> encodeExpect = new IsEqual<>(expected);
-            Matcher<String> decodeExpect = new IsEqual<>(charAsString);
-            errorCollector.checkThat(encodeMsg, uitAnsi.encode(immuneChars, charAsString), encodeExpect);
-            errorCollector.checkThat(decodeMsg, uitAnsi.decode(expected), decodeExpect);
+            assertAll(testName,
+                    () -> assertEquals(expected, uitAnsi.encode(immuneChars, charAsString), encodeMsg),
+                    () ->  assertEquals(charAsString, uitAnsi.decode(expected), decodeMsg)
+                    );
         }
     }
     /** Upper case letters should not be mutated by the implementation.*/
@@ -135,10 +139,10 @@ public class MySQLCodecTest {
             String encodeMsg = String.format("%s (%s) should not be changed when Encoded through the Standard MySQLCodec", charAsString, ref);
             String decodeMsg = String.format("%s (%s) [%s] should match original value when Encoded through the Standard MySQLCodec", charAsString, ref, expected);
 
-            Matcher<String> encodeExpect = new IsEqual<>(expected);
-            Matcher<String> decodeExpect = new IsEqual<>(charAsString);
-            errorCollector.checkThat(encodeMsg, uitMySqlStandard.encode(EMPTY_CHAR_ARRAY, charAsString), encodeExpect);
-            errorCollector.checkThat(decodeMsg, uitMySqlStandard.decode(expected), decodeExpect);
+            assertAll(testName,
+                    () ->   assertEquals(expected, uitMySqlStandard.encode(EMPTY_CHAR_ARRAY, charAsString), encodeMsg),
+                    () -> assertEquals(charAsString, uitMySqlStandard.decode(expected), decodeMsg)
+                    );
         }
     }
 
@@ -158,11 +162,10 @@ public class MySQLCodecTest {
             String encodeMsg = String.format("%s (%s) should have been escaped when Encoded through the Standard MySQLCodec", charAsString, refChar);
             String decodeMsg = String.format("%s (%s) [%s] should match original value when Encoded through the Standard MySQLCodec", charAsString, ref, expected);
 
-            Matcher<String> encodeExpect = new IsEqual<>(expected);
-            Matcher<String> decodeExpect = new IsEqual<>(charAsString);
-            errorCollector.checkThat(encodeMsg, uitMySqlStandard.encode(EMPTY_CHAR_ARRAY, charAsString), encodeExpect);
-            errorCollector.checkThat(decodeMsg, uitMySqlStandard.decode(expected), decodeExpect);
-
+            assertAll(testName,
+                    () ->  assertEquals(expected, uitMySqlStandard.encode(EMPTY_CHAR_ARRAY, charAsString), encodeMsg),
+                    () ->  assertEquals(charAsString, uitMySqlStandard.decode(expected), decodeMsg)
+                    );
         }
     }
     @Test
@@ -173,15 +176,15 @@ public class MySQLCodecTest {
         for (char refChar : immuneChars) {
             int ref = refChar;
             String charAsString = "" + refChar;
-          //Typically, we should expect the encode to be the original value prefixed by two backslashes.
+            //Typically, we should expect the encode to be the original value prefixed by two backslashes.
             String expected =  charAsString;
             String encodeMsg = String.format("%s (%s) should not be escaped when in the immunity list provided to Encoded through the Standard MySQLCodec", charAsString, refChar);
             String decodeMsg = String.format("%s (%s) [%s] should match original value when Encoded through the Standard MySQLCodec", charAsString, ref, expected);
 
-            Matcher<String> encodeExpect = new IsEqual<>(expected);
-            Matcher<String> decodeExpect = new IsEqual<>(charAsString);
-            errorCollector.checkThat(encodeMsg, uitMySqlStandard.encode(immuneChars, charAsString), encodeExpect);
-            errorCollector.checkThat(decodeMsg, uitMySqlStandard.decode(expected), decodeExpect);
+            assertAll(testName,
+                    () -> assertEquals(expected, uitMySqlStandard.encode(immuneChars, charAsString), encodeMsg),
+                    () ->  assertEquals(charAsString, uitMySqlStandard.decode(expected), decodeMsg)
+                    );
         }
     }
     /**
@@ -195,10 +198,10 @@ public class MySQLCodecTest {
             String encodeMsg = String.format("%s (%s) should have been escaped when Encoded through the Standard MySQLCodec", charAsString, (int) refChar.charValue());
             String decodeMsg = String.format("%s (%s) [%s] should match original value when Encoded through the Standard MySQLCodec", charAsString, (int) refChar.charValue(), expected);
 
-            Matcher<String> encodeExpect = new IsEqual<>(expected);
-            Matcher<String> decodeExpect = new IsEqual<>(charAsString);
-            errorCollector.checkThat(encodeMsg, uitMySqlStandard.encode(EMPTY_CHAR_ARRAY, charAsString), encodeExpect);
-            errorCollector.checkThat(decodeMsg, uitMySqlStandard.decode(expected), decodeExpect);
+            assertAll(testName,
+                    () ->   assertEquals(expected, uitMySqlStandard.encode(EMPTY_CHAR_ARRAY, charAsString), encodeMsg),
+                    () ->  assertEquals(charAsString, uitMySqlStandard.decode(expected), decodeMsg)
+                    );
         }
     }
 
@@ -332,11 +335,13 @@ public class MySQLCodecTest {
     }
     @Test
     public void testCreateUnsupportedModeByInt() {
-        exEx.expect(IllegalArgumentException.class);
         String message = String.format("No Mode for %s. Valid references are MySQLStandard: %s or ANSI: %s", Integer.MIN_VALUE, MySQLCodec.MYSQL_MODE, MySQLCodec.ANSI_MODE);
-        exEx.expectMessage(message);
-        new MySQLCodec(Integer.MIN_VALUE);
 
+        IllegalArgumentException exEx = assertThrows(IllegalArgumentException.class, () -> {
+            new MySQLCodec(Integer.MIN_VALUE);
+        });
+
+        assertEquals(message, exEx.getMessage());
     }
     private static class InclusiveRangePair {
         private final int upperInclusive;
