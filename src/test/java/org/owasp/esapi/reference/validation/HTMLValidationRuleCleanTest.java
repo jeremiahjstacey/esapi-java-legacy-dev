@@ -15,36 +15,24 @@
  */
 package org.owasp.esapi.reference.validation;
 
-import org.owasp.esapi.ESAPI;
-import org.owasp.esapi.EncoderConstants;
-import org.owasp.esapi.SecurityConfiguration;
-import org.owasp.esapi.SecurityConfigurationWrapper;
-import org.owasp.esapi.ValidationErrorList;
-import org.owasp.esapi.ValidationRule;
-import org.owasp.esapi.Validator;
-import org.owasp.esapi.errors.IntrusionException;
-import org.owasp.esapi.errors.ValidationException;
-import org.owasp.esapi.filters.SecurityWrapperRequest;
-import org.owasp.esapi.reference.validation.HTMLValidationRule;
-import static org.owasp.esapi.PropNames.VALIDATOR_HTML_VALIDATION_ACTION;
-
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.After;
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
-import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.owasp.esapi.PropNames.VALIDATOR_HTML_VALIDATION_ACTION;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.owasp.esapi.ESAPI;
+import org.owasp.esapi.SecurityConfiguration;
+import org.owasp.esapi.SecurityConfigurationWrapper;
+import org.owasp.esapi.ValidationErrorList;
+import org.owasp.esapi.Validator;
+import org.owasp.esapi.errors.IntrusionException;
+import org.owasp.esapi.errors.ValidationException;
 
 /**
  * The Class HTMLValidationRuleCleanTest.
@@ -94,12 +82,12 @@ public class HTMLValidationRuleCleanTest {
     public HTMLValidationRuleCleanTest() {
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         ESAPI.override(null);
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         ESAPI.override(
             new ConfOverride( origConfig, "clean" )

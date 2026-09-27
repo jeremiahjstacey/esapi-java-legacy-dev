@@ -25,8 +25,8 @@ import java.io.UnsupportedEncodingException;
 
 import javax.crypto.SecretKey;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.EncoderConstants;
 import org.owasp.esapi.Encryptor;
@@ -58,12 +58,11 @@ public class EncryptorTest {
         }
     }
 
-
     /**
      * {@inheritDoc}
      * @throws Exception
      */
-    @Before
+    @BeforeEach
     @SuppressWarnings("deprecation")
     public void setUp() throws Exception {
         // This is only mechanism to change this for now. Will do this with

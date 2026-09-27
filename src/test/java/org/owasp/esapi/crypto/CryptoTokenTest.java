@@ -1,16 +1,18 @@
 package org.owasp.esapi.crypto;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Date;
 import java.util.Map;
 
 import javax.crypto.SecretKey;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.errors.EncryptionException;
 import org.owasp.esapi.errors.ValidationException;
 
@@ -19,14 +21,10 @@ public class CryptoTokenTest {
     private SecretKey skey1 = null;
     private SecretKey skey2 = null;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         skey1 = CryptoHelper.generateSecretKey("AES", 128);
         skey2 = CryptoHelper.generateSecretKey("AES", 128);
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

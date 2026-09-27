@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.Encoder;
@@ -83,7 +83,7 @@ public class EncoderTest {
      * {@inheritDoc}s
      * @throws Exception
      */
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         ESAPI.override(null); // Restore
     }

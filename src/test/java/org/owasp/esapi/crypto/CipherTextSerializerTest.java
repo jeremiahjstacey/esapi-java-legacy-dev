@@ -1,16 +1,15 @@
 package org.owasp.esapi.crypto;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.errors.EncryptionException;
 
@@ -20,15 +19,8 @@ public class CipherTextSerializerTest {
                                             // about this being unread field. See
                                             // testAsSerializedByteArray().
 
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
 
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
-
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         encryptor = Cipher.getInstance("AES/CBC/PKCS5Padding");
         byte[] ivBytes = null;
@@ -36,7 +28,7 @@ public class CipherTextSerializerTest {
         ivSpec = new IvParameterSpec(ivBytes);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         System.out.flush();
     }

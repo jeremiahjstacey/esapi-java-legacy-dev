@@ -25,9 +25,9 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.owasp.esapi.SafeFile;
 import org.owasp.esapi.errors.ValidationException;
 import org.owasp.esapi.util.CollectionsUtil;
@@ -53,7 +53,7 @@ public class SafeFileTest
     /**
      * {@inheritDoc}
      */
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
         // create a file to test with
@@ -66,7 +66,7 @@ public class SafeFileTest
     /**
      * {@inheritDoc}
      */
-    @After
+    @AfterEach
     public void tearDown() throws Exception
     {
         FileTestUtils.deleteRecursively(testDir);
