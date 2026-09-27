@@ -19,6 +19,7 @@ package org.owasp.esapi.reference;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -26,7 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
@@ -36,10 +39,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.function.Executable;
 import org.owasp.esapi.Authenticator;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.EncoderConstants;
@@ -94,6 +99,22 @@ public class AuthenticatorTest {
         }
     }
 
+    /**
+     * Utility function used to print all exceptions from failures in separate threads    
+     * @param throwables
+     */
+    void checkAllExceptions(List<Throwable> throwables) {
+        if (throwables == null || throwables.isEmpty()) {
+            return;
+        }
+        // Map the list of Throwables to an array of JUnit 5 Executables
+        Executable[] assertions = throwables.stream()
+            .map(t -> (Executable) () -> fail("Failure captured from test Thread implementation", t))
+            .toArray(Executable[]::new);
+
+        // Execute all of them together
+        assertAll(assertions);
+    }
 
     /**
      * Test of createAccount method, of class org.owasp.esapi.Authenticator.
@@ -201,7 +222,7 @@ public class AuthenticatorTest {
         assertEquals( currentUser, user1 );
         instance.setCurrentUser( user2 );
         assertFalse( currentUser.getAccountName().equals( user2.getAccountName() ) );
-
+        final List<Throwable> threadErrs = new ArrayList<>();
         Runnable echo = new Runnable() {
             public void run() {
                 User a = null;
@@ -216,10 +237,14 @@ public class AuthenticatorTest {
                     a = instance.createUser(accountName, password, password);
                     instance.setCurrentUser(a);
                 } catch (AuthenticationException e) {
-                    fail("Authentication Exception Thrown", e);
+                    threadErrs.add(e);
                 }
                 User b = instance.getCurrentUser();
-                assertEquals(a, b,"Logged in user should equal original user");
+                try {
+                    assertEquals(a, b,"Logged in user should equal original user");
+                } catch (Throwable th) {
+                    threadErrs.add(th);
+                }
             }
         };
         ThreadGroup tg = new ThreadGroup("test");
@@ -229,6 +254,8 @@ public class AuthenticatorTest {
         while (tg.activeCount() > 0 ) {
             Thread.sleep(100);
         }
+        checkAllExceptions(threadErrs);
+        
     }
 
     /**
@@ -430,6 +457,7 @@ public class AuthenticatorTest {
         instance.setCurrentUser( userTwo );
         assertFalse( currentUser.getAccountName().equals( userTwo.getAccountName() ) );
         final CountDownLatch latch = new CountDownLatch(10);
+        final List<Throwable> threadErrs = new ArrayList<>();
         Runnable echo = new Runnable() {
             public void run() {
                 User u=null;
@@ -443,7 +471,7 @@ public class AuthenticatorTest {
                     //If the user isn't removed every subsequent execution will fail because we cannot create a duplicate user of the same name!
                     instance.removeUser( u.getAccountName() );
                 } catch (AuthenticationException e) {
-                    fail("Authentication Exception Thrown", e);
+                    threadErrs.add(e);
                 } finally {
                     latch.countDown();
                 }
@@ -455,6 +483,7 @@ public class AuthenticatorTest {
         while(!latch.await(500, TimeUnit.MILLISECONDS)) {
             //Spurious Interrupt Guard.
         }
+        checkAllExceptions(threadErrs);
     }
 
 
