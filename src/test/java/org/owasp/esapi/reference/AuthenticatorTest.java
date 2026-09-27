@@ -15,14 +15,16 @@
  */
 package org.owasp.esapi.reference;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+
+
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.util.Calendar;
 import java.util.Set;
@@ -33,15 +35,11 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hamcrest.core.IsEqual;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ErrorCollector;
-import org.junit.rules.TestName;
-import org.junit.rules.Timeout;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.owasp.esapi.Authenticator;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.EncoderConstants;
@@ -58,6 +56,7 @@ import org.owasp.esapi.http.MockHttpServletResponse;
  *
  * @author Jeff Williams (jeff.williams@aspectsecurity.com)
  */
+@Timeout(value = 5, unit = TimeUnit.MINUTES)
 public class AuthenticatorTest {
     private static Authenticator instance;
     /**
@@ -65,27 +64,20 @@ public class AuthenticatorTest {
      * This is done to prevent tests corrupting each others states since all will be executed on a limited set of Threads within the JVM.
      */
     private static Semaphore threadIsolation = new Semaphore(1, true);
-
-    @Rule
-    public ErrorCollector collector = new ErrorCollector();
-    @Rule
-    public Timeout testTimout = new Timeout(5, TimeUnit.MINUTES);
-    @Rule
-    public TestName name = new TestName();
-
-    @BeforeClass
+    
+    @BeforeAll
     public static void setUpStatic() {
         instance = ESAPI.authenticator();
     }
 
-    @Before
+    @BeforeEach
     public void setup() throws InterruptedException {
         while (!threadIsolation.tryAcquire(500, TimeUnit.MILLISECONDS)) {
             //Spurious Interrupt Guard
         }
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         try {
             instance.logout();
@@ -176,7 +168,7 @@ public class AuthenticatorTest {
                 instance.verifyPasswordStrength(oldPassword, newPassword, user);
             } catch( AuthenticationException e ) {
                 System.out.println( "  FAILED >> " + newPassword + " : " + e.getLogMessage());
-                fail();
+                fail("Failed generating password");
             }
         }
         try {
@@ -224,11 +216,10 @@ public class AuthenticatorTest {
                     a = instance.createUser(accountName, password, password);
                     instance.setCurrentUser(a);
                 } catch (AuthenticationException e) {
-                    //Use ErrorCollector to fail test.
-                    collector.addError(e);
+                    fail("Authentication Exception Thrown", e);
                 }
                 User b = instance.getCurrentUser();
-                collector.checkThat("Logged in user should equal original user", a.equals(b), new IsEqual<Boolean>(Boolean.TRUE));
+                assertEquals(a, b,"Logged in user should equal original user");
             }
         };
         ThreadGroup tg = new ThreadGroup("test");
@@ -452,7 +443,7 @@ public class AuthenticatorTest {
                     //If the user isn't removed every subsequent execution will fail because we cannot create a duplicate user of the same name!
                     instance.removeUser( u.getAccountName() );
                 } catch (AuthenticationException e) {
-                    collector.addError(e);
+                    fail("Authentication Exception Thrown", e);
                 } finally {
                     latch.countDown();
                 }
